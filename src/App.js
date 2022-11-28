@@ -1,8 +1,11 @@
+import Header from "./components/Header";
+import { Routes, Route } from "react-router-dom";
+
 function App() {
   return (
-    <div>
-      <h1>App</h1>
-    </div>
+    <main>
+      <Header />
+    </main>
   );
 }
 
