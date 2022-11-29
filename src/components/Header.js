@@ -2,8 +2,19 @@ import React from "react";
 import { HiShoppingBag } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
+import { app } from "../firebase.config";
+
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const Header = () => {
+  const firebaseAuth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  const login = async () => {
+    const response = await signInWithPopup(firebaseAuth, provider);
+    console.log(response);
+  };
+
   return (
     <nav>
       <div className="nav-container">
@@ -26,7 +37,7 @@ const Header = () => {
           </div>
         </div>
         <div className="user-profile">
-          <img src={Avatar} alt="user-profile" />
+          <img src={Avatar} alt="user-profile" onClick={login} />
         </div>
       </div>
     </nav>
