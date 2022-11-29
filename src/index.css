@@ -98,7 +98,7 @@ nav {
   order: 3;
 }
 
-@keyframes cart-pop {
+@keyframes pop {
   0% {
     transform: scale(1);
   }
@@ -142,19 +142,6 @@ nav {
   order: 4;
   transition: var(--primary-transition);
   width: 1.6rem;
-}
-
-@keyframes profile-click {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(0.8);
-  }
-}
-
-.user-profile:active {
-  animation: profile-click 0.1s linear;
 }
 .user-profile img {
   overflow: auto;
