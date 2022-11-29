@@ -138,10 +138,13 @@ nav {
   color: var(--nav-links-color);
   cursor: pointer;
   display: flex;
+  font-size: 6px;
+  word-wrap: break-word;
   margin-left: 2rem;
   order: 4;
   transition: var(--primary-transition);
   width: 1.6rem;
+  height: 1.6rem;
 }
 
 @keyframes profile-click {
@@ -157,6 +160,7 @@ nav {
   animation: profile-click 0.1s linear;
 }
 .user-profile img {
+  border-radius: 100%;
   overflow: auto;
 }
 
@@ -204,5 +208,6 @@ nav {
 
   .user-profile {
     width: 1.8rem;
+    height: 1.8rem;
   }
 }
