@@ -14,8 +14,10 @@
   --notification-color: #dc0000;
 
   --primary-font: "Noto Sans", sans-serif;
-  --primary-transition: all 0.3s linear;
-  --user-profile-box-shadow: 0 0 8px #868686;
+  --primary-transition: all 0.1s linear;
+  --secondary-transition: all 0.2s linear;
+  --user-profile-box-shadow: 0 0 8px #939393;
+  --user-container-box-shadow: 0px 4px 8px #c3c3c3e2;
 }
 
 body {
@@ -43,7 +45,7 @@ nav {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 0 2rem;
+  padding: 10px 2rem;
 }
 
 /* Brand Logo */
@@ -51,7 +53,6 @@ nav {
   cursor: pointer;
   display: inline-block;
   font-family: "Akronim", cursive;
-  padding: 10px;
   order: 1;
 }
 
@@ -142,9 +143,8 @@ nav {
   word-wrap: break-word;
   margin-left: 2rem;
   order: 4;
-  transition: var(--primary-transition);
-  width: 1.6rem;
   height: 1.6rem;
+  width: 1.6rem;
 }
 
 @keyframes profile-click {
@@ -156,16 +156,99 @@ nav {
   }
 }
 
-.user-profile:active {
-  animation: profile-click 0.1s linear;
-}
 .user-profile img {
   border-radius: 100%;
   overflow: auto;
+  transition: var(--secondary-transition);
 }
 
-.user-profile:hover {
+.user-profile img:hover {
   box-shadow: var(--user-profile-box-shadow);
+}
+
+.user-profile img:active {
+  animation: profile-click 0.1s linear;
+}
+
+@keyframes userMenu-open {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+    visibility: hidden;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    visibility: visible;
+  }
+}
+
+@keyframes userMenu-close {
+  from {
+    opacity: 1;
+    transform: scale(1);
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+    visibility: hidden;
+  }
+}
+
+.user-dropdown-menu {
+  background-color: #f9fbfb;
+  border-radius: 4px;
+  box-shadow: var(--user-container-box-shadow);
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  position: absolute;
+  top: 3.8rem;
+  right: 2rem;
+  width: 120px;
+  padding: 5px;
+}
+
+.openMenu {
+  animation: userMenu-open 0.2s ease-in-out forwards;
+}
+
+.closeMenu {
+  animation: userMenu-close 0.2s ease-in-out forwards;
+}
+
+.user-dropdown-menu a {
+  text-decoration: none;
+}
+
+.user-dropdown-menu p {
+  color: var(--nav-links-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+}
+
+.user-dropdown-menu p:hover {
+  background-color: #edf3fa;
+  transition: var(--primary-transition);
+}
+
+.mobile-view-list {
+  display: none !important;
+  font-size: 1rem;
+  list-style: none;
+}
+
+.mobile-view-list li {
+  padding: 5px 10px;
+}
+
+.mobile-view-list li:hover {
+  background-color: #edf3fa;
+  transition: var(--primary-transition);
 }
 
 /* mobiles & tablets */
@@ -198,8 +281,8 @@ nav {
   }
 
   .cart-itemCount {
-    width: 1rem;
     height: 1rem;
+    width: 1rem;
   }
 
   .cart-itemCount p {
@@ -207,7 +290,33 @@ nav {
   }
 
   .user-profile {
-    width: 1.8rem;
     height: 1.8rem;
+    width: 1.8rem;
+  }
+
+  .user-dropdown-menu {
+    padding: 0;
+    top: 3.6rem;
+    right: 1.4rem;
+  }
+
+  .user-dropdown-menu p {
+    font-size: 1rem;
+    padding: 5px 10px;
+  }
+
+  .mobile-view-list {
+    display: block !important;
+  }
+
+  .logout-btn {
+    background-color: #d7dde2;
+    justify-content: center;
+    margin: 5px;
+  }
+
+  .logout-btn:hover {
+    background-color: #ccd2d7 !important;
+    transition: var(--primary-transition);
   }
 }

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { HiShoppingBag } from "react-icons/hi";
+import { MdOutlineAdd, MdOutlineLogout } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
 import { app } from "../firebase.config";
@@ -14,14 +15,29 @@ const Header = () => {
 
   const [{ user }, dispatch] = useStateValue();
 
+  const [isMenu, setIsMenu] = useState(false);
+
   const login = async () => {
-    const {
-      user: { refreshToken, providerData },
-    } = await signInWithPopup(firebaseAuth, provider);
-    dispatch({
-      type: actionType.SET_USER,
-      user: providerData[0],
-    });
+    if (!user) {
+      const {
+        user: { refreshToken, providerData },
+      } = await signInWithPopup(firebaseAuth, provider);
+      dispatch({
+        type: actionType.SET_USER,
+        user: providerData[0],
+      });
+
+      // to persist state on refresh
+      localStorage.setItem("user", JSON.stringify(providerData[0]));
+    } else {
+      setIsMenu(!isMenu);
+    }
+  };
+
+  const logout = () => {
+    setIsMenu(false);
+    localStorage.clear();
+    dispatch({ type: actionType.SET_USER, user: null });
   };
 
   return (
@@ -51,6 +67,29 @@ const Header = () => {
             alt="user-profile"
             onClick={login}
           />
+          <div
+            className={`user-dropdown-menu ${
+              isMenu ? "openMenu" : "closeMenu"
+            }`}
+          >
+            {/* administration id */}
+            {user && user.email === "chandrachudsingh81@gmail.com" && (
+              <Link to="/createItem">
+                <p>
+                  New Item <MdOutlineAdd />
+                </p>
+              </Link>
+            )}
+            <ul className="mobile-view-list">
+              <li>Home</li>
+              <li>Menu</li>
+              <li>About Us</li>
+              <li>Service</li>
+            </ul>
+            <p className="logout-btn" onClick={logout}>
+              Logout <MdOutlineLogout />
+            </p>
+          </div>
         </div>
       </div>
     </nav>
