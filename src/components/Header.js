@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiShoppingBag } from "react-icons/hi";
 import { MdOutlineAdd, MdOutlineLogout } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -40,8 +40,18 @@ const Header = () => {
     dispatch({ type: actionType.SET_USER, user: null });
   };
 
+  function setNavHeight() {
+    const nav = document.querySelector(".navbar");
+    const root = document.querySelector(":root");
+    root.style.setProperty("--nav-height", `${nav.clientHeight}px`);
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", setNavHeight);
+  }, []);
+
   return (
-    <nav>
+    <nav className="navbar">
       <div className="nav-container">
         <div className="brand-logo">
           <Link to="/" className="logo-text">
