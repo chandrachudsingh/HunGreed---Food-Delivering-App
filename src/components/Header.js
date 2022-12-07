@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { HiShoppingBag } from "react-icons/hi";
 import { MdOutlineAdd, MdOutlineLogout } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -13,6 +13,7 @@ const Header = () => {
   const firebaseAuth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
+  const userDropdownRef = useRef();
   const [{ user }, dispatch] = useStateValue();
 
   const [isMenu, setIsMenu] = useState(false);
@@ -30,12 +31,24 @@ const Header = () => {
       // to persist state on refresh
       localStorage.setItem("user", JSON.stringify(providerData[0]));
     } else {
-      setIsMenu(!isMenu);
+      isMenu ? closeMenu() : openMenu();
     }
   };
 
-  const logout = () => {
+  const openMenu = () => {
+    userDropdownRef.current.classList.remove("none");
+    setIsMenu(true);
+  };
+
+  const closeMenu = () => {
     setIsMenu(false);
+    setTimeout(() => {
+      userDropdownRef.current.classList.add("none"); //for closing animation
+    }, 200);
+  };
+
+  const logout = () => {
+    closeMenu();
     localStorage.clear();
     dispatch({ type: actionType.SET_USER, user: null });
   };
@@ -60,10 +73,18 @@ const Header = () => {
           </Link>
         </div>
         <ul className="navlinks-container">
-          <li className="navlinks">home</li>
-          <li className="navlinks">menu</li>
-          <li className="navlinks">about us</li>
-          <li className="navlinks">services</li>
+          <li className="navlinks" onClick={closeMenu}>
+            home
+          </li>
+          <li className="navlinks" onClick={closeMenu}>
+            menu
+          </li>
+          <li className="navlinks" onClick={closeMenu}>
+            about us
+          </li>
+          <li className="navlinks" onClick={closeMenu}>
+            service
+          </li>
         </ul>
         <div className="cart">
           <HiShoppingBag />
@@ -78,6 +99,7 @@ const Header = () => {
             onClick={login}
           />
           <div
+            ref={userDropdownRef}
             className={`user-dropdown-menu ${
               isMenu ? "openMenu" : "closeMenu"
             }`}
@@ -85,16 +107,16 @@ const Header = () => {
             {/* administration id */}
             {user && user.email === "chandrachudsingh81@gmail.com" && (
               <Link to="/createItem">
-                <p>
+                <p onClick={closeMenu}>
                   New Item <MdOutlineAdd />
                 </p>
               </Link>
             )}
             <ul className="mobile-view-list">
-              <li>Home</li>
-              <li>Menu</li>
-              <li>About Us</li>
-              <li>Service</li>
+              <li onClick={closeMenu}>Home</li>
+              <li onClick={closeMenu}>Menu</li>
+              <li onClick={closeMenu}>About Us</li>
+              <li onClick={closeMenu}>Service</li>
             </ul>
             <p className="logout-btn" onClick={logout}>
               Logout <MdOutlineLogout />
