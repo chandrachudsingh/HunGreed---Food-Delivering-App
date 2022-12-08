@@ -176,8 +176,10 @@ const CreateContainer = () => {
     dispatch(setPrice(""));
     dispatch(setCategory(null));
 
-    document.getElementsByTagName("select").selectedIndex = 0;
+    document.getElementById("categoryList").selectedIndex = 0;
   };
+
+  console.log(category);
 
   return (
     <section className="create-container">
@@ -199,6 +201,7 @@ const CreateContainer = () => {
         </div>
         <select
           name=""
+          id="categoryList"
           className="category-list"
           onChange={(e) => dispatch(setCategory(e.target.value))}
         >
