@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import store from "./store";
 import "./index.css";
 import App from "./App";
 
@@ -14,7 +16,9 @@ root.render(
   <React.StrictMode>
     <Router>
       <StateProvider initialState={initialState} reducer={reducer}>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </StateProvider>
     </Router>
   </React.StrictMode>
