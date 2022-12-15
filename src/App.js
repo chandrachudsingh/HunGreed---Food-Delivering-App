@@ -2,10 +2,10 @@ import Header from "./components/Header";
 import { Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import CreateContainer from "./components/CreateContainer";
-import { useStateValue } from "./context/StateProvider";
+import { useSelector } from "react-redux";
 
 function App() {
-  const [{ user }] = useStateValue();
+  const { user } = useSelector((state) => state.userData);
   return (
     <main>
       <Header />

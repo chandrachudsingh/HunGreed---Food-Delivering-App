@@ -179,8 +179,6 @@ const CreateContainer = () => {
     document.getElementById("categoryList").selectedIndex = 0;
   };
 
-  console.log(category);
-
   return (
     <section className="create-container">
       <div className="create-item">

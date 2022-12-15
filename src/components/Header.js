@@ -6,15 +6,16 @@ import Avatar from "../Images/avatar.png";
 import { app } from "../firebase.config";
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useStateValue } from "../context/StateProvider";
-import { actionType } from "../context/reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../reducers/userSlice";
 
 const Header = () => {
   const firebaseAuth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
+  const { user } = useSelector((state) => state.userData);
+  const dispatch = useDispatch();
   const userDropdownRef = useRef();
-  const [{ user }, dispatch] = useStateValue();
 
   const [isMenu, setIsMenu] = useState(false);
 
@@ -23,10 +24,7 @@ const Header = () => {
       const {
         user: { refreshToken, providerData },
       } = await signInWithPopup(firebaseAuth, provider);
-      dispatch({
-        type: actionType.SET_USER,
-        user: providerData[0],
-      });
+      dispatch(setUser(providerData[0]));
 
       // to persist state on refresh
       localStorage.setItem("user", JSON.stringify(providerData[0]));
@@ -50,7 +48,7 @@ const Header = () => {
   const logout = () => {
     closeMenu();
     localStorage.clear();
-    dispatch({ type: actionType.SET_USER, user: null });
+    dispatch(setUser(null));
   };
 
   function setNavHeight() {
