@@ -14,8 +14,11 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    setFoodItems: (state, action) => {
+      state.foodItems = action.payload;
+    },
   },
 });
 
 export default userSlice.reducer;
-export const { setUser } = userSlice.actions;
+export const { setUser, setFoodItems } = userSlice.actions;
