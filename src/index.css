@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Akronim&family=Karla:wght@800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Akronim&family=Karla:wght@400;500;600;700;800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
   margin: 0;
@@ -11,7 +11,7 @@
   --primary-color: rgb(249, 251, 251);
   --primary-color-lg: rgb(252, 252, 252);
   --primary-color-lg2: rgb(237, 243, 250);
-  --primary-color-tr: rgba(256, 256, 256, 0.4);
+  --primary-color-tr: rgba(255, 255, 255, 0.4);
   --secondary-color: rgb(221, 255, 231);
   --secondary-color-dk: rgb(208, 249, 221);
   --secondary-color-dk2: rgb(8, 202, 8);
@@ -23,7 +23,7 @@
   --grey-color: rgba(65, 65, 65, 0.76);
   --grey-color-dk: rgba(60, 60, 60, 0.8);
   --grey-color-dk2: rgb(49, 49, 49);
-  --notification-color: rgb(220, 0, 0);
+  --red-color: rgb(220, 0, 0);
   --logoutBtn-mobile-color: rgb(215, 221, 226);
   --logoutBtn-mobile-hover-color: rgb(204, 210, 215);
   --danger-color: rgb(253, 84, 84);
@@ -42,6 +42,7 @@
   --box-shadow: 0px 4px 8px rgba(195, 195, 195, 0.886);
   --box-shadow2: 0px 2px 8px rgba(195, 195, 195, 0.3);
   --box-shadow3: 0px 2px 6px rgba(195, 195, 195, 0.886);
+  --drop-shadow: 0 25px 25px rgb(0 0 0 / 0.15);
   --border: 2px solid rgb(230, 230, 230);
   --loader-border: 5px solid rgb(216, 216, 216);
   --loader-top-border: 5px solid rgb(0, 180, 0);
@@ -148,7 +149,7 @@ main {
     transform: scale(1);
   }
   80% {
-    transform: scale(1.15);
+    transform: scale(1.2);
   }
   100% {
     transform: scale(1.1);
@@ -156,11 +157,11 @@ main {
 }
 
 .cart:hover {
-  animation: pop 0.3s linear forwards;
+  animation: pop 0.15s linear forwards;
 }
 
 .cart-itemCount {
-  background-color: var(--notification-color);
+  background-color: var(--red-color);
   border-radius: 100%;
   color: var(--primary-color);
   display: flex;
@@ -191,12 +192,12 @@ main {
   width: 1.6rem;
 }
 
-@keyframes profileClick {
+@keyframes click {
   from {
     transform: scale(1);
   }
   to {
-    transform: scale(0.8);
+    transform: scale(0.75);
   }
 }
 
@@ -211,7 +212,7 @@ main {
 }
 
 .user-profile img:active {
-  animation: profileClick 0.1s linear;
+  animation: click 0.1s linear;
 }
 
 /* user dropdown menu */
@@ -517,6 +518,7 @@ main {
 .item-name {
   color: var(--grey-color-dk);
   font-size: 1rem;
+  font-weight: 800;
   line-height: 1.5;
   margin-top: 1rem;
 }
@@ -524,6 +526,7 @@ main {
 .item-desc {
   color: var(--grey-color-lg);
   font-size: 0.75rem;
+  font-weight: 800;
   line-height: 1.25;
   margin-top: 0.5rem;
 }
@@ -531,6 +534,7 @@ main {
 .item-price {
   color: var(--grey-color-dk);
   font-size: 0.75rem;
+  font-weight: 800;
   line-height: 1.25;
   margin-top: 0.5rem;
 }
@@ -760,9 +764,17 @@ main {
   outline: none;
 }
 
+/* Chrome, Safari, Edge, Opera */
 .newItem-textfield input[type="number"]::-webkit-outer-spin-button,
 .newItem-textfield input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.newItem-textfield input[type="number"] {
   appearance: none;
+  -moz-appearance: textfield;
 }
 
 /* category dropdown list */
@@ -929,4 +941,196 @@ main {
   .create-item {
     width: 100%;
   }
+}
+
+/* ********************************************** */
+/*------------------Menu Section------------------*/
+/* ********************************************** */
+
+.menu-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px 1.8rem;
+  width: 100%;
+}
+
+/*-- Hot Section --*/
+.hot-section {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin: 0.5rem 0;
+  width: 100%;
+}
+
+/*- Header - heading & scroll btns -*/
+.hot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Hot Section heading */
+.hot-heading {
+  position: relative;
+  text-transform: capitalize;
+}
+
+.hot-heading::after {
+  background-image: linear-gradient(
+    to right,
+    var(--secondary-color-dk2),
+    var(--secondary-color-dk3)
+  );
+  border-radius: 2px;
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  height: 4px;
+  width: 140px;
+}
+
+/* Hot section scroll btns */
+.slide-btn-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.slide-btn {
+  background-color: var(--secondary-color-dk);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  color: black;
+  display: flex;
+  font-size: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  transition: var(--primary-transition);
+}
+
+.slide-btn:hover {
+  background-color: var(--secondary-color-dk2);
+  color: white;
+}
+
+/*- Dishes Container -*/
+.hot-dishes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hot-dishes::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hot-dishes {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Dish cards */
+.dish-card {
+  background-color: var(--primary-color-tr);
+  backdrop-filter: blur(12px);
+  border-radius: var(--border-radius2);
+  box-shadow: var(--box-shadow2);
+  display: flex;
+  flex-direction: column;
+  font-family: "Karla", sans-serif;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2.5rem 0;
+  padding: 0.5rem 1rem;
+  transition: var(--secondary-transition);
+  min-width: 280px;
+  width: 280px;
+}
+
+.dish-card:hover {
+  box-shadow: var(--box-shadow3);
+}
+
+.dish-primary {
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-between;
+  width: 100%;
+}
+/* Dish image */
+.dish-primary img {
+  filter: drop-shadow(var(--drop-shadow));
+  margin-top: -2.5rem;
+  height: 120px;
+  width: 120px;
+  transition: var(--primary-transition);
+}
+
+.dish-primary img:hover {
+  transform: scale(1.1);
+}
+
+/* Add to cart btn */
+.add-to-cart {
+  background-color: var(--red-color);
+  border-radius: 100%;
+  color: var(--primary-color-lg);
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--primary-transition);
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.add-to-cart:active {
+  animation: click 0.1s linear;
+}
+
+/* Dish Info */
+.dish-info {
+  display: flex;
+  flex-direction: column;
+  font-weight: 800;
+  gap: 0.1rem;
+  align-items: flex-end;
+  justify-content: flex-end;
+  /* margin-top: -2rem; */
+  width: 100%;
+}
+
+.dish-name {
+  color: var(--grey-color-dk);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.dish-calories {
+  color: var(--grey-color-lg);
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+.dish-price {
+  color: var(--grey-color-dk);
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+.dish-price span {
+  color: var(--secondary-color-dk3);
+  font-weight: bold;
 }

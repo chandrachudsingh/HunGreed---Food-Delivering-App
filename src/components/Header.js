@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { HiShoppingBag } from "react-icons/hi";
+import { MdShoppingBasket } from "react-icons/md";
 import { MdOutlineAdd, MdOutlineLogout } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
@@ -85,7 +85,7 @@ const Header = () => {
           </li>
         </ul>
         <div className="cart">
-          <HiShoppingBag />
+          <MdShoppingBasket />
           <div className="cart-itemCount">
             <p>2</p>
           </div>
