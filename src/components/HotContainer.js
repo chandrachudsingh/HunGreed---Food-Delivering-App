@@ -6,10 +6,10 @@ import {
   MdKeyboardArrowRight,
 } from "react-icons/md";
 
-const HotSection = ({ foodItems }) => {
+const HotContainer = ({ foodItems }) => {
   const dishContainerRef = useRef();
   const dishCardRef = useRef();
-  const [val, setVal] = useState(0);
+  const [offsetVal, setOffsetVal] = useState(0);
 
   const getScrollOffset = () => {
     const value =
@@ -21,7 +21,7 @@ const HotSection = ({ foodItems }) => {
           .getComputedStyle(dishContainerRef.current)
           .getPropertyValue("gap")
       );
-    setVal(value);
+    setOffsetVal(value);
   };
 
   const scrollDish = (scrollOffset) => {
@@ -29,14 +29,14 @@ const HotSection = ({ foodItems }) => {
   };
 
   return (
-    <section className="hot-section">
+    <section className="hot-container">
       <div className="hot-header">
         <h2 className="hot-heading">Our fresh & healthy fruits</h2>
         <div className="slide-btn-container">
-          <button className="slide-btn" onClick={() => scrollDish(-val)}>
+          <button className="slide-btn" onClick={() => scrollDish(-offsetVal)}>
             <MdKeyboardArrowLeft />
           </button>
-          <button className="slide-btn" onClick={() => scrollDish(val)}>
+          <button className="slide-btn" onClick={() => scrollDish(offsetVal)}>
             <MdKeyboardArrowRight />
           </button>
         </div>
@@ -75,4 +75,4 @@ const HotSection = ({ foodItems }) => {
   );
 };
 
-export default HotSection;
+export default HotContainer;

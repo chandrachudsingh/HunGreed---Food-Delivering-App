@@ -997,8 +997,8 @@ main {
   }
 }
 
-/*-- Hot Section --*/
-.hot-section {
+/*-- Hot Container --*/
+.hot-container {
   display: flex;
   flex-direction: column;
   gap: 3rem;
@@ -1014,7 +1014,7 @@ main {
   gap: 2rem;
 }
 
-/* Hot Section heading */
+/* Hot Container heading */
 .hot-heading {
   position: relative;
   text-transform: capitalize;
@@ -1035,7 +1035,7 @@ main {
   width: 140px;
 }
 
-/* Hot section scroll btns */
+/* Hot container scroll btns */
 .slide-btn-container {
   display: flex;
   gap: 0.5rem;
@@ -1210,7 +1210,7 @@ main {
 
 /* small screen devices */
 @media screen and (max-width: 480px) {
-  /* hot section heading */
+  /* hot container heading */
   .hot-heading {
     font-size: 1.2rem;
   }

@@ -1,16 +1,16 @@
 import React from "react";
-import HotSection from "./HotSection";
-import AllMenuSection from "./AllMenuSection";
+import HotContainer from "./HotContainer";
+import MenuContainer from "./MenuContainer";
 import { useSelector } from "react-redux";
 
 const MenuSection = () => {
   const { foodItems } = useSelector((state) => state.userData);
   return (
     <section className="menu-section" id="menu">
-      <HotSection
+      <HotContainer
         foodItems={foodItems?.filter((item) => item.category === "icecreams")}
       />
-      <AllMenuSection foodItems={foodItems} />
+      <MenuContainer foodItems={foodItems} />
     </section>
   );
 };
