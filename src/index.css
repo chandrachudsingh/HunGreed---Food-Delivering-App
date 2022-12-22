@@ -1054,8 +1054,9 @@ main {
   margin: 2.5rem 0;
   padding: 0.5rem 1rem;
   transition: var(--secondary-transition);
-  min-width: 280px;
-  width: 280px;
+  height: 145px;
+  min-width: 275px;
+  width: 275px;
 }
 
 .dish-card:hover {
@@ -1069,11 +1070,17 @@ main {
   width: 100%;
 }
 /* Dish image */
-.dish-primary img {
+.dish-img {
   filter: drop-shadow(var(--drop-shadow));
   margin-top: -2.5rem;
   height: 120px;
   width: 120px;
+}
+
+.dish-img img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
   transition: var(--primary-transition);
 }
 
@@ -1108,7 +1115,7 @@ main {
   gap: 0.1rem;
   align-items: flex-end;
   justify-content: flex-end;
-  /* margin-top: -2rem; */
+  margin-top: -2.5rem;
   width: 100%;
 }
 

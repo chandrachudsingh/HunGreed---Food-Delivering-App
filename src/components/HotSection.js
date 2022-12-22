@@ -53,7 +53,9 @@ const HotSection = ({ foodItems }) => {
                 onLoad={getScrollOffset}
               >
                 <div className="dish-primary">
-                  <img src={imageURL} alt={title} />
+                  <div className="dish-img">
+                    <img src={imageURL} alt={title} />
+                  </div>
                   <div className="add-to-cart">
                     <MdShoppingBasket />
                   </div>

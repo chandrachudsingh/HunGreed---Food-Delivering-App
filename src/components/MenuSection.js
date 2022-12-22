@@ -8,9 +8,9 @@ const MenuSection = () => {
   return (
     <section className="menu-section" id="menu">
       <HotSection
-        foodItems={foodItems?.filter((item) => item.category === "fruits")}
+        foodItems={foodItems?.filter((item) => item.category === "fish")}
       />
-      <AllMenuSection />
+      <AllMenuSection foodItems={foodItems} />
     </section>
   );
 };
