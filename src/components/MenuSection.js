@@ -8,7 +8,7 @@ const MenuSection = () => {
   return (
     <section className="menu-section" id="menu">
       <HotSection
-        foodItems={foodItems?.filter((item) => item.category === "fish")}
+        foodItems={foodItems?.filter((item) => item.category === "drinks")}
       />
       <AllMenuSection foodItems={foodItems} />
     </section>

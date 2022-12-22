@@ -32,12 +32,16 @@ const HeroSection = () => {
               const { id, name, desc, price, imageSrc } = item;
               return (
                 <article className="hero-card" key={id}>
-                  <img src={imageSrc} alt="" />
-                  <h4 className="item-name">{name}</h4>
-                  <p className="item-desc">{desc}</p>
-                  <p className="item-price">
-                    <span>₹</span> {price}
-                  </p>
+                  <div className="hero-img">
+                    <img src={imageSrc} alt="" />
+                  </div>
+                  <div className="item-info">
+                    <h4 className="item-name">{name}</h4>
+                    <p className="item-desc">{desc}</p>
+                    <p className="item-price">
+                      <span>₹</span> {price}
+                    </p>
+                  </div>
                 </article>
               );
             })}
