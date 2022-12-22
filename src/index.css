@@ -103,13 +103,13 @@ main {
 
 .logo-text {
   color: var(--brandLogo-color);
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   text-decoration: none;
   text-shadow: 4px 4px 10px var(--brand-shadow-color);
 }
 
 .small {
-  font-size: 2rem;
+  font-size: 2.2rem;
 }
 
 /* Navbar Links */
@@ -315,11 +315,11 @@ main {
   }
 
   .logo-text {
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
 
   .small {
-    font-size: 2.4rem;
+    font-size: 2rem;
   }
 
   .navlinks-container {
@@ -327,23 +327,14 @@ main {
   }
 
   .cart {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin-left: 0;
     order: 1;
   }
 
-  .cart-itemCount {
-    height: 1rem;
-    width: 1rem;
-  }
-
-  .cart-itemCount p {
-    font-size: 0.8rem;
-  }
-
   .user-profile {
-    height: 1.8rem;
-    width: 1.8rem;
+    height: 1.75rem;
+    width: 1.75rem;
   }
 
   .user-dropdown-menu {
@@ -370,6 +361,13 @@ main {
   .logout-btn:hover {
     background-color: var(--logoutBtn-mobile-hover-color) !important;
     transition: var(--primary-transition);
+  }
+}
+
+/* mobile view */
+@media screen and (max-width: 480px) {
+  .nav-container {
+    padding: 10px 1rem;
   }
 }
 
@@ -655,7 +653,17 @@ main {
   }
 }
 
+@media screen and (max-width: 640px) {
+  .hero-section {
+    padding: 20px 1.4rem;
+  }
+}
+
 @media screen and (max-width: 480px) {
+  .hero-section {
+    padding: 20px 1rem;
+  }
+
   .hero-order-btn {
     width: 100%;
   }
@@ -674,7 +682,7 @@ main {
   align-items: center;
   justify-content: center;
   margin-top: var(--nav-height);
-  padding: 0 1.8rem;
+  padding: 1.8rem;
   height: auto;
   min-height: calc(100vh - var(--nav-height));
   width: 100%;
@@ -932,6 +940,10 @@ main {
 
 /* small screen devices */
 @media screen and (max-width: 640px) {
+  .create-container {
+    padding: 20px 1.4rem;
+  }
+
   .create-item {
     width: 90%;
   }
@@ -943,6 +955,12 @@ main {
   .save-btn {
     margin-left: 0;
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .create-container {
+    padding: 20px 1rem;
   }
 }
 
@@ -967,6 +985,18 @@ main {
   width: 100%;
 }
 
+@media screen and (max-width: 640px) {
+  .menu-section {
+    padding: 20px 1.4rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .menu-section {
+    padding: 20px 1rem;
+  }
+}
+
 /*-- Hot Section --*/
 .hot-section {
   display: flex;
@@ -981,6 +1011,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 2rem;
 }
 
 /* Hot Section heading */
@@ -1152,4 +1183,64 @@ main {
 .dish-price span {
   color: var(--secondary-color-dk3);
   font-weight: bold;
+}
+
+/* medium screen devices */
+@media screen and (max-width: 768px) {
+  /* scroll btn container */
+  .slide-btn-container {
+    display: none;
+  }
+
+  /* dish card */
+  .dish-card {
+    min-width: 240px;
+  }
+
+  .dish-img {
+    margin-top: -2.4rem;
+    height: 100px;
+    width: 100px;
+  }
+
+  .dish-info {
+    margin-top: -0.5rem;
+  }
+}
+
+/* small screen devices */
+@media screen and (max-width: 480px) {
+  /* hot section heading */
+  .hot-heading {
+    font-size: 1.2rem;
+  }
+
+  .hot-heading::after {
+    width: 110px;
+  }
+
+  /* dish card */
+  .dish-card {
+    padding: 0.5rem;
+    min-width: 190px;
+  }
+
+  .dish-img {
+    margin-top: -2rem;
+    height: 80px;
+    width: 80px;
+  }
+
+  .dish-info {
+    margin-top: -0.35rem;
+  }
+
+  .dish-name {
+    font-size: 0.85rem;
+  }
+
+  .dish-calories,
+  .dish-price {
+    font-size: 0.65rem;
+  }
 }
