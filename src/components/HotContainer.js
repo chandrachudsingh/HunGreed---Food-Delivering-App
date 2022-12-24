@@ -1,53 +1,22 @@
 import React from "react";
-import { useRef, useState } from "react";
-import {
-  MdShoppingBasket,
-  MdKeyboardArrowLeft,
-  MdKeyboardArrowRight,
-} from "react-icons/md";
+import { MdShoppingBasket } from "react-icons/md";
+import NotFound from "../Images/NotFound.svg";
 
-const HotContainer = ({ foodItems }) => {
-  const dishContainerRef = useRef();
-  const dishCardRef = useRef();
-  const [offsetVal, setOffsetVal] = useState(0);
-
-  const getScrollOffset = () => {
-    const value =
-      parseInt(
-        window.getComputedStyle(dishCardRef.current).getPropertyValue("width")
-      ) +
-      parseInt(
-        window
-          .getComputedStyle(dishContainerRef.current)
-          .getPropertyValue("gap")
-      );
-    setOffsetVal(value);
-  };
-
-  const scrollDish = (scrollOffset) => {
-    dishContainerRef.current.scrollLeft += scrollOffset;
-  };
-
+const HotContainer = ({
+  foodItems,
+  dishContainerRef,
+  dishCardRef,
+  getScrollOffset,
+}) => {
   return (
-    <section className="hot-container">
-      <div className="hot-header">
-        <h2 className="hot-heading">Our fresh & healthy fruits</h2>
-        <div className="slide-btn-container">
-          <button className="slide-btn" onClick={() => scrollDish(-offsetVal)}>
-            <MdKeyboardArrowLeft />
-          </button>
-          <button className="slide-btn" onClick={() => scrollDish(offsetVal)}>
-            <MdKeyboardArrowRight />
-          </button>
-        </div>
-      </div>
+    <>
       <div className="hot-dishes" ref={dishContainerRef}>
-        {foodItems &&
+        {foodItems && foodItems.length > 0 ? (
           foodItems.map((item) => {
             const { id, title, calories, imageURL, price } = item;
             return (
               <article
-                className="dish-card"
+                className="hot-card dish-card"
                 key={id}
                 ref={dishCardRef}
                 onLoad={getScrollOffset}
@@ -56,9 +25,16 @@ const HotContainer = ({ foodItems }) => {
                   <div className="dish-img">
                     <img src={imageURL} alt={title} />
                   </div>
-                  <div className="add-to-cart">
-                    <MdShoppingBasket />
-                  </div>
+                  <button
+                    className={`add2cart-btn ${
+                      window.innerWidth > 480 && "hover"
+                    }`}
+                  >
+                    <p>Add</p>
+                    <div className="add-to-cart">
+                      <MdShoppingBasket />
+                    </div>
+                  </button>
                 </div>
                 <div className="dish-info">
                   <p className="dish-name">{title}</p>
@@ -69,9 +45,15 @@ const HotContainer = ({ foodItems }) => {
                 </div>
               </article>
             );
-          })}
+          })
+        ) : (
+          <div className="not-found">
+            <img src={NotFound} alt="Empty" />
+            <p>Items Not Available</p>
+          </div>
+        )}
       </div>
-    </section>
+    </>
   );
 };
 
