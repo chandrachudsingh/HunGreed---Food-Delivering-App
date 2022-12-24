@@ -2,13 +2,13 @@ import Header from "./components/Header";
 import { Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import CreateContainer from "./components/CreateContainer";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllFoodItems } from "./utils/firebaseFunctions";
-import { useEffect } from "react";
 import { setFoodItems } from "./reducers/userSlice";
 
 function App() {
-  const { user, foodItems } = useSelector((state) => state.userData);
+  const { user } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
   const fetchData = async () => {
     await getAllFoodItems().then((data) => {
@@ -24,7 +24,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} exact />
-        {user && (
+        {user && user.email === "chandrachudsingh81@gmail.com" && (
           <Route path="/createItem" element={<CreateContainer />} exact />
         )}
       </Routes>
