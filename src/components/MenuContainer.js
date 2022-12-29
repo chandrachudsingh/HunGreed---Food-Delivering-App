@@ -3,7 +3,12 @@ import { categories } from "../utils/data";
 import { MdShoppingBasket, MdRestaurantMenu } from "react-icons/md";
 import NotFound from "../Images/NotFound.svg";
 
-const MenuContainer = ({ itemList, filterItems, setAdd2CartBtnHover }) => {
+const MenuContainer = ({
+  itemList,
+  filterItems,
+  setAdd2CartBtnHover,
+  addToCart,
+}) => {
   const [filter, setFilter] = useState(categories[0].urlParamName);
 
   useEffect(() => {
@@ -49,7 +54,12 @@ const MenuContainer = ({ itemList, filterItems, setAdd2CartBtnHover }) => {
                     <div className="dish-img">
                       <img src={imageURL} alt={title} />
                     </div>
-                    <button className="add2cart-btn hover">
+                    <button
+                      className={`add2cart-btn ${
+                        window.innerWidth > 480 && "hover"
+                      }`}
+                      onClick={() => addToCart(item)}
+                    >
                       <p>Add</p>
                       <div className="add-to-cart">
                         <MdShoppingBasket />

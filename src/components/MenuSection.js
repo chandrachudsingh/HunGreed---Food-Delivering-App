@@ -1,16 +1,18 @@
 import React from "react";
 import HotContainer from "./HotContainer";
 import MenuContainer from "./MenuContainer";
-import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useRef, useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import { useCallback } from "react";
+import { getCartItems, saveCartItem } from "../utils/firebaseFunctions";
+import { setCartItems } from "../reducers/userSlice";
 
 const MenuSection = () => {
   const { foodItems } = useSelector((state) => state.userData);
+  const dispatch = useDispatch();
+
   const [itemList, setItemList] = useState([]);
   const [offsetVal, setOffsetVal] = useState(0);
-
   const dishContainerRef = useRef();
   const dishCardRef = useRef();
 
@@ -54,6 +56,17 @@ const MenuSection = () => {
     }
   };
 
+  const fetchCartItems = async () => {
+    await getCartItems().then((data) => {
+      dispatch(setCartItems(data));
+    });
+  };
+
+  const addToCart = async (item) => {
+    await saveCartItem(item);
+    fetchCartItems();
+  };
+
   return (
     <section className="menu-section" id="menu">
       <section className="hot-container">
@@ -81,6 +94,7 @@ const MenuSection = () => {
             dishContainerRef={dishContainerRef}
             dishCardRef={dishCardRef}
             getScrollOffset={getScrollOffset}
+            addToCart={addToCart}
           />
         ) : (
           <Loading />
@@ -95,6 +109,7 @@ const MenuSection = () => {
             itemList={itemList}
             filterItems={filterItems}
             setAdd2CartBtnHover={setAdd2CartBtnHover}
+            addToCart={addToCart}
           />
         ) : (
           <Loading />

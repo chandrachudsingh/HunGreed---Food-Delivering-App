@@ -7,17 +7,21 @@ import { app } from "../firebase.config";
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../reducers/userSlice";
+import { setCartIsOpen, setIsMenuOpen, setUser } from "../reducers/userSlice";
 
 const Header = () => {
   const firebaseAuth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-  const { user } = useSelector((state) => state.userData);
+  const {
+    user,
+    isMenuOpen,
+    cart: { isOpen, cartItems },
+  } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
-  const userDropdownRef = useRef();
 
-  const [isMenu, setIsMenu] = useState(false);
+  const userDropdownRef = useRef();
+  const cartItemCountRef = useRef();
 
   const login = async () => {
     if (!user) {
@@ -29,26 +33,54 @@ const Header = () => {
       // to persist state on refresh
       localStorage.setItem("user", JSON.stringify(providerData[0]));
     } else {
-      isMenu ? closeMenu() : openMenu();
+      isMenuOpen ? closeMenu() : openMenu();
     }
   };
 
   const openMenu = () => {
-    userDropdownRef.current.classList.remove("none");
-    setIsMenu(true);
+    userDropdownRef.current.style.display = "flex";
+    setTimeout(() => {
+      dispatch(setIsMenuOpen(true));
+    }, 0);
   };
 
   const closeMenu = () => {
-    setIsMenu(false);
+    userDropdownRef.current.classList.remove("openMenu");
+
+    const transitionDuration =
+      parseFloat(
+        window
+          .getComputedStyle(userDropdownRef.current)
+          .getPropertyValue("transition-duration")
+      ) * 1000;
     setTimeout(() => {
-      userDropdownRef.current.classList.add("none"); //for closing animation
-    }, 200);
+      userDropdownRef.current.style.display = "none"; //for closing animation
+
+      dispatch(setIsMenuOpen(false));
+    }, transitionDuration);
   };
 
   const logout = () => {
     closeMenu();
     localStorage.clear();
     dispatch(setUser(null));
+  };
+
+  const openCart = () => {
+    dispatch(setCartIsOpen(!isOpen));
+    document.getElementById("cart-overlay").style.display = "block";
+    setTimeout(() => {
+      document.getElementById("cart-overlay").style.backgroundColor =
+        "rgba(0, 0, 0, 0.5)";
+    }, 0);
+  };
+
+  const totalQty = () => {
+    let sum = 0;
+    cartItems.forEach((item) => {
+      sum += item.qty;
+    });
+    cartItemCountRef.current.innerText = sum;
   };
 
   function setNavHeight() {
@@ -61,6 +93,12 @@ const Header = () => {
     window.addEventListener("resize", setNavHeight);
   }, []);
 
+  useEffect(() => {
+    if (cartItemCountRef.current) {
+      totalQty();
+    }
+  }, [cartItems]);
+
   return (
     <nav className="navbar">
       <div className="nav-container">
@@ -70,25 +108,19 @@ const Header = () => {
             <span className="small">reed</span>
           </Link>
         </div>
-        <ul className="navlinks-container">
-          <li className="navlinks" onClick={closeMenu}>
-            home
-          </li>
-          <li className="navlinks" onClick={closeMenu}>
-            menu
-          </li>
-          <li className="navlinks" onClick={closeMenu}>
-            about us
-          </li>
-          <li className="navlinks" onClick={closeMenu}>
-            service
-          </li>
+        <ul className="navlinks-container" onClick={closeMenu}>
+          <li className="navlinks">home</li>
+          <li className="navlinks">menu</li>
+          <li className="navlinks">about us</li>
+          <li className="navlinks">service</li>
         </ul>
-        <div className="cart">
+        <div className="cart" onClick={openCart}>
           <MdShoppingBasket />
-          <div className="cart-itemCount">
-            <p>2</p>
-          </div>
+          {cartItems && cartItems.length > 0 && (
+            <div className="cart-itemCount">
+              <p ref={cartItemCountRef}></p>
+            </div>
+          )}
         </div>
         <div className="user-profile">
           <img
@@ -98,9 +130,7 @@ const Header = () => {
           />
           <div
             ref={userDropdownRef}
-            className={`user-dropdown-menu ${
-              isMenu ? "openMenu" : "closeMenu"
-            }`}
+            className={`user-dropdown-menu ${isMenuOpen && "openMenu"}`}
           >
             {/* administration id */}
             {user && user.email === "chandrachudsingh81@gmail.com" && (
@@ -116,7 +146,13 @@ const Header = () => {
               <li onClick={closeMenu}>About Us</li>
               <li onClick={closeMenu}>Service</li>
             </ul>
-            <p className="logout-btn" onClick={logout}>
+            <p
+              className="logout-btn"
+              onClick={() => {
+                logout();
+                closeMenu();
+              }}
+            >
               Logout <MdOutlineLogout />
             </p>
           </div>

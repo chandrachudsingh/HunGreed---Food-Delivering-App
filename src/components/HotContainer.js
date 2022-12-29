@@ -7,6 +7,7 @@ const HotContainer = ({
   dishContainerRef,
   dishCardRef,
   getScrollOffset,
+  addToCart,
 }) => {
   return (
     <>
@@ -29,6 +30,7 @@ const HotContainer = ({
                     className={`add2cart-btn ${
                       window.innerWidth > 480 && "hover"
                     }`}
+                    onClick={() => addToCart(item)}
                   >
                     <p>Add</p>
                     <div className="add-to-cart">
