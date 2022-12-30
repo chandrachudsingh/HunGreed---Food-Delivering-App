@@ -7,6 +7,7 @@ import {
   query,
   setDoc,
   updateDoc,
+  writeBatch,
 } from "firebase/firestore";
 import { firestore } from "../firebase.config";
 
@@ -31,7 +32,7 @@ export const saveCartItem = async (data) => {
   const cartItems = await getCartItems();
   const item = cartItems.find((obj) => obj.id === data.id);
   if (item) {
-    updateCartItem(item, 1);
+    await updateCartItem(item, 1);
     return;
   }
 
@@ -59,15 +60,19 @@ export const deleteCartItem = async (item) => {
 // Deleting entire collection
 export const deleteAllCartItem = async () => {
   const dbRef = collection(firestore, "cartItems");
-  const items = await getDocs(query(dbRef, orderBy("id", "desc")));
-  items.forEach((item) => {
-    deleteDoc(item.ref);
+  const docsSnap = await getDocs(query(dbRef, orderBy("id", "desc")));
+
+  // Delete documents in a batch
+  const batch = writeBatch(firestore);
+  docsSnap.forEach((doc) => {
+    batch.delete(doc.ref);
   });
+  await batch.commit();
 };
 
 // Get Cart items
 export const getCartItems = async () => {
   const dbRef = collection(firestore, "cartItems");
-  const items = await getDocs(query(dbRef, orderBy("id", "desc")));
-  return items.docs.map((doc) => doc.data());
+  const docsSnap = await getDocs(query(dbRef, orderBy("id", "desc")));
+  return docsSnap.docs.map((doc) => doc.data());
 };
