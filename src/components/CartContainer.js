@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import {
-  MdClose,
+  MdArrowBack,
   MdClearAll,
   MdOutlineRemove,
   MdOutlineAdd,
@@ -86,7 +86,7 @@ const CartContainer = () => {
     >
       <div className="cart-header">
         <button className="close-cart-btn" onClick={closeCart}>
-          <MdClose />
+          <MdArrowBack />
         </button>
         <h3 className="cart-heading">cart</h3>
         <button className="clear-cart-btn" onClick={deleteCart}>
@@ -96,11 +96,11 @@ const CartContainer = () => {
       </div>
       {cartItems && cartItems.length > 0 ? (
         <div className="cart-main">
-          {isItemsLoading && (
+          {/* {isItemsLoading && (
             <div id="cart-main-overlay">
               <div className="loader"></div>
             </div>
-          )}
+          )} */}
           <div className="cart-items-container">
             {cartItems.map((item) => {
               const { id, title, imageURL, price, qty } = item;
