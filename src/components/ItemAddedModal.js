@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { MdCheckCircle } from "react-icons/md";
 
 const ItemAddedModal = ({ modalDuration }) => {
   const successModalRef = useRef();
@@ -18,7 +19,7 @@ const ItemAddedModal = ({ modalDuration }) => {
   }, []);
   return (
     <div className="success-modal" ref={successModalRef}>
-      Item added to cart.
+      <MdCheckCircle className="check-icon" /> Item added to cart.
     </div>
   );
 };
