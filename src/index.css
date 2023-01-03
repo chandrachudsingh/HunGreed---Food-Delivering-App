@@ -50,7 +50,9 @@
   --drop-shadow: 0 25px 25px rgb(0 0 0 / 0.15);
   --border: 2px solid rgb(230, 230, 230);
   --loader-border: 5px solid rgb(216, 216, 216);
-  --loader-top-border: 5px solid rgb(0, 180, 0);
+  --loader-border-lg: 4px solid rgb(216, 216, 216);
+  --loader-top-border: 5px solid rgb(0, 190, 0);
+  --loader-top-border-lg: 4px solid rgb(0, 190, 0);
   --border-radius: 4px;
   --border-radius2: 6px;
   --border-radius3: 10px;
@@ -83,6 +85,35 @@ main {
   justify-content: center;
   height: auto;
   width: 100%;
+}
+
+/* loading state */
+@keyframes loading {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loader {
+  border: var(--loader-border);
+  border-top: var(--loader-top-border);
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  animation: loading 1s linear infinite;
+}
+
+/* small screen devices */
+@media screen and (max-width: 480px) {
+  .loader {
+    border: var(--loader-border-lg);
+    border-top: var(--loader-top-border-lg);
+    height: 30px;
+    width: 30px;
+  }
 }
 
 /* ********************************************** */
@@ -881,25 +912,6 @@ main {
   position: relative;
 }
 
-@keyframes loading {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* loading state */
-.loader {
-  border: var(--loader-border);
-  border-top: var(--loader-top-border);
-  border-radius: 50%;
-  height: 50px;
-  width: 50px;
-  animation: loading 1s linear infinite;
-}
-
 /* item image upload */
 .newItem-img-upload {
   cursor: pointer;
@@ -1614,6 +1626,38 @@ main {
   }
 }
 
+/* add to cart overlay */
+#add2cart-overlay {
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: var(--secondary-transition);
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+}
+
+/* Item added Success Modal */
+.success-modal {
+  background-color: var(--red-color-lg);
+  border: 2px solid red;
+  border-radius: var(--border-radius);
+  color: var(--red-color);
+  padding: 2px 0.5rem;
+  position: fixed;
+  top: 90%;
+  transition: var(--primary-transition);
+  opacity: 0;
+}
+
+.open-success-modal {
+  opacity: 1;
+}
+
 /* ********************************************** */
 /*-----------------Cart Container-----------------*/
 /* ********************************************** */
@@ -1746,12 +1790,12 @@ main {
 }
 
 #cart-main-overlay {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 0%;
+  top: 0;
   left: 0;
   transition: var(--secondary-transition);
   height: 100%;
@@ -1909,12 +1953,6 @@ main {
 .checkout-btn:hover {
   background-color: var(--secondary-color-dk2);
   box-shadow: var(--box-shadow);
-}
-
-.checkout-btn:active {
-  background-color: var(--secondary-color-dk4);
-  color: var(--grey-color-dk2);
-  transition: none;
 }
 
 /* Empty cart container */

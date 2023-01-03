@@ -6,13 +6,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { getCartItems, saveCartItem } from "../utils/firebaseFunctions";
 import { setCartItems } from "../reducers/userSlice";
+import ItemAddedModal from "./ItemAddedModal";
+import Loading from "./Loading";
 
 const MenuSection = () => {
   const { foodItems } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
+  const modalDuration = 3000;
   const [itemList, setItemList] = useState([]);
   const [offsetVal, setOffsetVal] = useState(0);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [addingToCart, setAddingToCart] = useState(false);
   const dishContainerRef = useRef();
   const dishCardRef = useRef();
 
@@ -59,10 +64,18 @@ const MenuSection = () => {
   const fetchCartItems = async () => {
     await getCartItems().then((data) => {
       dispatch(setCartItems(data));
+
+      setAddingToCart(false);
+      setShowSuccessModal(true);
+      const transitionDuration = 200;
+      setTimeout(() => {
+        setShowSuccessModal(false);
+      }, modalDuration + transitionDuration);
     });
   };
 
   const addToCart = async (item) => {
+    setAddingToCart(true);
     await saveCartItem(item);
     fetchCartItems();
   };
@@ -115,19 +128,13 @@ const MenuSection = () => {
           <Loading />
         )}
       </section>
+      {addingToCart && (
+        <div id="add2cart-overlay">
+          <div className="loader"></div>
+        </div>
+      )}
+      {showSuccessModal && <ItemAddedModal modalDuration={modalDuration} />}
     </section>
-  );
-};
-
-const Loading = () => {
-  return (
-    <div className="loading">
-      <div className="loading-dot"></div>
-      <div className="loading-dot"></div>
-      <div className="loading-dot"></div>
-      <div className="loading-dot"></div>
-      <div className="loading-dot"></div>
-    </div>
   );
 };
 

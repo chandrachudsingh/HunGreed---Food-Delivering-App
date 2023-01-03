@@ -1,6 +1,4 @@
-import React, { useRef } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   MdArrowBack,
   MdClearAll,
@@ -23,8 +21,7 @@ const CartContainer = () => {
   const dispatch = useDispatch();
 
   const deliveryCharges = 50;
-  const { isItemsLoading, setIsItemsLoading } = useState(false);
-  const { isQtyLoading, setIsQtyLoading } = useState(false);
+  const [isItemsUpdating, setIsItemsUpdating] = useState(false);
   const cartContainerRef = useRef();
   const subTotalRef = useRef();
   const totalRef = useRef();
@@ -49,15 +46,18 @@ const CartContainer = () => {
   const fetchCartItems = async () => {
     await getCartItems().then((data) => {
       dispatch(setCartItems(data));
+      setIsItemsUpdating(false);
     });
   };
 
   const updateItemQty = async (item, val) => {
+    setIsItemsUpdating(true);
     await updateCartItem(item, val);
     fetchCartItems();
   };
 
   const deleteCart = async () => {
+    setIsItemsUpdating(true);
     await deleteAllCartItem();
     fetchCartItems();
   };
@@ -96,11 +96,11 @@ const CartContainer = () => {
       </div>
       {cartItems && cartItems.length > 0 ? (
         <div className="cart-main">
-          {/* {isItemsLoading && (
+          {isItemsUpdating && (
             <div id="cart-main-overlay">
               <div className="loader"></div>
             </div>
-          )} */}
+          )}
           <div className="cart-items-container">
             {cartItems.map((item) => {
               const { id, title, imageURL, price, qty } = item;

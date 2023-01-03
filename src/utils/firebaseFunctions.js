@@ -20,8 +20,8 @@ export const saveItem = async (data) => {
 // Get all food items
 export const getAllFoodItems = async () => {
   const dbRef = collection(firestore, "foodItems");
-  const items = await getDocs(query(dbRef, orderBy("id", "desc")));
-  return items.docs.map((doc) => doc.data());
+  const docsSnap = await getDocs(query(dbRef, orderBy("id", "desc")));
+  return docsSnap.docs.map((doc) => doc.data());
 };
 
 // Saving Cart items
@@ -36,9 +36,7 @@ export const saveCartItem = async (data) => {
     return;
   }
 
-  await setDoc(docRef, data, {
-    merge: true,
-  });
+  await setDoc(docRef, data, { merge: true });
 };
 
 // Updating a cart item
