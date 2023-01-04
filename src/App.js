@@ -21,16 +21,19 @@ function App() {
     });
   };
 
-  const fetchCartItems = async () => {
-    await getCartItems().then((data) => {
+  const fetchCartItems = async (uid) => {
+    await getCartItems(uid).then((data) => {
       dispatch(setCartItems(data));
     });
   };
 
   useEffect(() => {
     fetchData();
-    fetchCartItems();
   }, []);
+
+  useEffect(() => {
+    fetchCartItems(user?.uid);
+  }, [user]);
 
   // disabling body scroll if cart is open
   useEffect(() => {

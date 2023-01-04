@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import { categories } from "../utils/data";
 import { MdShoppingBasket, MdRestaurantMenu } from "react-icons/md";
 import NotFound from "../Images/NotFound.svg";
+import { useSelector } from "react-redux";
 
 const MenuContainer = ({
   itemList,
   filterItems,
   setAdd2CartBtnHover,
   addToCart,
+  showErrorModal,
 }) => {
+  const { user } = useSelector((state) => state.userData);
+
   const [filter, setFilter] = useState(categories[0].urlParamName);
 
   useEffect(() => {
@@ -58,7 +62,9 @@ const MenuContainer = ({
                       className={`add2cart-btn ${
                         window.innerWidth > 480 && "hover"
                       }`}
-                      onClick={() => addToCart(item)}
+                      onClick={() =>
+                        user ? addToCart(user?.uid, item) : showErrorModal()
+                      }
                     >
                       <p>Add</p>
                       <div className="add-to-cart">

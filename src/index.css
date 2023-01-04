@@ -77,6 +77,10 @@ body {
   display: none !important;
 }
 
+.disable {
+  cursor: not-allowed !important;
+}
+
 main {
   background-color: var(--primary-color);
   display: flex;
@@ -1383,7 +1387,6 @@ main {
   background-color: var(--red-color);
   border-radius: 100%;
   color: var(--primary-color-lg);
-  cursor: pointer;
   font-size: 0.9rem;
   display: flex;
   align-items: center;
@@ -1463,12 +1466,10 @@ main {
   z-index: 100;
 }
 
-/* Item added Success Modal */
-.success-modal {
-  background-color: var(--secondary-color);
+/* Message Modal */
+.message-modal {
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow3);
-  color: var(--secondary-color-dk3);
   display: flex;
   gap: 0.5rem;
   align-items: center;
@@ -1480,11 +1481,21 @@ main {
   opacity: 0;
 }
 
-.open-success-modal {
+.success-modal {
+  background-color: var(--secondary-color);
+  color: var(--secondary-color-dk3);
+}
+
+.danger-modal {
+  background-color: var(--red-color-lg);
+  color: var(--red-color);
+}
+
+.open-message-modal {
   opacity: 1;
 }
 
-.check-icon {
+.message-modal-icon {
   font-size: 1.2rem;
 }
 
@@ -1631,13 +1642,13 @@ main {
     font-size: 0.65rem;
   }
 
-  /* Item added Success Modal */
-  .success-modal {
+  /* Message Modal */
+  .message-modal {
     font-size: 0.8rem;
     gap: 6px;
   }
 
-  .check-icon {
+  .message-modal-icon {
     font-size: 1rem;
   }
 }

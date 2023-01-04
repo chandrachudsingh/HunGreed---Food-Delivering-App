@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { MdShoppingBasket } from "react-icons/md";
 import { MdOutlineAdd, MdOutlineLogout } from "react-icons/md";
 import { Link } from "react-router-dom";

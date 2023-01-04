@@ -16,6 +16,7 @@ import {
 
 const CartContainer = () => {
   const {
+    user,
     cart: { isOpen, cartItems },
   } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
@@ -43,23 +44,23 @@ const CartContainer = () => {
     }, transitionDuration);
   };
 
-  const fetchCartItems = async () => {
-    await getCartItems().then((data) => {
+  const fetchCartItems = async (uid) => {
+    await getCartItems(uid).then((data) => {
       dispatch(setCartItems(data));
       setIsItemsUpdating(false);
     });
   };
 
-  const updateItemQty = async (item, val) => {
+  const updateItemQty = async (uid, item, val) => {
     setIsItemsUpdating(true);
-    await updateCartItem(item, val);
-    fetchCartItems();
+    await updateCartItem(uid, item, val);
+    fetchCartItems(uid);
   };
 
-  const deleteCart = async () => {
+  const deleteCart = async (uid) => {
     setIsItemsUpdating(true);
-    await deleteAllCartItem();
-    fetchCartItems();
+    await deleteAllCartItem(uid);
+    fetchCartItems(uid);
   };
 
   const cartTotalPrice = () => {
@@ -89,7 +90,10 @@ const CartContainer = () => {
           <MdArrowBack />
         </button>
         <h3 className="cart-heading">cart</h3>
-        <button className="clear-cart-btn" onClick={deleteCart}>
+        <button
+          className="clear-cart-btn"
+          onClick={() => deleteCart(user?.uid)}
+        >
           <p>clear</p>
           <MdClearAll className="clear-icon" />
         </button>
@@ -118,14 +122,14 @@ const CartContainer = () => {
                   <div className="cart-item-quantity">
                     <button
                       className="cart-item-count-btn"
-                      onClick={() => updateItemQty(item, -1)}
+                      onClick={() => updateItemQty(user?.uid, item, -1)}
                     >
                       <MdOutlineRemove />
                     </button>
                     <p className="cart-item-count">{qty}</p>
                     <button
                       className="cart-item-count-btn"
-                      onClick={() => updateItemQty(item, 1)}
+                      onClick={() => updateItemQty(user?.uid, item, 1)}
                     >
                       <MdOutlineAdd />
                     </button>

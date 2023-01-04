@@ -1,5 +1,6 @@
 import React from "react";
 import { MdShoppingBasket } from "react-icons/md";
+import { useSelector } from "react-redux";
 import NotFound from "../Images/NotFound.svg";
 
 const HotContainer = ({
@@ -8,7 +9,10 @@ const HotContainer = ({
   dishCardRef,
   getScrollOffset,
   addToCart,
+  showErrorModal,
 }) => {
+  const { user } = useSelector((state) => state.userData);
+
   return (
     <>
       <div className="hot-dishes" ref={dishContainerRef}>
@@ -30,7 +34,9 @@ const HotContainer = ({
                     className={`add2cart-btn ${
                       window.innerWidth > 480 && "hover"
                     }`}
-                    onClick={() => addToCart(item)}
+                    onClick={() =>
+                      user ? addToCart(user?.uid, item) : showErrorModal()
+                    }
                   >
                     <p>Add</p>
                     <div className="add-to-cart">

@@ -25,14 +25,14 @@ export const getAllFoodItems = async () => {
 };
 
 // Saving Cart items
-export const saveCartItem = async (data) => {
-  const docRef = doc(firestore, "cartItems", data.id);
+export const saveCartItem = async (uid, data) => {
+  const docRef = doc(firestore, uid + "_cartItems", data.id);
 
   // check if item already present
-  const cartItems = await getCartItems();
+  const cartItems = await getCartItems(uid);
   const item = cartItems.find((obj) => obj.id === data.id);
   if (item) {
-    await updateCartItem(item, 1);
+    await updateCartItem(uid, item, 1);
     return;
   }
 
@@ -40,24 +40,24 @@ export const saveCartItem = async (data) => {
 };
 
 // Updating a cart item
-export const updateCartItem = async (item, val) => {
-  const docRef = doc(firestore, "cartItems", item.id);
+export const updateCartItem = async (uid, item, val) => {
+  const docRef = doc(firestore, uid + "_cartItems", item.id);
   if (item.qty + val !== 0) {
     await updateDoc(docRef, { qty: item.qty + val });
   } else {
-    await deleteCartItem(item);
+    await deleteCartItem(uid, item);
   }
 };
 
 // Deleting a cart item
-export const deleteCartItem = async (item) => {
-  const docRef = doc(firestore, "cartItems", item.id);
+export const deleteCartItem = async (uid, item) => {
+  const docRef = doc(firestore, uid + "_cartItems", item.id);
   await deleteDoc(docRef);
 };
 
 // Deleting entire collection
-export const deleteAllCartItem = async () => {
-  const dbRef = collection(firestore, "cartItems");
+export const deleteAllCartItem = async (uid) => {
+  const dbRef = collection(firestore, uid + "_cartItems");
   const docsSnap = await getDocs(query(dbRef, orderBy("id", "desc")));
 
   // Delete documents in a batch
@@ -69,8 +69,8 @@ export const deleteAllCartItem = async () => {
 };
 
 // Get Cart items
-export const getCartItems = async () => {
-  const dbRef = collection(firestore, "cartItems");
+export const getCartItems = async (uid) => {
+  const dbRef = collection(firestore, uid + "_cartItems");
   const docsSnap = await getDocs(query(dbRef, orderBy("id", "desc")));
   return docsSnap.docs.map((doc) => doc.data());
 };

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { getCartItems, saveCartItem } from "../utils/firebaseFunctions";
 import { setCartItems } from "../reducers/userSlice";
-import ItemAddedModal from "./ItemAddedModal";
+import MessageModal from "./MessageModal";
 import Loading from "./Loading";
 
 const MenuSection = () => {
@@ -14,9 +14,14 @@ const MenuSection = () => {
   const dispatch = useDispatch();
 
   const modalDuration = 3000;
+  const [modalTimeout, setModalTimeout] = useState(null);
   const [itemList, setItemList] = useState([]);
   const [offsetVal, setOffsetVal] = useState(0);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [modal, setModal] = useState({
+    isModal: false,
+    type: "danger",
+    message: "",
+  });
   const [addingToCart, setAddingToCart] = useState(false);
   const dishContainerRef = useRef();
   const dishCardRef = useRef();
@@ -61,23 +66,49 @@ const MenuSection = () => {
     }
   };
 
-  const fetchCartItems = async () => {
-    await getCartItems().then((data) => {
+  const fetchCartItems = async (uid) => {
+    await getCartItems(uid).then((data) => {
       dispatch(setCartItems(data));
 
       setAddingToCart(false);
-      setShowSuccessModal(true);
+      setModal({
+        isModal: true,
+        type: "success",
+        message: "Item added to cart",
+      });
       const transitionDuration = 200;
-      setTimeout(() => {
-        setShowSuccessModal(false);
-      }, modalDuration + transitionDuration);
+      setModalTimeout(
+        setTimeout(() => {
+          setModal({ ...modal, isModal: false });
+        }, modalDuration + transitionDuration)
+      );
     });
   };
 
-  const addToCart = async (item) => {
+  const addToCart = async (uid, item) => {
+    clearTimeout(modalTimeout);
+    setModal({ ...modal, isModal: false });
     setAddingToCart(true);
-    await saveCartItem(item);
-    fetchCartItems();
+    await saveCartItem(uid, item);
+    fetchCartItems(uid);
+  };
+
+  const showErrorModal = () => {
+    clearTimeout(modalTimeout);
+    setModal({ ...modal, isModal: false });
+    setTimeout(() => {
+      setModal({
+        isModal: true,
+        type: "danger",
+        message: "Login to add item to cart",
+      });
+    }, 0);
+    const transitionDuration = 200;
+    setModalTimeout(
+      setTimeout(() => {
+        setModal({ ...modal, isModal: false });
+      }, modalDuration + transitionDuration)
+    );
   };
 
   return (
@@ -108,6 +139,7 @@ const MenuSection = () => {
             dishCardRef={dishCardRef}
             getScrollOffset={getScrollOffset}
             addToCart={addToCart}
+            showErrorModal={showErrorModal}
           />
         ) : (
           <Loading />
@@ -123,6 +155,7 @@ const MenuSection = () => {
             filterItems={filterItems}
             setAdd2CartBtnHover={setAdd2CartBtnHover}
             addToCart={addToCart}
+            showErrorModal={showErrorModal}
           />
         ) : (
           <Loading />
@@ -133,7 +166,13 @@ const MenuSection = () => {
           <div className="loader"></div>
         </div>
       )}
-      {showSuccessModal && <ItemAddedModal modalDuration={modalDuration} />}
+      {modal.isModal && (
+        <MessageModal
+          modalDuration={modalDuration}
+          type={modal.type}
+          message={modal.message}
+        />
+      )}
     </section>
   );
 };
