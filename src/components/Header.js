@@ -109,44 +109,60 @@ const Header = () => {
           </Link>
         </div>
         <ul className="navlinks-container" onClick={closeMenu}>
-          <li className="navlinks">home</li>
-          <li className="navlinks">menu</li>
-          <li className="navlinks">about us</li>
-          <li className="navlinks">service</li>
+          <Link to="/" className="navlinks">
+            home
+          </Link>
+          <Link to="/" className="navlinks">
+            menu
+          </Link>
+          <Link to="/" className="navlinks">
+            about us
+          </Link>
+          <Link to="/" className="navlinks">
+            service
+          </Link>
         </ul>
-        <div className="cart" onClick={openCart}>
+        <button className="cart" onClick={openCart}>
           <MdShoppingBasket />
           {cartItems && cartItems.length > 0 && (
             <div className="cart-itemCount">
               <p ref={cartItemCountRef}></p>
             </div>
           )}
-        </div>
+        </button>
         <div className="user-profile">
-          <img
-            src={user ? user.photoURL : Avatar}
-            alt="user-profile"
-            onClick={login}
-          />
+          <button className="user-profile-btn">
+            <img
+              src={user ? user.photoURL : Avatar}
+              alt="user-profile"
+              onClick={login}
+            />
+          </button>
           <div
             ref={userDropdownRef}
             className={`user-dropdown-menu ${isMenuOpen && "openMenu"}`}
           >
             {/* administration id */}
             {user && user.email === "chandrachudsingh81@gmail.com" && (
-              <Link to="/createItem">
-                <p onClick={closeMenu}>
-                  New Item <MdOutlineAdd />
-                </p>
+              <Link to="/createItem" onClick={closeMenu}>
+                New Item <MdOutlineAdd />
               </Link>
             )}
             <ul className="mobile-view-list">
-              <li onClick={closeMenu}>Home</li>
-              <li onClick={closeMenu}>Menu</li>
-              <li onClick={closeMenu}>About Us</li>
-              <li onClick={closeMenu}>Service</li>
+              <Link to="/" onClick={closeMenu}>
+                Home
+              </Link>
+              <Link to="/" onClick={closeMenu}>
+                Menu
+              </Link>
+              <Link to="/" onClick={closeMenu}>
+                About Us
+              </Link>
+              <Link to="/" onClick={closeMenu}>
+                Services
+              </Link>
             </ul>
-            <p
+            <button
               className="logout-btn"
               onClick={() => {
                 logout();
@@ -154,7 +170,7 @@ const Header = () => {
               }}
             >
               Logout <MdOutlineLogout />
-            </p>
+            </button>
           </div>
         </div>
       </div>
