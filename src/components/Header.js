@@ -116,10 +116,10 @@ const Header = () => {
             menu
           </Link>
           <Link to="/" className="navlinks">
-            about us
+            services
           </Link>
           <Link to="/" className="navlinks">
-            service
+            about us
           </Link>
         </ul>
         <button className="cart" onClick={openCart}>
@@ -156,10 +156,10 @@ const Header = () => {
                 Menu
               </Link>
               <Link to="/" onClick={closeMenu}>
-                About Us
+                Services
               </Link>
               <Link to="/" onClick={closeMenu}>
-                Services
+                About Us
               </Link>
             </ul>
             <button

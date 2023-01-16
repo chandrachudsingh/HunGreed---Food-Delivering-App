@@ -1,7 +1,7 @@
 import React from "react";
 import { heroData } from "../utils/data";
 import Delivery from "../Images/delivery.png";
-import heroBg from "../Images/heroBg.jpg";
+import heroBg from "../Images/heroBg.png";
 
 const HeroSection = () => {
   return (
