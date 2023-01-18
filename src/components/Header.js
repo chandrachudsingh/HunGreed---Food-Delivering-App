@@ -26,7 +26,7 @@ const Header = () => {
   const login = async () => {
     if (!user) {
       const {
-        user: { refreshToken, providerData },
+        user: { providerData },
       } = await signInWithPopup(firebaseAuth, provider);
       dispatch(setUser(providerData[0]));
 
@@ -116,10 +116,10 @@ const Header = () => {
             menu
           </Link>
           <Link to="/" className="navlinks">
-            services
+            about us
           </Link>
           <Link to="/" className="navlinks">
-            about us
+            services
           </Link>
         </ul>
         <button className="cart" onClick={openCart}>
@@ -156,10 +156,10 @@ const Header = () => {
                 Menu
               </Link>
               <Link to="/" onClick={closeMenu}>
-                Services
+                About Us
               </Link>
               <Link to="/" onClick={closeMenu}>
-                About Us
+                Services
               </Link>
             </ul>
             <button

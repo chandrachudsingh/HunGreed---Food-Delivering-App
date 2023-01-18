@@ -1,5 +1,6 @@
 import React from "react";
 import HeroSection from "./HeroSection";
+import About from "./About";
 import MenuSection from "./MenuSection";
 import ServicesSection from "./ServicesSection";
 
@@ -8,6 +9,7 @@ const Home = () => {
     <>
       <HeroSection />
       <MenuSection />
+      <About />
       <ServicesSection />
     </>
   );
