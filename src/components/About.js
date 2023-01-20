@@ -9,9 +9,6 @@ import { setUser } from "../reducers/userSlice";
 import MessageModal from "./MessageModal";
 
 const About = () => {
-  const firebaseAuth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-
   const { user } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
@@ -20,6 +17,8 @@ const About = () => {
   const modalDuration = 3000;
 
   const login = async () => {
+    const firebaseAuth = getAuth(app);
+    const provider = new GoogleAuthProvider();
     if (!user) {
       const {
         user: { providerData },

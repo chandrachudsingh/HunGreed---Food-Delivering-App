@@ -1,18 +1,16 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MdShoppingBasket } from "react-icons/md";
 import { MdOutlineAdd, MdOutlineLogout } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link as LinkR } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
 import { app } from "../firebase.config";
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { setCartIsOpen, setIsMenuOpen, setUser } from "../reducers/userSlice";
+import { Link as LinkS, animateScroll as scroll } from "react-scroll";
 
 const Header = () => {
-  const firebaseAuth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-
   const {
     user,
     isMenuOpen,
@@ -22,8 +20,11 @@ const Header = () => {
 
   const userDropdownRef = useRef();
   const cartItemCountRef = useRef();
+  const [offset, setOffset] = useState(-82);
 
   const login = async () => {
+    const firebaseAuth = getAuth(app);
+    const provider = new GoogleAuthProvider();
     if (!user) {
       const {
         user: { providerData },
@@ -83,14 +84,19 @@ const Header = () => {
     cartItemCountRef.current.innerText = sum;
   };
 
-  function setNavHeight() {
+  function getNavHeight() {
     const nav = document.querySelector(".navbar");
-    const root = document.querySelector(":root");
-    root.style.setProperty("--nav-height", `${nav.clientHeight}px`);
+    const navHeight = parseFloat(getComputedStyle(nav).height);
+    setOffset(-navHeight);
   }
 
+  const toggleHome = () => {
+    scroll.scrollToTop({ smooth: true, duration: 500 });
+  };
+
   useEffect(() => {
-    window.addEventListener("resize", setNavHeight);
+    window.addEventListener("resize", getNavHeight);
+    getNavHeight();
   }, []);
 
   useEffect(() => {
@@ -103,24 +109,64 @@ const Header = () => {
     <nav className="navbar">
       <div className="nav-container">
         <div className="brand-logo">
-          <Link to="/" className="logo-text">
+          <LinkR to="/" className="logo-text" onClick={toggleHome}>
             H<span className="small">un</span>G
             <span className="small">reed</span>
-          </Link>
+          </LinkR>
         </div>
         <ul className="navlinks-container" onClick={closeMenu}>
-          <Link to="/" className="navlinks">
-            home
-          </Link>
-          <Link to="/" className="navlinks">
-            menu
-          </Link>
-          <Link to="/" className="navlinks">
-            about us
-          </Link>
-          <Link to="/" className="navlinks">
-            services
-          </Link>
+          <li className="navlinks">
+            <LinkS
+              to="home"
+              activeClass="active"
+              spy={true}
+              smooth={true}
+              offset={offset}
+              duration={500}
+              onClick={closeMenu}
+            >
+              home
+            </LinkS>
+          </li>
+          <li className="navlinks">
+            <LinkS
+              to="menu"
+              activeClass="active"
+              spy={true}
+              smooth={true}
+              offset={offset}
+              duration={500}
+              onClick={closeMenu}
+            >
+              menu
+            </LinkS>
+          </li>
+          <li className="navlinks">
+            <LinkS
+              to="about"
+              activeClass="active"
+              spy={true}
+              smooth={true}
+              offset={offset}
+              duration={500}
+              onClick={closeMenu}
+            >
+              about us
+            </LinkS>
+          </li>
+          <li className="navlinks">
+            <LinkS
+              to="services"
+              activeClass="active"
+              spy={true}
+              smooth={true}
+              offset={offset}
+              duration={500}
+              onClick={closeMenu}
+            >
+              services
+            </LinkS>
+          </li>
         </ul>
         <button className="cart" onClick={openCart}>
           <MdShoppingBasket />
@@ -144,23 +190,59 @@ const Header = () => {
           >
             {/* administration id */}
             {user && user.email === "chandrachudsingh81@gmail.com" && (
-              <Link to="/createItem" onClick={closeMenu}>
+              <LinkR to="/createItem" onClick={closeMenu}>
                 New Item <MdOutlineAdd />
-              </Link>
+              </LinkR>
             )}
             <ul className="mobile-view-list">
-              <Link to="/" onClick={closeMenu}>
-                Home
-              </Link>
-              <Link to="/" onClick={closeMenu}>
-                Menu
-              </Link>
-              <Link to="/" onClick={closeMenu}>
-                About Us
-              </Link>
-              <Link to="/" onClick={closeMenu}>
-                Services
-              </Link>
+              <li>
+                <LinkS
+                  to="home"
+                  spy={true}
+                  smooth={true}
+                  offset={offset}
+                  duration={500}
+                  onClick={closeMenu}
+                >
+                  Home
+                </LinkS>
+              </li>
+              <li>
+                <LinkS
+                  to="menu"
+                  spy={true}
+                  smooth={true}
+                  offset={offset}
+                  duration={500}
+                  onClick={closeMenu}
+                >
+                  Menu
+                </LinkS>
+              </li>
+              <li>
+                <LinkS
+                  to="about"
+                  spy={true}
+                  smooth={true}
+                  offset={offset}
+                  duration={500}
+                  onClick={closeMenu}
+                >
+                  About Us
+                </LinkS>
+              </li>
+              <li>
+                <LinkS
+                  to="services"
+                  spy={true}
+                  smooth={true}
+                  offset={offset}
+                  duration={500}
+                  onClick={closeMenu}
+                >
+                  Services
+                </LinkS>
+              </li>
             </ul>
             <button
               className="logout-btn"

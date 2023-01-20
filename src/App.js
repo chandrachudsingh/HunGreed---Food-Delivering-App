@@ -1,5 +1,5 @@
 import Header from "./components/Header";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import Home from "./components/Home";
 import CreateContainer from "./components/CreateContainer";
 import CartContainer from "./components/CartContainer";
@@ -48,14 +48,16 @@ function App() {
   return (
     <main>
       <div id="cart-overlay"></div>
-      <Header />
-      <CartContainer />
-      <Routes>
-        <Route path="/" element={<Home />} exact />
-        {user && user.email === "chandrachudsingh81@gmail.com" && (
-          <Route path="/createItem" element={<CreateContainer />} exact />
-        )}
-      </Routes>
+      <Router>
+        <Header />
+        <CartContainer />
+        <Routes>
+          <Route path="/" element={<Home />} exact />
+          {user && user.email === "chandrachudsingh81@gmail.com" && (
+            <Route path="/createItem" element={<CreateContainer />} exact />
+          )}
+        </Routes>
+      </Router>
     </main>
   );
 }

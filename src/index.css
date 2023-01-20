@@ -64,6 +64,9 @@
   --loader-border-lg: 4px solid rgb(216, 216, 216);
   --loader-top-border: 5px solid rgb(0, 190, 0);
   --loader-top-border-lg: 4px solid rgb(0, 190, 0);
+  --background-tr: rgba(0, 0, 0, 0.5);
+  --background-tr2: rgba(0, 0, 0, 0.4);
+  --background-tr3: rgba(255, 255, 255, 0.5);
   --background-radGradient: radial-gradient(
     rgb(180, 255, 224),
     rgb(160, 255, 249)
@@ -79,13 +82,13 @@
       rgba(255, 255, 255, 0.1)
     ),
     linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 1));
-  --nav-height: 75px;
+  --nav-height-lg: 82px;
+  --nav-height-sm: 75px;
 }
 
 html,
 body {
   font-family: var(--primary-font);
-  scroll-behavior: smooth;
 }
 
 /* SCROLLBAR */
@@ -162,6 +165,7 @@ main {
   position: fixed;
   top: 0;
   left: 0;
+  height: var(--nav-height-lg);
   width: 100%;
   z-index: 10;
 }
@@ -171,6 +175,7 @@ main {
   flex-direction: row;
   align-items: center;
   padding: 0 1.8rem;
+  height: 100%;
 }
 
 /* Brand Logo */
@@ -179,7 +184,7 @@ main {
   display: inline-block;
   font-family: "Akronim", cursive;
   order: 1;
-  margin: 10px 0;
+  margin: auto 0;
 }
 
 .logo-text {
@@ -203,30 +208,35 @@ main {
   margin-left: auto;
   list-style: none;
   order: 2;
+  height: var(--nav-height-lg);
   max-width: 500px;
   width: 50%;
-  height: var(--nav-height);
 }
 
 .navlinks {
+  height: 100%;
+}
+
+.navlinks a {
   color: var(--grey-color);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  height: 100%;
   text-transform: capitalize;
   text-decoration: none;
   transition: var(--primary-transition);
   padding: 0 0.5rem;
+  height: 100%;
+  /* min-width: 80px; */
 }
 
-.navlinks:active {
+.navlinks > .active {
   border-bottom: 3px solid var(--secondary-color-dk);
 }
 
-.navlinks:focus {
+.navlinks a:focus {
   outline: none;
 }
 
@@ -284,8 +294,6 @@ main {
   border-radius: 100%;
   color: var(--nav-links-color);
   display: flex;
-  font-size: 6px;
-  word-wrap: break-word;
   margin-left: 2rem;
   order: 4;
   height: 1.6rem;
@@ -302,9 +310,11 @@ main {
 }
 
 .user-profile-btn {
+  background-color: var(--primary-color);
   border: none;
   border-radius: 100%;
   cursor: pointer;
+  font-size: 6px;
   overflow: hidden;
   transition: var(--secondary-transition);
   height: 1.6rem;
@@ -414,8 +424,12 @@ main {
 }
 
 @media screen and (max-width: 640px) {
+  .navbar {
+    height: var(--nav-height-sm);
+  }
+
   .brand-logo {
-    margin: 10px auto;
+    margin: auto;
     order: 2;
   }
 
@@ -478,7 +492,7 @@ main {
 /* ********************************************** */
 
 #cart-overlay {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--background-tr);
   display: none;
   position: fixed;
   top: 0;
@@ -600,7 +614,7 @@ main {
 }
 
 #cart-main-overlay {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--background-tr3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -872,7 +886,7 @@ main {
   display: grid;
   gap: 1rem;
   grid-template-columns: 1fr 1fr;
-  margin-top: var(--nav-height);
+  margin-top: var(--nav-height-lg);
   padding: 20px 1.8rem;
 }
 
@@ -1141,6 +1155,12 @@ main {
   }
 }
 
+@media screen and (max-width: 640px) {
+  .hero-section {
+    margin-top: var(--nav-height-sm);
+  }
+}
+
 /* small screen view - mobiles */
 @media screen and (max-width: 480px) {
   .hero-section {
@@ -1218,10 +1238,10 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: var(--nav-height);
+  margin-top: var(--nav-height-lg);
   padding: 1.8rem;
   height: auto;
-  min-height: calc(100vh - var(--nav-height));
+  min-height: calc(100vh - var(--nav-height-lg));
   width: 100%;
 }
 
@@ -1461,6 +1481,11 @@ main {
 }
 
 @media screen and (max-width: 640px) {
+  .create-container {
+    margin-top: var(--nav-height-sm);
+    min-height: calc(100vh - var(--nav-height-sm));
+  }
+
   .create-item {
     width: 90%;
   }
@@ -1914,7 +1939,7 @@ main {
 
 /* add to cart overlay */
 #add2cart-overlay {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--background-tr3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2181,7 +2206,7 @@ main {
 }
 
 .about-header:after {
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--background-tr2);
   content: "";
   position: absolute;
   top: 0;

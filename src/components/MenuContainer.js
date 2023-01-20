@@ -21,6 +21,7 @@ const MenuContainer = ({
 
   useEffect(() => {
     window.addEventListener("resize", setAdd2CartBtnHover);
+    return () => window.removeEventListener("resize", setAdd2CartBtnHover);
   }, [setAdd2CartBtnHover]);
 
   return (

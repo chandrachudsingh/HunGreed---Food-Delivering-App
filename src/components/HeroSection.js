@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { heroData } from "../utils/data";
 import Delivery from "../Images/delivery.png";
 import heroBg from "../Images/heroBg.png";
+import { Button } from "react-scroll";
 
 const HeroSection = () => {
+  const [offset, setOffset] = useState(-82);
+
+  function getNavHeight() {
+    const nav = document.querySelector(".navbar");
+    const navHeight = parseFloat(getComputedStyle(nav).height);
+    setOffset(-navHeight);
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", getNavHeight);
+    getNavHeight();
+  }, []);
+
   return (
     <section className="hero-section" id="home">
       <div className="hero-content">
@@ -22,7 +36,17 @@ const HeroSection = () => {
           tempore optio blanditiis, odio, error a fugit nihil enim laboriosam
           iure.
         </p>
-        <button className="hero-order-btn">order now</button>
+        <Button
+          type="submit"
+          activeClass="active"
+          to="menu"
+          spy={true}
+          smooth={true}
+          offset={offset}
+          duration={500}
+          className="hero-order-btn"
+          value="Order Now"
+        ></Button>
       </div>
       <div className="hero-attractions">
         <img src={heroBg} alt="hero-bg" className="hero-bg" />
