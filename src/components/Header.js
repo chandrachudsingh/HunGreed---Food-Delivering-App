@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { MdShoppingBasket } from "react-icons/md";
-import { MdOutlineAdd, MdOutlineLogout } from "react-icons/md";
+import { MdOutlineAdd, MdLogin, MdOutlineLogout } from "react-icons/md";
 import { Link as LinkR } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
 import { app } from "../firebase.config";
@@ -20,22 +20,25 @@ const Header = () => {
 
   const userDropdownRef = useRef();
   const cartItemCountRef = useRef();
+  const cartIconContainerRef = useRef();
+  const loginBtnRef = useRef();
   const [offset, setOffset] = useState(-82);
+  const [loginBtnText, setLoginBtnText] = useState(true);
 
   const login = async () => {
     const firebaseAuth = getAuth(app);
     const provider = new GoogleAuthProvider();
-    if (!user) {
-      const {
-        user: { providerData },
-      } = await signInWithPopup(firebaseAuth, provider);
-      dispatch(setUser(providerData[0]));
 
-      // to persist state on refresh
-      localStorage.setItem("user", JSON.stringify(providerData[0]));
-    } else {
-      isMenuOpen ? closeMenu() : openMenu();
-    }
+    const {
+      user: { providerData },
+    } = await signInWithPopup(firebaseAuth, provider);
+    dispatch(setUser(providerData[0]));
+
+    // to persist state on refresh
+    localStorage.setItem("user", JSON.stringify(providerData[0]));
+
+    // to set cart icon to its original size
+    cartIconContainerRef.current.style.width = "fit-content";
   };
 
   const openMenu = () => {
@@ -62,9 +65,12 @@ const Header = () => {
   };
 
   const logout = () => {
-    closeMenu();
+    dispatch(setIsMenuOpen(false));
     localStorage.clear();
     dispatch(setUser(null));
+    setTimeout(() => {
+      changeHeaderAttrs();
+    }, 1);
   };
 
   const openCart = () => {
@@ -90,13 +96,44 @@ const Header = () => {
     setOffset(-navHeight);
   }
 
+  const changeHeaderAttrs = () => {
+    const pageWidth = window.innerWidth;
+    const loginBtnWidth = parseInt(
+      window.getComputedStyle(loginBtnRef.current).width
+    );
+
+    if (pageWidth > 640) {
+      cartIconContainerRef.current.style.width = "fit-content";
+    } else if (pageWidth <= 640) {
+      cartIconContainerRef.current.style.width = `${loginBtnWidth}px`;
+    }
+
+    if (pageWidth > 320) {
+      setLoginBtnText(true);
+    } else {
+      setLoginBtnText(false);
+    }
+  };
+
   const toggleHome = () => {
     scroll.scrollToTop({ smooth: true, duration: 500 });
   };
 
+  const setAltUserImg = (e) => {
+    e.target.src = Avatar;
+  };
+
   useEffect(() => {
-    window.addEventListener("resize", getNavHeight);
+    window.addEventListener("resize", () => {
+      getNavHeight();
+      if (loginBtnRef.current) {
+        changeHeaderAttrs();
+      }
+    });
     getNavHeight();
+    if (loginBtnRef.current) {
+      changeHeaderAttrs();
+    }
   }, []);
 
   useEffect(() => {
@@ -109,12 +146,19 @@ const Header = () => {
     <nav className="navbar">
       <div className="nav-container">
         <div className="brand-logo">
-          <LinkR to="/" className="logo-text" onClick={toggleHome}>
+          <LinkR
+            to="/"
+            className="logo-text"
+            onClick={() => {
+              toggleHome();
+              user && closeMenu();
+            }}
+          >
             H<span className="small">un</span>G
             <span className="small">reed</span>
           </LinkR>
         </div>
-        <ul className="navlinks-container" onClick={closeMenu}>
+        <ul className="navlinks-container" onClick={user && closeMenu}>
           <li className="navlinks">
             <LinkS
               to="home"
@@ -123,7 +167,7 @@ const Header = () => {
               smooth={true}
               offset={offset}
               duration={500}
-              onClick={closeMenu}
+              onClick={user && closeMenu}
             >
               home
             </LinkS>
@@ -136,7 +180,7 @@ const Header = () => {
               smooth={true}
               offset={offset}
               duration={500}
-              onClick={closeMenu}
+              onClick={user && closeMenu}
             >
               menu
             </LinkS>
@@ -149,7 +193,7 @@ const Header = () => {
               smooth={true}
               offset={offset}
               duration={500}
-              onClick={closeMenu}
+              onClick={user && closeMenu}
             >
               about us
             </LinkS>
@@ -162,99 +206,102 @@ const Header = () => {
               smooth={true}
               offset={offset}
               duration={500}
-              onClick={closeMenu}
+              onClick={user && closeMenu}
             >
               services
             </LinkS>
           </li>
         </ul>
-        <button className="cart" onClick={openCart}>
-          <MdShoppingBasket />
-          {cartItems && cartItems.length > 0 && (
-            <div className="cart-itemCount">
-              <p ref={cartItemCountRef}></p>
-            </div>
-          )}
-        </button>
-        <div className="user-profile">
-          <button className="user-profile-btn">
-            <img
-              src={user ? user.photoURL : Avatar}
-              alt="user-profile"
-              onClick={login}
-            />
-          </button>
-          <div
-            ref={userDropdownRef}
-            className={`user-dropdown-menu ${isMenuOpen && "openMenu"}`}
-          >
-            {/* administration id */}
-            {user && user.email === "chandrachudsingh81@gmail.com" && (
-              <LinkR to="/createItem" onClick={closeMenu}>
-                New Item <MdOutlineAdd />
-              </LinkR>
+        <div className="cartIcon-container" ref={cartIconContainerRef}>
+          <button className="cart" onClick={openCart}>
+            <MdShoppingBasket />
+            {cartItems && cartItems.length > 0 && (
+              <div className="cart-itemCount">
+                <p ref={cartItemCountRef}></p>
+              </div>
             )}
-            <ul className="mobile-view-list">
-              <li>
-                <LinkS
-                  to="home"
-                  spy={true}
-                  smooth={true}
-                  offset={offset}
-                  duration={500}
-                  onClick={closeMenu}
-                >
-                  Home
-                </LinkS>
-              </li>
-              <li>
-                <LinkS
-                  to="menu"
-                  spy={true}
-                  smooth={true}
-                  offset={offset}
-                  duration={500}
-                  onClick={closeMenu}
-                >
-                  Menu
-                </LinkS>
-              </li>
-              <li>
-                <LinkS
-                  to="about"
-                  spy={true}
-                  smooth={true}
-                  offset={offset}
-                  duration={500}
-                  onClick={closeMenu}
-                >
-                  About Us
-                </LinkS>
-              </li>
-              <li>
-                <LinkS
-                  to="services"
-                  spy={true}
-                  smooth={true}
-                  offset={offset}
-                  duration={500}
-                  onClick={closeMenu}
-                >
-                  Services
-                </LinkS>
-              </li>
-            </ul>
-            <button
-              className="logout-btn"
-              onClick={() => {
-                logout();
-                closeMenu();
-              }}
-            >
-              Logout <MdOutlineLogout />
-            </button>
-          </div>
+          </button>
         </div>
+        {user ? (
+          <div className="user-profile">
+            <button className="user-profile-btn">
+              <img
+                src={user.photoURL}
+                alt="user-profile"
+                onError={(e) => setAltUserImg(e)}
+                onClick={() => (isMenuOpen ? closeMenu() : openMenu())}
+              />
+            </button>
+            <div
+              ref={userDropdownRef}
+              className={`user-dropdown-menu ${isMenuOpen && "openMenu"}`}
+            >
+              {/* administration id */}
+              {user && user.email === "chandrachudsingh81@gmail.com" && (
+                <LinkR to="/createItem" onClick={closeMenu}>
+                  New Item <MdOutlineAdd />
+                </LinkR>
+              )}
+              <ul className="mobile-view-list">
+                <li>
+                  <LinkS
+                    to="home"
+                    spy={true}
+                    smooth={true}
+                    offset={offset}
+                    duration={500}
+                    onClick={closeMenu}
+                  >
+                    Home
+                  </LinkS>
+                </li>
+                <li>
+                  <LinkS
+                    to="menu"
+                    spy={true}
+                    smooth={true}
+                    offset={offset}
+                    duration={500}
+                    onClick={closeMenu}
+                  >
+                    Menu
+                  </LinkS>
+                </li>
+                <li>
+                  <LinkS
+                    to="about"
+                    spy={true}
+                    smooth={true}
+                    offset={offset}
+                    duration={500}
+                    onClick={closeMenu}
+                  >
+                    About Us
+                  </LinkS>
+                </li>
+                <li>
+                  <LinkS
+                    to="services"
+                    spy={true}
+                    smooth={true}
+                    offset={offset}
+                    duration={500}
+                    onClick={closeMenu}
+                  >
+                    Services
+                  </LinkS>
+                </li>
+              </ul>
+              <button className="logout-btn" onClick={logout}>
+                Logout <MdOutlineLogout />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button className="login-btn" onClick={login} ref={loginBtnRef}>
+            {loginBtnText ? "Login" : <MdLogin />}
+          </button>
+        )}
       </div>
     </nav>
   );

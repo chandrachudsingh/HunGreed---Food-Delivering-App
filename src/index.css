@@ -241,6 +241,12 @@ main {
 }
 
 /* Shopping Cart */
+.cartIcon-container {
+  margin-left: 2rem;
+  order: 3;
+  width: auto;
+}
+
 .cart {
   background-color: inherit;
   border: none;
@@ -249,8 +255,6 @@ main {
   display: flex;
   font-size: 1.2rem;
   align-items: center;
-  margin-left: 2rem;
-  order: 3;
 }
 
 @keyframes pop {
@@ -289,13 +293,41 @@ main {
   font-size: 0.6rem;
 }
 
+/* Sign-In btn */
+.login-btn {
+  background-color: var(--secondary-color-dk);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 0.9rem;
+  order: 4;
+  padding: 6px;
+  margin-left: 2rem;
+  text-transform: capitalize;
+  transition: var(--primary-transition);
+  width: 80px;
+}
+
+.login-btn:hover {
+  background-color: var(--secondary-color);
+  box-shadow: var(--box-shadow);
+}
+
+.login-btn:active {
+  background-color: var(--secondary-color-dk2);
+}
+
 /* User Profile */
 .user-profile {
   border-radius: 100%;
   color: var(--nav-links-color);
   display: flex;
-  margin-left: 2rem;
   order: 4;
+  margin-left: 2rem;
   height: 1.6rem;
   width: 1.6rem;
 }
@@ -421,6 +453,11 @@ main {
   .nav-container {
     padding: 0 1.4rem;
   }
+
+  .login-btn {
+    font-size: 0.8rem;
+    width: 60px;
+  }
 }
 
 @media screen and (max-width: 640px) {
@@ -445,9 +482,13 @@ main {
     display: none;
   }
 
-  .cart {
+  .cartIcon-container {
     margin-left: 0;
     order: 1;
+  }
+
+  .login-btn {
+    margin-left: 0;
   }
 
   .user-profile {
@@ -484,6 +525,12 @@ main {
 @media screen and (max-width: 480px) {
   .nav-container {
     padding: 0 1rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .login-btn {
+    width: auto;
   }
 }
 
@@ -959,19 +1006,17 @@ main {
   font-size: 0.9rem;
   text-transform: capitalize;
   padding: 6px 12px;
-  transition: var(--secondary-transition);
+  transition: var(--primary-transition);
   width: 180px;
 }
 
-.hero-order-btn:hover,
-.hero-order-btn:focus {
+.hero-order-btn:hover {
   background-color: var(--secondary-color);
   box-shadow: var(--box-shadow);
 }
 
 .hero-order-btn:active {
   background-color: var(--secondary-color-dk2);
-  transition: var(--primary-transition);
 }
 
 /*--- Hero section attractions ---*/
@@ -2308,7 +2353,7 @@ main {
   font-size: 1rem;
   margin-left: 4rem;
   padding: 6px;
-  transition: var(--secondary-transition);
+  transition: var(--primary-transition);
   width: 200px;
 }
 
@@ -2319,7 +2364,6 @@ main {
 
 .join-btn:active {
   background-color: var(--secondary-color-dk2);
-  transition: var(--primary-transition);
 }
 
 .right-icon {
