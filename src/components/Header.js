@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import { MdShoppingBasket } from "react-icons/md";
-import { MdOutlineAdd, MdLogin, MdOutlineLogout } from "react-icons/md";
+import {
+  MdShoppingBasket,
+  MdOutlineAdd,
+  MdLogin,
+  MdOutlineLogout,
+} from "react-icons/md";
 import { Link as LinkR } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
 import { app } from "../firebase.config";
-
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { setCartIsOpen, setIsMenuOpen, setUser } from "../reducers/userSlice";
 import { Link as LinkS, animateScroll as scroll } from "react-scroll";
+import { adminId } from "..";
 
 const Header = () => {
   const {
@@ -18,6 +22,7 @@ const Header = () => {
   } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
+  const userName = user?.displayName.split(" ").slice(0, 2).join(" ");
   const userDropdownRef = useRef();
   const cartItemCountRef = useRef();
   const cartIconContainerRef = useRef();
@@ -213,7 +218,13 @@ const Header = () => {
           </li>
         </ul>
         <div className="cartIcon-container" ref={cartIconContainerRef}>
-          <button className="cart" onClick={openCart}>
+          <button
+            className="cart"
+            onClick={() => {
+              openCart();
+              closeMenu();
+            }}
+          >
             <MdShoppingBasket />
             {cartItems && cartItems.length > 0 && (
               <div className="cart-itemCount">
@@ -236,9 +247,16 @@ const Header = () => {
               ref={userDropdownRef}
               className={`user-dropdown-menu ${isMenuOpen && "openMenu"}`}
             >
+              <p className="user-name">
+                {userName}
+                <span>premium</span>
+              </p>
               {/* administration id */}
-              {user && user.email === "chandrachudsingh81@gmail.com" && (
-                <LinkR to="/createItem" onClick={closeMenu}>
+              {user && user.email === adminId && (
+                <LinkR
+                  to="/createItem"
+                  onClick={() => dispatch(setIsMenuOpen(false))}
+                >
                   New Item <MdOutlineAdd />
                 </LinkR>
               )}
