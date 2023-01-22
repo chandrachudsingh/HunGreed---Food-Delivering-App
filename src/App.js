@@ -1,12 +1,11 @@
-import Header from "./components/Header";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import Home from "./components/Home";
-import CreateContainer from "./components/CreateContainer";
-import CartContainer from "./components/CartContainer";
+import CreatePage from "./components/CreatePage";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllFoodItems, getCartItems } from "./utils/firebaseFunctions";
 import { setCartItems, setFoodItems } from "./reducers/userSlice";
+import { adminId } from ".";
 
 function App() {
   const {
@@ -49,12 +48,10 @@ function App() {
     <main>
       <div id="cart-overlay"></div>
       <Router>
-        <Header />
-        <CartContainer />
         <Routes>
           <Route path="/" element={<Home />} exact />
-          {user && user.email === "chandrachudsingh81@gmail.com" && (
-            <Route path="/createItem" element={<CreateContainer />} exact />
+          {user && user.email === adminId && (
+            <Route path="/createItem" element={<CreatePage />} exact />
           )}
         </Routes>
       </Router>
