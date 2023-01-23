@@ -13,13 +13,23 @@
   --primary-color-dk: rgb(237, 243, 250);
   --primary-color-dk2: rgb(242, 242, 242);
   --primary-color-tr: rgba(255, 255, 255, 0.4);
-  --secondary-color-lg4: rgb(221, 255, 231);
-  --secondary-color-lg3: rgb(208, 249, 221);
-  --secondary-color-lg2: rgb(189, 255, 212);
+  --primary-color-tr2: rgba(255, 255, 255, 0.8);
+  --primary-color-tr3: rgba(255, 255, 255, 0.25);
+  --primary-color-tr4: rgba(255, 255, 255, 0.2);
+  --secondary-color-lg6: rgb(221, 255, 231);
+  --secondary-color-lg5: rgb(208, 249, 221);
+  --secondary-color-lg4: rgb(190, 255, 203);
+  --secondary-color-lg3: rgb(189, 255, 212);
+  --secondary-color-lg2: rgb(145, 231, 162);
   --secondary-color-lg: rgb(0, 255, 81);
   --secondary-color: rgb(8, 202, 8);
   --secondary-color-dk: rgb(8, 188, 8);
   --secondary-color-dk2: rgb(0, 181, 116);
+  --secondary-color-grad: linear-gradient(
+    to right,
+    rgb(8, 202, 8),
+    rgb(0, 181, 116)
+  );
   --blue-color-lg: rgb(160, 249, 255);
   --blue-color: rgb(0, 210, 227);
   --blue-color-tr: rgba(200, 249, 255, 0.8);
@@ -27,10 +37,12 @@
   --blue-color-dk2: rgb(0, 0, 149);
   --brandLogo-color: rgb(0, 128, 0);
   --brand-shadow-color: rgb(0, 100, 0);
+  --grey-color-lg2: rgba(230, 230, 230, 0.6);
   --grey-color-lg: rgba(100, 100, 100, 0.6);
   --grey-color: rgba(65, 65, 65, 0.76);
   --grey-color-dk: rgba(60, 60, 60, 0.8);
   --grey-color-dk2: rgb(49, 49, 49);
+  --grey-color-tr: rgba(220, 220, 220, 0.6);
   --red-color: rgb(220, 0, 0);
   --red-color-lg: rgb(255, 170, 170);
   --logoutBtn-mobile-color: rgb(215, 221, 226);
@@ -44,6 +56,8 @@
 
   /* some useful variables */
   --primary-font: "Poppins", sans-serif;
+  --secondary-font: "karla", sans-serif;
+  --tertiary-font: "Akronim", cursive;
   --primary-transition: all 0.1s linear;
   --primary-transition-sl: all 0.05s linear;
   --secondary-transition: all 0.2s linear;
@@ -55,6 +69,7 @@
   --box-shadow4: 0 -2px 4px rgba(190, 190, 190, 0.5);
   --box-shadow5: 1px 1px 10px rgba(0, 0, 0, 0.2);
   --box-shadow6: 1px 1px 6px rgba(60, 60, 60, 0.8);
+  --box-shadow7: 2px 2px 14px rgba(60, 60, 60, 0.3);
   --text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
   --text-shadow2: 1px 1px 2px rgba(0, 0, 0, 0.4);
   --drop-shadow: 0 25px 25px rgba(0, 0, 0, 0.15);
@@ -161,7 +176,7 @@ main {
 
 .navbar,
 .navbar2 {
-  background-color: var(--secondary-color-lg4);
+  background-color: var(--secondary-color-lg6);
   box-shadow: var(--box-shadow2);
   position: fixed;
   top: 0;
@@ -171,6 +186,7 @@ main {
   z-index: 10;
 }
 
+/*- navbar-container -*/
 .nav-container {
   display: flex;
   flex-direction: row;
@@ -180,15 +196,15 @@ main {
 }
 
 /* Brand Logo */
-.brand-logo {
+.nav-container .brand-logo {
   cursor: pointer;
   display: inline-block;
-  font-family: "Akronim", cursive;
+  font-family: var(--tertiary-font);
   order: 1;
   margin: auto 0;
 }
 
-.logo-text {
+.nav-container .logo-text {
   color: var(--brandLogo-color);
   font-size: 2.8rem;
   text-decoration: none;
@@ -196,7 +212,7 @@ main {
   user-select: none;
 }
 
-.small {
+.nav-container .small {
   font-size: 2.2rem;
 }
 
@@ -306,6 +322,7 @@ main {
   background-color: var(--secondary-color-dk);
   border: none;
   border-radius: var(--border-radius);
+  color: black;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -316,6 +333,7 @@ main {
   padding: 6px;
   margin-left: 2rem;
   text-transform: capitalize;
+  text-decoration: none;
   transition: var(--primary-transition);
   width: 80px;
 }
@@ -494,16 +512,17 @@ main {
     height: var(--nav-height-sm);
   }
 
-  .brand-logo {
+  /* brand logo */
+  .nav-container .brand-logo {
     margin: auto;
     order: 2;
   }
 
-  .logo-text {
+  .nav-container .logo-text {
     font-size: 2.5rem;
   }
 
-  .small {
+  .nav-container .small {
     font-size: 2rem;
   }
 
@@ -511,16 +530,19 @@ main {
     display: none;
   }
 
+  /* shopping cart icon */
   .cartIcon-container,
   .cartIcon-container2 {
     margin-left: 0;
     order: 1;
   }
 
+  /* login button */
   .login-btn {
     margin-left: 0;
   }
 
+  /* user profile */
   .user-profile {
     margin-left: 0;
   }
@@ -653,7 +675,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "poppins", sans-serif;
+  font-family: var(--primary-font);
   font-size: 0.9rem;
   gap: 4px;
   margin-left: auto;
@@ -739,7 +761,7 @@ main {
   box-shadow: var(--box-shadow2);
   color: var(--grey-color-dk2);
   display: flex;
-  font-family: "karla", sans-serif;
+  font-family: var(--secondary-font);
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem;
@@ -820,7 +842,7 @@ main {
 .cart-checkout div {
   color: var(--grey-color-dk2);
   display: flex;
-  font-family: "karla", sans-serif;
+  font-family: var(--secondary-font);
   font-size: 1.1rem;
   align-items: center;
   justify-content: space-between;
@@ -839,6 +861,7 @@ main {
 .hr {
   border-radius: var(--border-radius);
   background-color: var(--grey-color-lg);
+  border: none;
   margin: 0.5rem 0;
   height: 1px;
 }
@@ -982,7 +1005,7 @@ main {
 /* delievery */
 .delivery {
   border-radius: 50px;
-  background-color: var(--secondary-color-lg3);
+  background-color: var(--secondary-color-lg5);
   color: var(--secondary-color-dk);
   display: flex;
   align-items: center;
@@ -1014,7 +1037,7 @@ main {
 /* Hero tagline */
 .tagline {
   color: var(--grey-color-dk2);
-  font-family: "Karla", sans-serif;
+  font-family: var(--secondary-font);
   font-size: 4.5rem;
   font-weight: bold;
   line-height: 1.5;
@@ -1091,7 +1114,7 @@ main {
   border-radius: var(--border-radius3);
   box-shadow: var(--box-shadow2);
   display: flex;
-  font-family: "Karla", sans-serif;
+  font-family: var(--secondary-font);
   flex-direction: column;
   gap: 1rem;
   align-items: center;
@@ -1684,7 +1707,7 @@ main {
 }
 
 .slide-btn {
-  background-color: var(--secondary-color-lg3);
+  background-color: var(--secondary-color-lg5);
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
@@ -1825,7 +1848,7 @@ main {
 
 .category-name {
   color: var(--category-name-color);
-  font-family: "poppins", sans-serif;
+  font-family: var(--primary-font);
   font-size: 0.75rem;
   font-weight: 500;
 }
@@ -1869,7 +1892,7 @@ main {
   box-shadow: var(--box-shadow2);
   display: flex;
   flex-direction: column;
-  font-family: "Karla", sans-serif;
+  font-family: var(--secondary-font);
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem;
@@ -2053,7 +2076,7 @@ main {
 }
 
 .success-modal {
-  background-color: var(--secondary-color-lg4);
+  background-color: var(--secondary-color-lg6);
   color: var(--secondary-color-dk);
 }
 
@@ -2405,7 +2428,7 @@ main {
   background-color: var(--secondary-color-dk2);
 }
 
-.right-icon {
+.join-btn > .right-icon {
   font-size: 1.2rem;
 }
 
@@ -2612,7 +2635,7 @@ main {
 }
 
 .services-para {
-  background-color: var(--secondary-color-lg2);
+  background-color: var(--secondary-color-lg3);
   border-top-right-radius: var(--border-radius2);
   border-bottom-right-radius: var(--border-radius2);
   color: var(--grey-color-dk2);
@@ -2825,5 +2848,457 @@ main {
   /* service container */
   .services-container {
     padding: 0 1rem;
+  }
+}
+
+/* ********************************************** */
+/*------------------Sign-in Page------------------*/
+/* ********************************************** */
+
+.signin-page {
+  background-color: var(--secondary-color-lg4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+
+/* signin page bg shapes - circles */
+.circleBg {
+  background-color: var(--primary-color-tr3);
+  border-radius: 100%;
+  position: absolute;
+  height: 90vw;
+  width: 90vw;
+}
+
+.circleBg:nth-child(1) {
+  top: -45vw;
+  left: 5%;
+}
+
+.circleBg:nth-child(2) {
+  bottom: -55vw;
+  right: -20%;
+}
+
+.circleBg:nth-child(3) {
+  bottom: 2%;
+  left: 2%;
+  height: 25vw;
+  width: 25vw;
+}
+
+/*-- sign-in container --*/
+.signin-container {
+  background-color: var(--primary-color);
+  border-radius: var(--border-radius3);
+  box-shadow: var(--box-shadow7);
+  display: flex;
+  overflow: auto;
+  min-height: 80%;
+  max-height: 100%;
+  min-width: 700px;
+  max-width: 1048px;
+  width: 70%;
+  z-index: 10;
+}
+
+/*- sign-in content container -*/
+.signin-content {
+  background-color: var(--secondary-color-lg2);
+  border-top-left-radius: var(--border-radius3);
+  border-bottom-left-radius: var(--border-radius3);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 1.5;
+  align-items: center;
+  overflow: hidden;
+  padding: 1rem 2rem;
+  position: relative;
+  width: 600px;
+}
+
+/* sign-in content bg shapes */
+.signin-content .shapes-icon {
+  color: var(--primary-color-tr4);
+  font-size: 20rem;
+  position: absolute;
+  bottom: 10px;
+  z-index: 1;
+}
+
+/* sign-in content brand logo */
+.signin-page .brand-logo {
+  font-family: var(--tertiary-font);
+  z-index: 10;
+}
+
+.signin-content .brand-logo {
+  align-self: flex-start;
+  position: absolute;
+}
+
+.signin-page .logo-text {
+  color: var(--brandLogo-color);
+  font-size: 3rem;
+  text-decoration: none;
+  text-shadow: 4px 4px 10px var(--brand-shadow-color);
+  user-select: none;
+}
+
+.signin-page .logo-text .small {
+  font-size: 2.3rem;
+}
+
+/* sign-in content user greetings */
+.signin-greet {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--secondary-font);
+  margin: auto 0;
+  z-index: 10;
+}
+
+.signin-greet h1 {
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.signin-greet p {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+/* sign-in content footer */
+.signin-content footer {
+  color: white;
+  display: flex;
+  font-family: var(--secondary-font);
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  z-index: 10;
+}
+
+.signin-content footer p {
+  font-size: 0.9rem;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.signin-content footer hr {
+  background-color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  height: 2px;
+  flex-grow: 2;
+  flex-basis: 20px;
+}
+
+/*- sign-in main container -*/
+.signin-main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem;
+  position: relative;
+  width: 600px;
+}
+
+/* sign-in main shield icon */
+.signin-main .shield-icon {
+  color: var(--grey-color-tr);
+  font-size: 5rem;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+}
+
+/* sign-in brand logo */
+.signin-main .brand-logo {
+  display: none;
+}
+
+.signin-main h1 {
+  display: none;
+}
+
+/* sign-in main signin options */
+.signin-options {
+  display: flex;
+  gap: 1.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  padding: 1rem 0;
+  min-width: 250px;
+  width: 70%;
+}
+
+.signin-heading {
+  align-self: flex-start;
+  color: var(--grey-color-dk);
+}
+
+/* direct signin option - email & password */
+.signin-direct {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.signin-options input,
+.signin-btn,
+.google-signin-btn {
+  border-radius: var(--border-radius4);
+  font-family: inherit;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.signin-options input {
+  border: none;
+  background-color: var(--grey-color-lg2);
+  padding: 0.5rem 2rem;
+}
+
+.signin-options input:focus {
+  outline: none;
+}
+
+.signin-btn {
+  background: var(--secondary-color-dk) var(--secondary-color-grad);
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  transition: var(--primary-transition);
+}
+
+.signin-btn > p {
+  margin: 0 auto;
+  text-transform: uppercase;
+}
+
+.signin-btn > .right-icon {
+  color: white;
+  font-size: 1.2rem;
+}
+
+.signin-btn:hover {
+  background: var(--secondary-color);
+  box-shadow: var(--box-shadow);
+}
+
+.signin-btn:active {
+  background: var(--secondary-color-dk2);
+}
+
+/* signin using partner login */
+.signin-partners {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+  flex-direction: column;
+  width: 100%;
+}
+
+.signin-partners-head {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.signin-partners-head p {
+  color: var(--grey-color-dk);
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.signin-partners-head hr {
+  background-color: var(--grey-color-dk2);
+  border: none;
+  flex-grow: 2;
+  flex-basis: 20px;
+  height: 2px;
+}
+
+.google-signin-btn {
+  background-color: var(--primary-color);
+  border: 2px solid var(--grey-color-lg);
+  color: var(--grey-color-dk2);
+  cursor: pointer;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  text-transform: capitalize;
+  transition: var(--primary-transition);
+}
+
+.google-signin-btn .google-icon {
+  font-size: 1.2rem;
+}
+
+.google-signin-btn:hover {
+  box-shadow: var(--box-shadow3);
+}
+
+.google-signin-btn:active {
+  box-shadow: var(--box-shadow4);
+}
+
+/* sign-up link */
+.signup-link {
+  color: var(--grey-color-dk2);
+  margin-top: 0.5rem;
+}
+
+.signup-link span {
+  color: var(--secondary-color-dk);
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--primary-transition);
+}
+
+.signup-link span:hover,
+.signup-link span:active {
+  text-decoration: underline;
+}
+
+/* medium screen devices */
+@media screen and (max-width: 768px) {
+  /*-- sign-in container --*/
+  .signin-container {
+    min-width: 460px;
+    width: 70%;
+  }
+
+  /*- sign-in content -*/
+  .signin-content {
+    display: none;
+  }
+
+  /*- sign-in main -*/
+  .signin-main {
+    width: 100%;
+  }
+
+  /* sign-in main brand logo */
+  .signin-main .brand-logo {
+    text-align: center;
+    display: inline-block;
+  }
+
+  .signin-main .logo-text {
+    font-size: 2.5rem;
+  }
+
+  .signin-main .logo-text .small {
+    font-size: 2rem;
+  }
+
+  /* sign-in main greeting */
+  .signin-main h1 {
+    color: var(--grey-color-dk2);
+    display: block;
+    font-family: var(--secondary-font);
+    font-size: 1.8rem;
+    margin-top: 2rem;
+    text-shadow: var(--text-shadow2);
+    z-index: 10;
+  }
+
+  /* sign-in options */
+  .signin-options {
+    margin-top: 0.5rem;
+    gap: 1rem;
+  }
+
+  .signin-heading {
+    font-size: 1.4rem;
+  }
+}
+
+/* small screen devices */
+@media screen and (max-width: 480px) {
+  .signin-page {
+    background-color: var(--primary-color);
+  }
+
+  .circleBg {
+    background-color: var(--secondary-color-lg4);
+  }
+
+  /*-- sign-in container --*/
+  .signin-container {
+    background: transparent;
+    border-radius: 0;
+    min-height: 100%;
+    min-width: 280px;
+    width: 100%;
+  }
+
+  /*- sign-in main -*/
+  .signin-main h1 {
+    font-size: 1.5rem;
+  }
+
+  .signin-main .brand-logo {
+    display: block;
+  }
+
+  .signin-main .shield-icon {
+    display: none;
+  }
+
+  .signin-heading {
+    font-size: 1.25rem;
+  }
+
+  /* sign-in options */
+  .signin-options input,
+  .signin-btn {
+    border-radius: var(--border-radius2);
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+
+  .signin-partners p {
+    font-size: 0.8rem;
+  }
+
+  .google-signin-btn {
+    font-size: 0.8rem;
+    padding: 6px 2rem;
+    width: auto;
+  }
+
+  .google-signin-btn .google-icon {
+    font-size: 1.1rem;
+  }
+
+  /* sign-up link */
+  .signup-link {
+    font-size: 0.9rem;
   }
 }

@@ -5,7 +5,7 @@ import {
   MdLogin,
   MdOutlineLogout,
 } from "react-icons/md";
-import { Link as LinkR } from "react-router-dom";
+import { Link, Link as LinkR } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
 import { app } from "../firebase.config";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,17 +33,30 @@ const Header = () => {
   const login = async () => {
     const firebaseAuth = getAuth(app);
     const provider = new GoogleAuthProvider();
+    // provider.addScope("")
 
     const {
       user: { providerData },
-    } = await signInWithPopup(firebaseAuth, provider);
-    dispatch(setUser(providerData[0]));
+    } = await signInWithPopup(firebaseAuth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(errorCode);
+      });
+    // dispatch(setUser(providerData[0]));
 
-    // to persist state on refresh
-    localStorage.setItem("user", JSON.stringify(providerData[0]));
-
-    // to set cart icon to its original size
-    cartIconContainerRef.current.style.width = "fit-content";
+    // // to persist state on refresh
+    // localStorage.setItem("user", JSON.stringify(providerData[0]));
+    // // to set cart icon to its original size
+    // cartIconContainerRef.current.style.width = "fit-content";
   };
 
   const openMenu = () => {
@@ -316,9 +329,9 @@ const Header = () => {
             </div>
           </div>
         ) : (
-          <button className="login-btn" onClick={login} ref={loginBtnRef}>
-            {loginBtnText ? "Login" : <MdLogin />}
-          </button>
+          <Link to="/signin" className="login-btn" ref={loginBtnRef}>
+            {loginBtnText ? "Sign In" : <MdLogin />}
+          </Link>
         )}
       </div>
     </nav>

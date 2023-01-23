@@ -1,5 +1,6 @@
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import Home from "./components/Home";
+import SignIn from "./components/SignIn";
 import CreatePage from "./components/CreatePage";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,10 +47,10 @@ function App() {
 
   return (
     <main>
-      <div id="cart-overlay"></div>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} exact />
+          <Route path="/signin" element={<SignIn />} exact />
           {user && user.email === adminId && (
             <Route path="/createItem" element={<CreatePage />} exact />
           )}

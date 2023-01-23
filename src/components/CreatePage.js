@@ -6,6 +6,7 @@ import CreateContainer from "./CreateContainer";
 const CreatePage = () => {
   return (
     <>
+      <div id="cart-overlay"></div>
       <Header />
       <CartContainer />
       <CreateContainer />

@@ -9,6 +9,7 @@ import ServicesSection from "./ServicesSection";
 const Home = () => {
   return (
     <>
+      <div id="cart-overlay"></div>
       <Header />
       <CartContainer />
       <HeroSection />
