@@ -3,8 +3,15 @@ import { heroData } from "../utils/data";
 import Delivery from "../Images/delivery.png";
 import heroBg from "../Images/heroBg.png";
 import { Button } from "react-scroll";
+import { setIsMenuOpen } from "../reducers/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { firebaseAuth } from "../firebase.config";
 
 const HeroSection = () => {
+  const { isMenuOpen } = useSelector((state) => state.userData);
+  const dispatch = useDispatch();
+  const [user] = useAuthState(firebaseAuth);
   const [offset, setOffset] = useState(-82);
 
   function getNavHeight() {
@@ -13,13 +20,38 @@ const HeroSection = () => {
     setOffset(-navHeight);
   }
 
+  const closeMenu = () => {
+    const userDropdown = document.querySelector(".user-dropdown-menu");
+    userDropdown.classList.remove("openMenu");
+
+    const transitionDuration =
+      parseFloat(
+        window
+          .getComputedStyle(userDropdown)
+          .getPropertyValue("transition-duration")
+      ) * 1000;
+    setTimeout(() => {
+      userDropdown.style.display = "none"; //for closing animation
+
+      dispatch(setIsMenuOpen(false));
+    }, transitionDuration);
+  };
+
   useEffect(() => {
     window.addEventListener("resize", getNavHeight);
     getNavHeight();
   }, []);
 
   return (
-    <section className="hero-section" id="home">
+    <section
+      className="hero-section"
+      id="home"
+      onClick={() => {
+        if (user && isMenuOpen) {
+          closeMenu();
+        }
+      }}
+    >
       <div className="hero-content">
         <div className="delivery">
           <p>bike delivery</p>

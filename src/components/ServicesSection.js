@@ -4,10 +4,43 @@ import Premium from "../Images/premium-discount.png";
 import Celebration from "../Images/celebration.png";
 import GlobalChain from "../Images/global-chain.png";
 import Aid from "../Images/aid.png";
+import { useDispatch, useSelector } from "react-redux";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { firebaseAuth } from "../firebase.config";
+import { setIsMenuOpen } from "../reducers/userSlice";
 
 const ServicesSection = () => {
+  const { isMenuOpen } = useSelector((state) => state.userData);
+  const dispatch = useDispatch();
+  const [user] = useAuthState(firebaseAuth);
+
+  const closeMenu = () => {
+    const userDropdown = document.querySelector(".user-dropdown-menu");
+    userDropdown.classList.remove("openMenu");
+
+    const transitionDuration =
+      parseFloat(
+        window
+          .getComputedStyle(userDropdown)
+          .getPropertyValue("transition-duration")
+      ) * 1000;
+    setTimeout(() => {
+      userDropdown.style.display = "none"; //for closing animation
+
+      dispatch(setIsMenuOpen(false));
+    }, transitionDuration);
+  };
+
   return (
-    <section className="services-section" id="services">
+    <section
+      className="services-section"
+      id="services"
+      onClick={() => {
+        if (user && isMenuOpen) {
+          closeMenu();
+        }
+      }}
+    >
       <div className="services-header">
         <h1 className="service-heading">
           Our <span>Services</span>

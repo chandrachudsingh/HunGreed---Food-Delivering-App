@@ -1,19 +1,26 @@
-import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import { useEffect } from "react";
 import Home from "./components/Home";
 import SignIn from "./components/SignIn";
 import CreatePage from "./components/CreatePage";
-import { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllFoodItems, getCartItems } from "./utils/firebaseFunctions";
-import { setCartItems, setFoodItems } from "./reducers/userSlice";
-import { adminId } from ".";
+import {
+  fetchUserData,
+  getAllFoodItems,
+  getCartItems,
+} from "./utils/firebaseFunctions";
+import { setCartItems, setFoodItems, setUserInfo } from "./reducers/userSlice";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { firebaseAuth } from "./firebase.config";
 
 function App() {
   const {
-    user,
+    userInfo,
     cart: { isOpen },
   } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [user, loading] = useAuthState(firebaseAuth);
 
   const fetchData = async () => {
     await getAllFoodItems().then((data) => {
@@ -27,13 +34,24 @@ function App() {
     });
   };
 
+  const fetchUserDetails = async (user) => {
+    const data = await fetchUserData(user);
+    dispatch(setUserInfo(data));
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
 
   useEffect(() => {
-    fetchCartItems(user?.uid);
-  }, [user]);
+    fetchCartItems(userInfo?.uid);
+  }, [userInfo]);
+
+  useEffect(() => {
+    if (loading) return;
+    if (!user) return navigate("/");
+    fetchUserDetails(user);
+  }, [user, loading]);
 
   // disabling body scroll if cart is open
   useEffect(() => {
@@ -47,15 +65,14 @@ function App() {
 
   return (
     <main>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} exact />
-          <Route path="/signin" element={<SignIn />} exact />
-          {user && user.email === adminId && (
-            <Route path="/createItem" element={<CreatePage />} exact />
-          )}
-        </Routes>
-      </Router>
+      <Routes>
+        <Route path="/" element={<Home />} exact />
+        <Route path="/signin" element={<SignIn />} exact />
+        {/* admin only */}
+        {user && userInfo?.accountType === "admin" && (
+          <Route path="/createItem" element={<CreatePage />} exact />
+        )}
+      </Routes>
     </main>
   );
 }

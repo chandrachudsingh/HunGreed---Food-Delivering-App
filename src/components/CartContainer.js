@@ -16,12 +16,12 @@ import {
 
 const CartContainer = () => {
   const {
-    user,
+    userInfo,
     cart: { isOpen, cartItems },
   } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
-  const deliveryCharges = 50;
+  const [deliveryCharges, setDeliveryCharges] = useState(50);
   const [isItemsUpdating, setIsItemsUpdating] = useState(false);
   const cartContainerRef = useRef();
   const subTotalRef = useRef();
@@ -69,6 +69,11 @@ const CartContainer = () => {
     cartItems.forEach((item) => {
       subTotal += item.price * item.qty;
     });
+    if (subTotal >= 500) {
+      setDeliveryCharges(0);
+    } else {
+      setDeliveryCharges(50);
+    }
     total = subTotal + deliveryCharges;
     subTotalRef.current.innerHTML = `<span>₹</span> ${subTotal}`;
     totalRef.current.innerHTML = `<span>₹</span> ${total}`;
@@ -92,7 +97,7 @@ const CartContainer = () => {
         <h3 className="cart-heading">cart</h3>
         <button
           className="clear-cart-btn"
-          onClick={() => deleteCart(user?.uid)}
+          onClick={() => deleteCart(userInfo?.uid)}
         >
           <p>clear</p>
           <MdClearAll className="clear-icon" />
@@ -102,7 +107,9 @@ const CartContainer = () => {
         <div className="cart-main">
           {isItemsUpdating && (
             <div id="cart-main-overlay">
-              <div className="loader"></div>
+              <div className="loaderBg">
+                <div className="loader"></div>
+              </div>
             </div>
           )}
           <div className="cart-items-container">
@@ -122,14 +129,14 @@ const CartContainer = () => {
                   <div className="cart-item-quantity">
                     <button
                       className="cart-item-count-btn"
-                      onClick={() => updateItemQty(user?.uid, item, -1)}
+                      onClick={() => updateItemQty(userInfo?.uid, item, -1)}
                     >
                       <MdOutlineRemove />
                     </button>
                     <p className="cart-item-count">{qty}</p>
                     <button
                       className="cart-item-count-btn"
-                      onClick={() => updateItemQty(user?.uid, item, 1)}
+                      onClick={() => updateItemQty(userInfo?.uid, item, 1)}
                     >
                       <MdOutlineAdd />
                     </button>
@@ -146,7 +153,11 @@ const CartContainer = () => {
             <div className="delivery-charge">
               <p>delivery</p>
               <p>
-                <span>₹</span> {deliveryCharges}
+                <span>₹</span>{" "}
+                {deliveryCharges === 0 && (
+                  <span className="price-crossed">{50}</span>
+                )}{" "}
+                {deliveryCharges}
               </p>
             </div>
             <div className="hr"></div>

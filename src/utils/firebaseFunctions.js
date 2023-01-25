@@ -2,6 +2,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   orderBy,
   query,
@@ -9,7 +10,89 @@ import {
   updateDoc,
   writeBatch,
 } from "firebase/firestore";
-import { firestore } from "../firebase.config";
+import { firebaseAuth, firestore } from "../firebase.config";
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+
+// Registering new user
+export const registerWithEmailAndPassword = async (name, email, password) => {
+  try {
+    const result = await createUserWithEmailAndPassword(
+      firebaseAuth,
+      email,
+      password
+    );
+    const user = result.user;
+    const userData = {
+      uid: user.email,
+      name,
+      image: user.photoURL,
+      authProvider: "google",
+      accountType: "local",
+    };
+    const docRef = doc(firestore, "users", user.email);
+    await setDoc(docRef, userData);
+    return { type: "success", message: "Registeration successful" };
+  } catch (err) {
+    console.error(err);
+    return { type: "danger", message: err.code };
+  }
+};
+
+// Direct user login
+export const logInWithEmailAndPassword = async (email, password) => {
+  try {
+    await signInWithEmailAndPassword(firebaseAuth, email, password);
+    return "success";
+  } catch (err) {
+    console.error(err);
+    return { type: "danger", message: err.code };
+  }
+};
+
+// Google sign-in
+export const googleSignIn = async () => {
+  const provider = new GoogleAuthProvider();
+  // provider.addScope("")
+
+  try {
+    const result = await signInWithPopup(firebaseAuth, provider);
+    const user = result.user;
+    const userData = {
+      uid: user.email,
+      name: user.displayName,
+      image: user.photoURL,
+      authProvider: "google",
+      accountType: "local",
+    };
+
+    const docRef = doc(firestore, "users", user.email);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      await setDoc(docRef, userData);
+    }
+    return "success";
+  } catch (err) {
+    console.error(err);
+    return { type: "danger", message: err.code };
+  }
+};
+
+//  fecth user data
+export const fetchUserData = async (user) => {
+  try {
+    const docRef = doc(firestore, "users", user.email);
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
+  } catch (err) {
+    console.error(err);
+  }
+  return null;
+};
 
 // Saving new Item
 export const saveItem = async (data) => {

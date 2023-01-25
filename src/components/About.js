@@ -2,49 +2,64 @@ import React, { useState } from "react";
 import Healthy_Food from "../Images/healthy_food3.png";
 import Dinning from "../Images/restaurent_dine.jpg";
 import { MdChevronRight } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { app } from "../firebase.config";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { setUser } from "../reducers/userSlice";
 import MessageModal from "./MessageModal";
+import { Link } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { firebaseAuth } from "../firebase.config";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsMenuOpen } from "../reducers/userSlice";
 
 const About = () => {
-  const { user } = useSelector((state) => state.userData);
+  const { isMenuOpen } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
+  const [user] = useAuthState(firebaseAuth);
 
   const [isUser, setIsUser] = useState(false);
   const [modalTimeout, setModalTimeout] = useState(null);
   const modalDuration = 3000;
 
-  const login = async () => {
-    const firebaseAuth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-    if (!user) {
-      const {
-        user: { providerData },
-      } = await signInWithPopup(firebaseAuth, provider);
-      dispatch(setUser(providerData[0]));
+  const displayMessageModal = () => {
+    clearTimeout(modalTimeout);
+    setIsUser(false);
+    setTimeout(() => {
+      setIsUser(true);
+    }, 0);
 
-      // to persist state on refresh
-      localStorage.setItem("user", JSON.stringify(providerData[0]));
-    } else {
-      clearTimeout(modalTimeout);
-      setIsUser(false);
+    const transitionDuration = 200;
+    setModalTimeout(
       setTimeout(() => {
-        setIsUser(true);
-      }, 0);
+        setIsUser(false);
+      }, modalDuration + transitionDuration)
+    );
+  };
 
-      const transitionDuration = 200;
-      setModalTimeout(
-        setTimeout(() => {
-          setIsUser(false);
-        }, modalDuration + transitionDuration)
-      );
-    }
+  const closeMenu = () => {
+    const userDropdown = document.querySelector(".user-dropdown-menu");
+    userDropdown.classList.remove("openMenu");
+
+    const transitionDuration =
+      parseFloat(
+        window
+          .getComputedStyle(userDropdown)
+          .getPropertyValue("transition-duration")
+      ) * 1000;
+    setTimeout(() => {
+      userDropdown.style.display = "none"; //for closing animation
+
+      dispatch(setIsMenuOpen(false));
+    }, transitionDuration);
   };
 
   return (
-    <section className="about-section" id="about">
+    <section
+      className="about-section"
+      id="about"
+      onClick={() => {
+        if (user && isMenuOpen) {
+          closeMenu();
+        }
+      }}
+    >
       <div className="about-header">
         <h1 className="about-heading">About Us</h1>
         <div className="moto-container">
@@ -92,15 +107,22 @@ const About = () => {
         </div>
       </div>
       <div className="join-btn-container">
-        <button className="join-btn" onClick={login}>
-          Join Us <MdChevronRight className="right-icon" />
-        </button>
+        {user ? (
+          <button className="join-btn" onClick={displayMessageModal}>
+            Join Us <MdChevronRight className="right-icon" />
+          </button>
+        ) : (
+          <Link to="/signin" className="join-btn">
+            Join Us <MdChevronRight className="right-icon" />
+          </Link>
+        )}
       </div>
       {isUser && (
         <MessageModal
           modalDuration={modalDuration}
           type={"success"}
           message={"Already logged in !!"}
+          page={"about"}
         />
       )}
     </section>

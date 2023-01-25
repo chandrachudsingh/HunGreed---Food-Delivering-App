@@ -7,57 +7,33 @@ import {
 } from "react-icons/md";
 import { Link, Link as LinkR } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
-import { app } from "../firebase.config";
 import { useDispatch, useSelector } from "react-redux";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { setCartIsOpen, setIsMenuOpen, setUser } from "../reducers/userSlice";
+import {
+  setCartIsOpen,
+  setIsMenuOpen,
+  setUserInfo,
+} from "../reducers/userSlice";
 import { Link as LinkS, animateScroll as scroll } from "react-scroll";
-import { adminId } from "..";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { firebaseAuth } from "../firebase.config";
+import { signOut } from "firebase/auth";
 
 const Header = () => {
   const {
-    user,
+    userInfo,
     isMenuOpen,
     cart: { isOpen, cartItems },
   } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
-  const userName = user?.displayName.split(" ").slice(0, 2).join(" ");
+  const [user, loading, error] = useAuthState(firebaseAuth);
+
   const userDropdownRef = useRef();
   const cartItemCountRef = useRef();
   const cartIconContainerRef = useRef();
   const loginBtnRef = useRef();
   const [offset, setOffset] = useState(-82);
   const [loginBtnText, setLoginBtnText] = useState(true);
-
-  const login = async () => {
-    const firebaseAuth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-    // provider.addScope("")
-
-    const {
-      user: { providerData },
-    } = await signInWithPopup(firebaseAuth, provider)
-      .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        const user = result.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(errorCode);
-      });
-    // dispatch(setUser(providerData[0]));
-
-    // // to persist state on refresh
-    // localStorage.setItem("user", JSON.stringify(providerData[0]));
-    // // to set cart icon to its original size
-    // cartIconContainerRef.current.style.width = "fit-content";
-  };
 
   const openMenu = () => {
     userDropdownRef.current.style.display = "flex";
@@ -84,11 +60,8 @@ const Header = () => {
 
   const logout = () => {
     dispatch(setIsMenuOpen(false));
-    localStorage.clear();
-    dispatch(setUser(null));
-    setTimeout(() => {
-      changeHeaderAttrs();
-    }, 1);
+    dispatch(setUserInfo(null));
+    signOut(firebaseAuth);
   };
 
   const openCart = () => {
@@ -160,8 +133,22 @@ const Header = () => {
     }
   }, [cartItems]);
 
+  useEffect(() => {
+    if (user) {
+      // to set cart icon to its original size
+      cartIconContainerRef.current.style.width = "fit-content";
+    }
+  });
+
   return (
-    <nav className="navbar">
+    <nav
+      className="navbar"
+      // onClick={() => {
+      //   if (user && isMenuOpen) {
+      //     closeMenu();
+      //   }
+      // }}
+    >
       <div className="nav-container">
         <div className="brand-logo">
           <LinkR
@@ -169,14 +156,23 @@ const Header = () => {
             className="logo-text"
             onClick={() => {
               toggleHome();
-              user && closeMenu();
+              if (user && isMenuOpen) {
+                closeMenu();
+              }
             }}
           >
             H<span className="small">un</span>G
             <span className="small">reed</span>
           </LinkR>
         </div>
-        <ul className="navlinks-container" onClick={user && closeMenu}>
+        <ul
+          className="navlinks-container"
+          onClick={() => {
+            if (user) {
+              closeMenu();
+            }
+          }}
+        >
           <li className="navlinks">
             <LinkS
               to="home"
@@ -185,7 +181,11 @@ const Header = () => {
               smooth={true}
               offset={offset}
               duration={500}
-              onClick={user && closeMenu}
+              onClick={() => {
+                if (user) {
+                  closeMenu();
+                }
+              }}
             >
               home
             </LinkS>
@@ -198,7 +198,11 @@ const Header = () => {
               smooth={true}
               offset={offset}
               duration={500}
-              onClick={user && closeMenu}
+              onClick={() => {
+                if (user) {
+                  closeMenu();
+                }
+              }}
             >
               menu
             </LinkS>
@@ -211,7 +215,11 @@ const Header = () => {
               smooth={true}
               offset={offset}
               duration={500}
-              onClick={user && closeMenu}
+              onClick={() => {
+                if (user) {
+                  closeMenu();
+                }
+              }}
             >
               about us
             </LinkS>
@@ -224,7 +232,11 @@ const Header = () => {
               smooth={true}
               offset={offset}
               duration={500}
-              onClick={user && closeMenu}
+              onClick={() => {
+                if (user) {
+                  closeMenu();
+                }
+              }}
             >
               services
             </LinkS>
@@ -235,7 +247,9 @@ const Header = () => {
             className="cart"
             onClick={() => {
               openCart();
-              closeMenu();
+              if (user) {
+                closeMenu();
+              }
             }}
           >
             <MdShoppingBasket />
@@ -250,7 +264,7 @@ const Header = () => {
           <div className="user-profile">
             <button className="user-profile-btn">
               <img
-                src={user.photoURL}
+                src={user.photoURL || Avatar}
                 alt="user-profile"
                 onError={(e) => setAltUserImg(e)}
                 onClick={() => (isMenuOpen ? closeMenu() : openMenu())}
@@ -261,11 +275,14 @@ const Header = () => {
               className={`user-dropdown-menu ${isMenuOpen && "openMenu"}`}
             >
               <p className="user-name">
-                {userName}
-                <span>premium</span>
+                {userInfo?.name?.split(" ").slice(0, 2).join(" ")}
+                {userInfo?.accountType !== "local" && (
+                  <span>{userInfo?.accountType}</span>
+                )}
               </p>
-              {/* administration id */}
-              {user && user.email === adminId && (
+              <hr />
+              {/* admin only */}
+              {userInfo && userInfo.accountType === "admin" && (
                 <LinkR
                   to="/createItem"
                   onClick={() => dispatch(setIsMenuOpen(false))}

@@ -37,7 +37,8 @@
   --blue-color-dk2: rgb(0, 0, 149);
   --brandLogo-color: rgb(0, 128, 0);
   --brand-shadow-color: rgb(0, 100, 0);
-  --grey-color-lg2: rgba(230, 230, 230, 0.6);
+  --grey-color-lg3: rgba(230, 230, 230, 0.6);
+  --grey-color-lg2: rgb(225, 225, 225);
   --grey-color-lg: rgba(100, 100, 100, 0.6);
   --grey-color: rgba(65, 65, 65, 0.76);
   --grey-color-dk: rgba(60, 60, 60, 0.8);
@@ -70,18 +71,19 @@
   --box-shadow5: 1px 1px 10px rgba(0, 0, 0, 0.2);
   --box-shadow6: 1px 1px 6px rgba(60, 60, 60, 0.8);
   --box-shadow7: 2px 2px 14px rgba(60, 60, 60, 0.3);
+  --box-shadow8: 0 1px 10px rgba(0, 0, 0, 0.14);
   --text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
   --text-shadow2: 1px 1px 2px rgba(0, 0, 0, 0.4);
   --drop-shadow: 0 25px 25px rgba(0, 0, 0, 0.15);
   --drop-shadow2: 0 4px 20px rgba(0, 0, 0, 0.2);
   --border: 2px solid rgb(230, 230, 230);
-  --loader-border: 5px solid rgb(216, 216, 216);
-  --loader-border-lg: 4px solid rgb(216, 216, 216);
-  --loader-top-border: 5px solid rgb(0, 190, 0);
-  --loader-top-border-lg: 4px solid rgb(0, 190, 0);
+  --loader-border: 4.5px solid rgb(225, 225, 225);
+  --loader-border-lg: 3.5px solid rgb(225, 225, 225);
+  --loader-top-border: 4.5px solid rgb(0, 200, 0);
+  --loader-top-border-lg: 3.5px solid rgb(0, 200, 0);
   --background-tr: rgba(0, 0, 0, 0.5);
   --background-tr2: rgba(0, 0, 0, 0.4);
-  --background-tr3: rgba(255, 255, 255, 0.5);
+  --background-tr3: rgba(255, 255, 255, 0.6);
   --background-radGradient: radial-gradient(
     rgb(180, 255, 224),
     rgb(160, 255, 249)
@@ -151,22 +153,79 @@ main {
   }
 }
 
+.loaderBg {
+  background-color: white;
+  border-radius: var(--border-radius3);
+  box-shadow: var(--box-shadow5);
+  padding: 0.5rem;
+}
+
 .loader {
   border: var(--loader-border);
   border-top: var(--loader-top-border);
   border-radius: 50%;
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   animation: loading 1s linear infinite;
 }
 
 /* small screen devices */
 @media screen and (max-width: 480px) {
+  .loaderBg {
+    padding: 6px;
+  }
+
   .loader {
     border: var(--loader-border-lg);
     border-top: var(--loader-top-border-lg);
     height: 30px;
     width: 30px;
+  }
+}
+
+/* Message Modal */
+.message-modal {
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow6);
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  position: fixed;
+  top: 90%;
+  transition: var(--primary-transition);
+  opacity: 0;
+  z-index: 10;
+}
+
+.success-modal {
+  background-color: var(--secondary-color-lg6);
+  color: var(--secondary-color-dk);
+}
+
+.danger-modal {
+  background-color: var(--red-color-lg);
+  color: var(--red-color);
+}
+
+.open-message-modal {
+  opacity: 1;
+}
+
+.message-modal-icon {
+  font-size: 1.2rem;
+}
+
+/* small screen devices */
+@media screen and (max-width: 480px) {
+  .message-modal {
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+
+  .message-modal-icon {
+    font-size: 1rem;
   }
 }
 
@@ -177,7 +236,7 @@ main {
 .navbar,
 .navbar2 {
   background-color: var(--secondary-color-lg6);
-  box-shadow: var(--box-shadow2);
+  box-shadow: var(--box-shadow8);
   position: fixed;
   top: 0;
   left: 0;
@@ -345,6 +404,7 @@ main {
 
 .login-btn:active {
   background-color: var(--secondary-color-dk2);
+  transition: var(--tertiary-transition);
 }
 
 /* User Profile */
@@ -449,20 +509,28 @@ main {
   align-items: center;
   font-size: 0.75rem;
   flex-direction: column;
-  padding: 0 5px;
+  padding: 4px 0;
   margin: 0 auto;
   text-transform: capitalize;
   user-select: none;
 }
 
 .user-dropdown-menu .user-name > span {
-  color: rgb(83, 119, 93);
+  color: var(--blue-color-dk2);
   align-self: flex-start;
   font-size: 0.6rem;
   font-style: italic;
   position: relative;
   top: -2px;
   text-transform: capitalize;
+}
+
+.user-dropdown-menu hr {
+  background-color: var(--grey-color-lg2);
+  border: none;
+  border-radius: var(--border-radius);
+  height: 1px;
+  width: 100%;
 }
 
 .user-dropdown-menu a,
@@ -854,6 +922,13 @@ main {
   font-size: 0.96rem;
 }
 
+.cart-checkout .price-crossed {
+  color: var(--grey-color-dk2);
+  font-size: 1.1rem;
+  text-decoration: line-through;
+  text-decoration-color: var(--grey-color-dk2);
+}
+
 .cart-total {
   font-weight: 600;
 }
@@ -1074,6 +1149,7 @@ main {
 
 .hero-order-btn:active {
   background-color: var(--secondary-color-dk2);
+  transition: var(--tertiary-transition);
 }
 
 /*--- Hero section attractions ---*/
@@ -1567,6 +1643,7 @@ main {
 
 .save-btn:active {
   background-color: var(--secondary-color);
+  transition: var(--tertiary-transition);
 }
 
 /* large screen devices */
@@ -2059,40 +2136,6 @@ main {
   z-index: 100;
 }
 
-/* Message Modal */
-.message-modal {
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow6);
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 10px;
-  position: fixed;
-  top: 90%;
-  transition: var(--primary-transition);
-  opacity: 0;
-  z-index: 10;
-}
-
-.success-modal {
-  background-color: var(--secondary-color-lg6);
-  color: var(--secondary-color-dk);
-}
-
-.danger-modal {
-  background-color: var(--red-color-lg);
-  color: var(--red-color);
-}
-
-.open-message-modal {
-  opacity: 1;
-}
-
-.message-modal-icon {
-  font-size: 1.2rem;
-}
-
 /* large screen devices */
 @media screen and (max-width: 1280px) {
   .menu-dishes {
@@ -2234,16 +2277,6 @@ main {
   .hot-card .dish-calories,
   .hot-card .dish-price {
     font-size: 0.65rem;
-  }
-
-  /* Message Modal */
-  .message-modal {
-    font-size: 0.8rem;
-    gap: 6px;
-  }
-
-  .message-modal-icon {
-    font-size: 1rem;
   }
 }
 
@@ -2406,6 +2439,7 @@ main {
   background-color: var(--secondary-color-dk);
   border: none;
   border-radius: var(--border-radius);
+  color: var(--grey-color-dk2);
   cursor: pointer;
   display: flex;
   gap: 0.5rem;
@@ -2415,6 +2449,7 @@ main {
   font-size: 1rem;
   margin-left: 4rem;
   padding: 6px;
+  text-decoration: none;
   transition: var(--primary-transition);
   width: 200px;
 }
@@ -2426,6 +2461,7 @@ main {
 
 .join-btn:active {
   background-color: var(--secondary-color-dk2);
+  transition: var(--tertiary-transition);
 }
 
 .join-btn > .right-icon {
@@ -2734,6 +2770,7 @@ main {
 }
 
 .service-btn:active {
+  transition: var(--tertiary-transition);
   background-color: var(--blue-color-lg);
 } */
 
@@ -2898,13 +2935,35 @@ main {
   border-radius: var(--border-radius3);
   box-shadow: var(--box-shadow7);
   display: flex;
+  justify-content: center;
   overflow: auto;
+  position: relative;
   min-height: 80%;
   max-height: 100%;
   min-width: 700px;
   max-width: 1048px;
   width: 70%;
   z-index: 10;
+}
+
+/* signin message modal */
+.signin-container > .message-modal {
+  top: 80%;
+}
+
+/* signin overlay */
+#signin-overlay {
+  background-color: var(--background-tr3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: var(--secondary-transition);
+  height: 100%;
+  width: 100%;
+  z-index: 100;
 }
 
 /*- sign-in content container -*/
@@ -2919,6 +2978,7 @@ main {
   overflow: hidden;
   padding: 1rem 2rem;
   position: relative;
+  height: 575px;
   width: 600px;
 }
 
@@ -3009,8 +3069,10 @@ main {
   display: flex;
   align-items: center;
   flex-direction: column;
+  overflow: hidden;
   padding: 1rem;
   position: relative;
+  height: 575px;
   width: 600px;
 }
 
@@ -3042,7 +3104,7 @@ main {
   margin-top: 2rem;
   padding: 1rem 0;
   min-width: 250px;
-  width: 70%;
+  width: 80%;
 }
 
 .signin-heading {
@@ -3069,7 +3131,7 @@ main {
 
 .signin-options input {
   border: none;
-  background-color: var(--grey-color-lg2);
+  background-color: var(--grey-color-lg3);
   padding: 0.5rem 2rem;
 }
 
@@ -3107,6 +3169,7 @@ main {
 
 .signin-btn:active {
   background: var(--secondary-color-dk2);
+  transition: var(--tertiary-transition);
 }
 
 /* signin using partner login */
@@ -3165,6 +3228,7 @@ main {
 
 .google-signin-btn:active {
   box-shadow: var(--box-shadow4);
+  transition: var(--tertiary-transition);
 }
 
 /* sign-up link */
@@ -3177,6 +3241,7 @@ main {
   color: var(--secondary-color-dk);
   cursor: pointer;
   font-weight: 600;
+  text-transform: capitalize;
   transition: var(--primary-transition);
 }
 
@@ -3200,6 +3265,7 @@ main {
 
   /*- sign-in main -*/
   .signin-main {
+    height: 595px;
     width: 100%;
   }
 
@@ -3259,6 +3325,10 @@ main {
   }
 
   /*- sign-in main -*/
+  .signin-main {
+    height: 560px;
+  }
+
   .signin-main h1 {
     font-size: 1.5rem;
   }

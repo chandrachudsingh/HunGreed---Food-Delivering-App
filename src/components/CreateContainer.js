@@ -27,7 +27,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { getAllFoodItems, saveItem } from "../utils/firebaseFunctions";
-import { setFoodItems } from "../reducers/userSlice";
+import { setFoodItems, setIsMenuOpen } from "../reducers/userSlice";
 
 const CreateContainer = () => {
   const {
@@ -41,7 +41,9 @@ const CreateContainer = () => {
     msg,
     isLoading,
   } = useSelector((state) => state.newItem);
+  const { isMenuOpen } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
+
   const imgRef = useRef();
   const alertRef = useRef();
 
@@ -187,8 +189,32 @@ const CreateContainer = () => {
     });
   };
 
+  const closeMenu = () => {
+    const userDropdown = document.querySelector(".user-dropdown-menu");
+    userDropdown.classList.remove("openMenu");
+
+    const transitionDuration =
+      parseFloat(
+        window
+          .getComputedStyle(userDropdown)
+          .getPropertyValue("transition-duration")
+      ) * 1000;
+    setTimeout(() => {
+      userDropdown.style.display = "none"; //for closing animation
+
+      dispatch(setIsMenuOpen(false));
+    }, transitionDuration);
+  };
+
   return (
-    <section className="create-container">
+    <section
+      className="create-container"
+      onClick={() => {
+        if (isMenuOpen) {
+          closeMenu();
+        }
+      }}
+    >
       <div className="create-item">
         {fields && (
           <p ref={alertRef} className={`${alertStatus} alert-message`}>

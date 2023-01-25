@@ -1,10 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUser } from "../utils/fetchLocalStorageData";
-
-const userInfo = fetchUser();
 
 const initialState = {
-  user: userInfo,
+  userInfo: null,
   foodItems: null,
   isMenuOpen: false,
   cart: { isOpen: false, cartItems: [] },
@@ -14,8 +11,8 @@ const userSlice = createSlice({
   name: "userData",
   initialState,
   reducers: {
-    setUser: (state, action) => {
-      state.user = action.payload;
+    setUserInfo: (state, action) => {
+      state.userInfo = action.payload;
     },
     setFoodItems: (state, action) => {
       state.foodItems = action.payload;
@@ -34,7 +31,7 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 export const {
-  setUser,
+  setUserInfo,
   setIsMenuOpen,
   setFoodItems,
   setCartIsOpen,

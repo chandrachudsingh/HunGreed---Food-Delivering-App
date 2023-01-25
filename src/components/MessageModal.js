@@ -1,9 +1,13 @@
 import React, { useEffect, useRef } from "react";
-import { MdCheckCircle, MdLogin, MdOutlineGppGood } from "react-icons/md";
-import { useSelector } from "react-redux";
+import {
+  MdCheckCircle,
+  MdErrorOutline,
+  MdLogin,
+  MdOutlineGppGood,
+  MdThumbUp,
+} from "react-icons/md";
 
-const MessageModal = ({ modalDuration, type, message }) => {
-  const { user } = useSelector((state) => state.userData);
+const MessageModal = ({ modalDuration, type, message, page }) => {
   const modalRef = useRef();
 
   useEffect(() => {
@@ -18,11 +22,15 @@ const MessageModal = ({ modalDuration, type, message }) => {
   return (
     <div className={`message-modal ${type}-modal`} ref={modalRef}>
       {type === "success" ? (
-        user ? (
-          <MdOutlineGppGood className="message-modal-icon" />
-        ) : (
+        page === "signin" ? (
+          <MdThumbUp className="message-modal-icon" />
+        ) : page === "menu" ? (
           <MdCheckCircle className="message-modal-icon" />
+        ) : (
+          <MdOutlineGppGood className="message-modal-icon" />
         )
+      ) : page === "signin" ? (
+        <MdErrorOutline className="message-modal-icon" />
       ) : (
         <MdLogin className="message-modal-icon" />
       )}{" "}

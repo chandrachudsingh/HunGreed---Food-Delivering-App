@@ -11,7 +11,7 @@ const MenuContainer = ({
   addToCart,
   showErrorModal,
 }) => {
-  const { user } = useSelector((state) => state.userData);
+  const { userInfo } = useSelector((state) => state.userData);
 
   const [filter, setFilter] = useState(categories[0].urlParamName);
 
@@ -64,7 +64,9 @@ const MenuContainer = ({
                         window.innerWidth > 480 && "hover"
                       }`}
                       onClick={() =>
-                        user ? addToCart(user?.uid, item) : showErrorModal()
+                        userInfo
+                          ? addToCart(userInfo?.uid, item)
+                          : showErrorModal()
                       }
                     >
                       <p>Add</p>

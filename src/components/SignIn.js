@@ -3,34 +3,129 @@ import { MdChevronRight } from "react-icons/md";
 import { BsShieldLock } from "react-icons/bs";
 import { FaShapes } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import {
+  googleSignIn,
+  logInWithEmailAndPassword,
+  registerWithEmailAndPassword,
+} from "../utils/firebaseFunctions";
+import { firebaseAuth } from "../firebase.config";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
+import MessageModal from "../components/MessageModal";
 
 const SignIn = (e) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isNewUser, setIsNewUser] = useState(false);
+
+  const [user, loading, error] = useAuthState(firebaseAuth);
+  const navigate = useNavigate();
+
+  const modalDuration = 3000;
+  const [modalTimeout, setModalTimeout] = useState(null);
+  const [modal, setModal] = useState({
+    isModal: false,
+    type: "danger",
+    message: "",
+  });
+
   const NameInputRef = useRef();
   const EmailInputRef = useRef();
   const PasswordInputRef = useRef();
   const SignInBtnRef = useRef();
-  const [isNewUser, SetIsNewUser] = useState(false);
 
-  const clickSignInBtn = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      SignInBtnRef.current.click();
+  const submitDetails = async () => {
+    clearTimeout(modalTimeout);
+    setModal({ ...modal, isModal: false });
+
+    let status = "";
+    if (isNewUser) {
+      if (!name || !email || !password) {
+        setTimeout(() => {
+          setModal({
+            isModal: true,
+            type: "danger",
+            message: "Please fill all the fields!!",
+          });
+        }, 0);
+        const transitionDuration = 200;
+        setModalTimeout(
+          setTimeout(() => {
+            setModal({ ...modal, isModal: false });
+          }, modalDuration + transitionDuration)
+        );
+        return;
+      }
+      status = await registerWithEmailAndPassword(name, email, password);
+    } else {
+      if (!email || !password) {
+        console.log("hello");
+        setTimeout(() => {
+          setModal({
+            isModal: true,
+            type: "danger",
+            message: "Please fill all the fields!!",
+          });
+        }, 0);
+        const transitionDuration = 200;
+        setModalTimeout(
+          setTimeout(() => {
+            setModal({ ...modal, isModal: false });
+          }, modalDuration + transitionDuration)
+        );
+        return;
+      }
+      status = await logInWithEmailAndPassword(email, password);
+    }
+
+    if (status !== "success") {
+      setTimeout(() => {
+        setModal({
+          isModal: true,
+          type: status.type,
+          message: status.message,
+        });
+      }, 0);
+      const transitionDuration = 200;
+      setModalTimeout(
+        setTimeout(() => {
+          setModal({ ...modal, isModal: false });
+        }, modalDuration + transitionDuration)
+      );
+    }
+  };
+
+  const googleLogin = async () => {
+    clearTimeout(modalTimeout);
+    setModal({ ...modal, isModal: false });
+
+    const status = await googleSignIn();
+    if (status !== "success") {
+      setTimeout(() => {
+        setModal({
+          isModal: true,
+          type: status.type,
+          message: status.message,
+        });
+      }, 0);
+      const transitionDuration = 200;
+      setModalTimeout(
+        setTimeout(() => {
+          setModal({ ...modal, isModal: false });
+        }, modalDuration + transitionDuration)
+      );
     }
   };
 
   useEffect(() => {
-    NameInputRef.current?.addEventListener("keypress", (e) =>
-      clickSignInBtn(e)
-    );
-    EmailInputRef.current.addEventListener("keypress", (e) =>
-      clickSignInBtn(e)
-    );
-    PasswordInputRef.current.addEventListener("keypress", (e) =>
-      clickSignInBtn(e)
-    );
-
-    // EmailInputRef.current.focus();
-  });
+    if (loading) {
+      return;
+    }
+    if (user) {
+      navigate("/");
+    }
+  }, [user, loading]);
 
   return (
     <div className="signin-page">
@@ -39,6 +134,13 @@ const SignIn = (e) => {
       <div className="circleBg"></div>
 
       <div className="signin-container">
+        {loading && (
+          <div id="signin-overlay">
+            <div className="loaderBg">
+              <div className="loader"></div>
+            </div>
+          </div>
+        )}
         <div className="signin-content">
           <FaShapes className="shapes-icon" />
           <div className="brand-logo">
@@ -79,44 +181,77 @@ const SignIn = (e) => {
             ) : (
               <h2 className="signin-heading">Sign In</h2>
             )}
+            {/* <form action="" className="signin-direct"> */}
             <div className="signin-direct">
               {isNewUser && (
-                <input type="text" placeholder="Name" ref={NameInputRef} />
+                <input
+                  type="text"
+                  placeholder="Name"
+                  ref={NameInputRef}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
               )}
-              <input type="email" placeholder="Email" ref={EmailInputRef} />
+              <input
+                type="email"
+                placeholder="Email"
+                ref={EmailInputRef}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
               <input
                 type="password"
                 placeholder="Password"
                 ref={PasswordInputRef}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
-              <button type="submit" className="signin-btn" ref={SignInBtnRef}>
+              <button
+                type="submit"
+                className="signin-btn"
+                ref={SignInBtnRef}
+                onClick={submitDetails}
+              >
                 <p>{isNewUser ? "create" : "log in"}</p>{" "}
                 <MdChevronRight className="right-icon" />
               </button>
             </div>
+            {/* </form> */}
             <div className="signin-partners">
               <div className="signin-partners-head">
                 <hr />
                 <p>or sign up/in using</p>
                 <hr />
               </div>
-              <button type="submit" className="google-signin-btn">
+              <button
+                type="submit"
+                className="google-signin-btn"
+                onClick={googleLogin}
+              >
                 <FcGoogle className="google-icon" /> google
               </button>
             </div>
             {isNewUser ? (
               <p className="signup-link">
                 Already have an account?{" "}
-                <span onClick={() => SetIsNewUser(false)}>Register</span>
+                <span onClick={() => setIsNewUser(false)}>sign in</span>
               </p>
             ) : (
               <p className="signup-link">
                 New User?{" "}
-                <span onClick={() => SetIsNewUser(true)}>sign up</span>
+                <span onClick={() => setIsNewUser(true)}>register</span>
               </p>
             )}
           </div>
         </div>
+        {modal.isModal && (
+          <MessageModal
+            modalDuration={modalDuration}
+            type={modal.type}
+            message={modal.message}
+            page={"signin"}
+          />
+        )}
       </div>
     </div>
   );

@@ -5,13 +5,16 @@ import { useRef, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { getCartItems, saveCartItem } from "../utils/firebaseFunctions";
-import { setCartItems } from "../reducers/userSlice";
+import { setCartItems, setIsMenuOpen } from "../reducers/userSlice";
 import MessageModal from "./MessageModal";
 import Loading from "./Loading";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { firebaseAuth } from "../firebase.config";
 
 const MenuSection = () => {
-  const { foodItems } = useSelector((state) => state.userData);
+  const { foodItems, isMenuOpen } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
+  const [user] = useAuthState(firebaseAuth);
 
   const modalDuration = 3000;
   const [modalTimeout, setModalTimeout] = useState(null);
@@ -111,8 +114,33 @@ const MenuSection = () => {
     );
   };
 
+  const closeMenu = () => {
+    const userDropdown = document.querySelector(".user-dropdown-menu");
+    userDropdown.classList.remove("openMenu");
+
+    const transitionDuration =
+      parseFloat(
+        window
+          .getComputedStyle(userDropdown)
+          .getPropertyValue("transition-duration")
+      ) * 1000;
+    setTimeout(() => {
+      userDropdown.style.display = "none"; //for closing animation
+
+      dispatch(setIsMenuOpen(false));
+    }, transitionDuration);
+  };
+
   return (
-    <section className="menu-section" id="menu">
+    <section
+      className="menu-section"
+      id="menu"
+      onClick={() => {
+        if (user && isMenuOpen) {
+          closeMenu();
+        }
+      }}
+    >
       <section className="hot-container">
         <div className="hot-header container-header">
           <h2 className="hot-heading container-heading">
@@ -163,7 +191,9 @@ const MenuSection = () => {
       </section>
       {addingToCart && (
         <div id="add2cart-overlay">
-          <div className="loader"></div>
+          <div className="loaderBg">
+            <div className="loader"></div>
+          </div>
         </div>
       )}
       {modal.isModal && (
@@ -171,6 +201,7 @@ const MenuSection = () => {
           modalDuration={modalDuration}
           type={modal.type}
           message={modal.message}
+          page={"menu"}
         />
       )}
     </section>

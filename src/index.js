@@ -4,14 +4,15 @@ import { Provider } from "react-redux";
 import store from "./store";
 import "./index.css";
 import App from "./App";
-
-export const adminId = "chandrachudsingh81@gmail.com";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </Provider>
   </React.StrictMode>
 );

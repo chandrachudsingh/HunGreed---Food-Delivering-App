@@ -3,11 +3,17 @@ import { MdShoppingBasket, MdOutlineLogout } from "react-icons/md";
 import { Link as LinkR } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
 import { useDispatch, useSelector } from "react-redux";
-import { setCartIsOpen, setIsMenuOpen, setUser } from "../reducers/userSlice";
+import {
+  setCartIsOpen,
+  setIsMenuOpen,
+  setUserInfo,
+} from "../reducers/userSlice";
+import { signOut } from "firebase/auth";
+import { firebaseAuth } from "../firebase.config";
 
 const Header = () => {
   const {
-    user,
+    userInfo,
     isMenuOpen,
     cart: { isOpen, cartItems },
   } = useSelector((state) => state.userData);
@@ -15,7 +21,6 @@ const Header = () => {
 
   const userDropdownRef = useRef();
   const cartItemCountRef = useRef();
-  const userName = user.displayName.split(" ").slice(0, 2).join(" ");
 
   const openMenu = () => {
     userDropdownRef.current.style.display = "flex";
@@ -42,8 +47,8 @@ const Header = () => {
 
   const logout = () => {
     dispatch(setIsMenuOpen(false));
-    localStorage.clear();
-    dispatch(setUser(null));
+    dispatch(setUserInfo(null));
+    signOut(firebaseAuth);
     window.location.href = "/";
   };
 
@@ -75,22 +80,23 @@ const Header = () => {
   }, [cartItems]);
 
   return (
-    <nav className="navbar">
+    <nav
+      className="navbar"
+      onClick={() => {
+        if (isMenuOpen) {
+          closeMenu();
+        }
+      }}
+    >
       <div className="nav-container">
         <div className="brand-logo">
-          <LinkR to="/" className="logo-text" onClick={closeMenu}>
+          <LinkR to="/" className="logo-text">
             H<span className="small">un</span>G
             <span className="small">reed</span>
           </LinkR>
         </div>
         <div className="cartIcon-container2">
-          <button
-            className="cart"
-            onClick={() => {
-              openCart();
-              closeMenu();
-            }}
-          >
+          <button className="cart" onClick={openCart}>
             <MdShoppingBasket />
             {cartItems && cartItems.length > 0 && (
               <div className="cart-itemCount">
@@ -102,7 +108,7 @@ const Header = () => {
         <div className="user-profile">
           <button className="user-profile-btn">
             <img
-              src={user.photoURL}
+              src={userInfo?.image}
               alt="user-profile"
               onError={(e) => setAltUserImg(e)}
               onClick={() => (isMenuOpen ? closeMenu() : openMenu())}
@@ -113,8 +119,10 @@ const Header = () => {
             className={`user-dropdown-menu ${isMenuOpen && "openMenu"}`}
           >
             <p className="user-name">
-              {userName}
-              <span>premium</span>
+              {userInfo?.name?.split(" ").slice(0, 2).join(" ")}
+              {userInfo?.accountType !== "local" && (
+                <span>{userInfo?.accountType}</span>
+              )}
             </p>
             <button className="logout-btn" onClick={logout}>
               Logout <MdOutlineLogout />
