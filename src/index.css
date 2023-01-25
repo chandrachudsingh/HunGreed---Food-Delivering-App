@@ -269,6 +269,7 @@ main {
   text-decoration: none;
   text-shadow: 4px 4px 10px var(--brand-shadow-color);
   user-select: none;
+  user-select: none;
 }
 
 .nav-container .small {
@@ -320,6 +321,12 @@ main {
 /* Shopping Cart */
 .cartIcon-container {
   margin-left: 2rem;
+  order: 3;
+  width: auto;
+}
+
+.cartIcon-container2 {
+  margin-left: auto;
   order: 3;
   width: auto;
 }
@@ -619,6 +626,10 @@ main {
     padding: 0;
     top: 3.6rem;
     right: 1.4rem;
+  }
+
+  .user-dropdown-menu .user-name {
+    margin-top: 4px;
   }
 
   .user-dropdown-menu .user-name {
