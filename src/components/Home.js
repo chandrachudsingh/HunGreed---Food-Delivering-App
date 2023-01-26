@@ -5,6 +5,7 @@ import HeroSection from "./HeroSection";
 import About from "./About";
 import MenuSection from "./MenuSection";
 import ServicesSection from "./ServicesSection";
+import Footer from "./Footer";
 import { useDispatch } from "react-redux";
 import { setCartIsOpen } from "../reducers/userSlice";
 
@@ -37,6 +38,7 @@ const Home = () => {
       <MenuSection />
       <About />
       <ServicesSection />
+      <Footer />
     </>
   );
 };
