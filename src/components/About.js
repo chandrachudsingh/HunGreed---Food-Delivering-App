@@ -79,31 +79,33 @@ const About = () => {
           </div>
         </div>
       </div>
-      <div className="aboutUs-container">
-        <h2>Who are we ?</h2>
-        <div className="dine-img">
-          <img src={Dinning} alt="" />
-        </div>
-        <div className="about-us">
+      <div className="about-main">
+        <div className="aboutUs-container">
           <h2>Who are we ?</h2>
-          <p>
-            Launched in 2010, We serve as a global food chain with an ever
-            evolving taste to satisfy our customers. Also our technology
-            platform connects customers with our restaurant. Customers can enjoy
-            their favourite HunGreed taste in almost over 75+ countries and can
-            either visit our restaurents to dine or use our platform to order
-            food from our restaurants online and enjoy their favourite food
-            anywhere. They can read and write food reviews and view and upload
-            photos, book a table and make payments while dining-out at our
-            restaurants. We provide our customers reliable and efficient last
-            mile delivery service. We supply high quality ingredients and
-            kitchen products to our restaurants to ensure healthy meals to our
-            customers. Also we regularly launch new dishes to provide our
-            customers with more variety to choose from. Our isolated
-            multy-kitchen and staff arrangement provides our vegiterian
-            customers with pure vegeterian dishes untouched with the
-            non-vegeterian dishes that we serve.
-          </p>
+          <div className="dine-img">
+            <img src={Dinning} alt="" />
+          </div>
+          <div className="about-us">
+            <h2>Who are we ?</h2>
+            <p>
+              Launched in 2010, We serve as a global food chain with an ever
+              evolving taste to satisfy our customers. Also our technology
+              platform connects customers with our restaurant. Customers can
+              enjoy their favourite HunGreed taste in almost over 75+ countries
+              and can either visit our restaurents to dine or use our platform
+              to order food from our restaurants online and enjoy their
+              favourite food anywhere. They can read and write food reviews and
+              view and upload photos, book a table and make payments while
+              dining-out at our restaurants. We provide our customers reliable
+              and efficient last mile delivery service. We supply high quality
+              ingredients and kitchen products to our restaurants to ensure
+              healthy meals to our customers. Also we regularly launch new
+              dishes to provide our customers with more variety to choose from.
+              Our isolated multy-kitchen and staff arrangement provides our
+              vegiterian customers with pure vegeterian dishes untouched with
+              the non-vegeterian dishes that we serve.
+            </p>
+          </div>
         </div>
       </div>
       <div className="join-btn-container">
