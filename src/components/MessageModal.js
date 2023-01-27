@@ -24,7 +24,7 @@ const MessageModal = ({ modalDuration, type, message, page }) => {
       {type === "success" ? (
         page === "signin" ? (
           <MdThumbUp className="message-modal-icon" />
-        ) : page === "menu" ? (
+        ) : page === "menu" || page === "premium" ? (
           <MdCheckCircle className="message-modal-icon" />
         ) : (
           <MdOutlineGppGood className="message-modal-icon" />

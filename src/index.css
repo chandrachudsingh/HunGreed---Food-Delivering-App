@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Akronim&family=Karla:wght@400;500;600;700;800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Akronim&family=Karla:wght@400;500;600;700;800&family=Merienda+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
   margin: 0;
@@ -30,11 +30,13 @@
     rgb(8, 202, 8),
     rgb(0, 181, 116)
   );
-  --blue-color-lg: rgb(160, 249, 255);
+  --blue-color-lg2: rgb(160, 249, 255);
+  --blue-color-lg: rgb(0, 222, 238);
   --blue-color: rgb(0, 210, 227);
+  --blue-color-dk: rgb(0, 181, 194);
+  --blue-color-dk2: rgb(0, 0, 180);
+  --blue-color-dk3: rgb(0, 0, 149);
   --blue-color-tr: rgba(200, 249, 255, 0.8);
-  --blue-color-dk: rgb(0, 0, 180);
-  --blue-color-dk2: rgb(0, 0, 149);
   --brandLogo-color: rgb(0, 128, 0);
   --brand-shadow-color: rgb(0, 100, 0);
   --grey-color-lg4: rgba(230, 230, 230, 0.6);
@@ -73,8 +75,9 @@
   --box-shadow4: 0 -2px 4px rgba(190, 190, 190, 0.5);
   --box-shadow5: 1px 1px 10px rgba(0, 0, 0, 0.2);
   --box-shadow6: 1px 1px 6px rgba(60, 60, 60, 0.8);
-  --box-shadow7: 2px 2px 14px rgba(60, 60, 60, 0.3);
+  --box-shadow7: 2px 2px 14px rgba(60, 60, 60, 0.2);
   --box-shadow8: 0 1px 10px rgba(0, 0, 0, 0.14);
+  --box-shadow9: -1px -1px 20px rgba(0, 0, 0, 0.3);
   --text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
   --text-shadow2: 1px 1px 2px rgba(0, 0, 0, 0.4);
   --drop-shadow: 0 25px 25px rgba(0, 0, 0, 0.15);
@@ -1010,7 +1013,7 @@ main {
 }
 
 .user-dropdown-menu .user-name > span {
-  color: var(--blue-color-dk2);
+  color: var(--blue-color-dk3);
   align-self: flex-start;
   font-size: 0.6rem;
   font-style: italic;
@@ -3218,10 +3221,10 @@ main {
 }
 
 .service-card:hover {
-  --service-name-clr: var(--blue-color-dk);
+  --service-name-clr: var(--blue-color-dk2);
 
   background: var(--background-radGradient);
-  border-bottom: 0.5rem solid var(--blue-color-dk2);
+  border-bottom: 0.5rem solid var(--blue-color-dk3);
 }
 
 /* service image */
@@ -3333,7 +3336,7 @@ main {
   }
 
   .service-card:hover {
-    border-bottom: 7px solid var(--blue-color-dk2);
+    border-bottom: 7px solid var(--blue-color-dk3);
   }
 
   .service-img {
@@ -3635,5 +3638,199 @@ main {
 
   .vertical-column {
     text-align: center;
+  }
+}
+
+/* ********************************************** */
+/*---------------Premium Container----------------*/
+/* ********************************************** */
+
+.premium-container {
+  --open-btn-animation: none;
+  --open-btn-right: 134px;
+
+  background-color: rgb(190, 247, 255);
+  border: 3px solid var(--blue-color-dk);
+  border-top-left-radius: var(--border-radius3);
+  border-top-right-radius: var(--border-radius3);
+  box-shadow: var(--box-shadow9);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.5rem;
+  position: fixed;
+  bottom: -165px;
+  right: 0;
+  transition: var(--secondary-transition);
+  height: 205px;
+  width: 300px;
+  z-index: 150;
+}
+
+.open-premium-container {
+  --open-btn-right: 0px !important;
+  bottom: 0 !important;
+}
+
+/* Open premium buttom */
+.open-premium-btn {
+  background-color: var(--grey-color-dk);
+  border: none;
+  border-radius: 100%;
+  cursor: pointer;
+  color: var(--grey-color-lg3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -16px;
+  right: var(--open-btn-right);
+  font-size: 1.5rem;
+  transition: var(--secondary-transition);
+  height: 32px;
+  width: 32px;
+}
+
+/* Premium heading */
+.premium-heading {
+  color: var(--blue-color-dk3);
+  font-family: "Merienda One", cursive;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+/* Premium benefits */
+.premium-benefits {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.premium-img {
+  height: 80px;
+  width: 80px;
+}
+
+.premium-img img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.benefits-list h4 {
+  font-weight: 500;
+}
+
+.benefits-list ul {
+  list-style: none;
+}
+
+.benefits-list li {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  gap: 6px;
+}
+
+/* Join premium button */
+.join-premium-btn {
+  background-color: var(--blue-color);
+  border: none;
+  border-radius: var(--border-radius2);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 6px;
+  transition: var(--primary-transition);
+  width: 150px;
+}
+
+.join-premium-btn:hover {
+  background-color: var(--blue-color-lg);
+  box-shadow: var(--box-shadow5);
+}
+
+.join-premium-btn:active {
+  background-color: var(--blue-color-dk);
+}
+
+/* medium screen devices */
+@media screen and (max-width: 768px) {
+  .premium-container {
+    --open-btn-right: 124px;
+
+    gap: 0.75rem;
+    bottom: -150px;
+    height: 190px;
+    width: 280px;
+  }
+
+  /* Premium heading */
+  .premium-heading {
+    font-size: 1.1rem;
+  }
+
+  /* Premium benefits */
+  .premium-benefits h4 {
+    font-size: 0.9rem;
+  }
+
+  .premium-benefits li {
+    font-size: 0.85rem;
+  }
+
+  .premium-img {
+    height: 75px;
+    width: 75px;
+  }
+
+  /* Join premium button */
+  .join-premium-btn {
+    font-size: 0.85rem;
+    width: 140px;
+  }
+}
+
+/* small screen devices */
+@media screen and (max-width: 480px) {
+  .premium-container {
+    --open-btn-right: 114px;
+
+    gap: 0.5rem;
+    bottom: -135px;
+    padding: 6px;
+    height: 170px;
+    width: 260px;
+  }
+
+  /* Premium heading */
+  .premium-heading {
+    font-size: 1rem;
+  }
+
+  /* Premium benefits */
+  .premium-benefits h4 {
+    font-size: 0.85rem;
+  }
+
+  .premium-benefits li {
+    font-size: 0.8rem;
+  }
+
+  .premium-img {
+    height: 70px;
+    width: 70px;
+  }
+
+  /* Join premium button */
+  .join-premium-btn {
+    font-size: 0.8rem;
+    width: 120px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .premium-container {
+    width: 100%;
   }
 }

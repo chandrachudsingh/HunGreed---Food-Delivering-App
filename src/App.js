@@ -34,8 +34,8 @@ function App() {
     });
   };
 
-  const fetchUserDetails = async (user) => {
-    const data = await fetchUserData(user);
+  const fetchUserDetails = async (uid) => {
+    const data = await fetchUserData(uid);
     dispatch(setUserInfo(data));
   };
 
@@ -50,7 +50,7 @@ function App() {
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/");
-    fetchUserDetails(user);
+    fetchUserDetails(user.email);
   }, [user, loading]);
 
   // disabling body scroll if cart is open

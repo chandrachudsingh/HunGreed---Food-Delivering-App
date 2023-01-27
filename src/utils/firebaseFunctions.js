@@ -83,9 +83,9 @@ export const googleSignIn = async () => {
 };
 
 //  fecth user data
-export const fetchUserData = async (user) => {
+export const fetchUserData = async (uid) => {
   try {
-    const docRef = doc(firestore, "users", user.email);
+    const docRef = doc(firestore, "users", uid);
     const docSnap = await getDoc(docRef);
     return docSnap.data();
   } catch (err) {
@@ -156,4 +156,10 @@ export const getCartItems = async (uid) => {
   const dbRef = collection(firestore, uid + "_cartItems");
   const docsSnap = await getDocs(query(dbRef, orderBy("id", "desc")));
   return docsSnap.docs.map((doc) => doc.data());
+};
+
+// Join Premium button
+export const joinUserPremium = async (uid) => {
+  const docRef = doc(firestore, "users", uid);
+  await updateDoc(docRef, { accountType: "premium" });
 };
