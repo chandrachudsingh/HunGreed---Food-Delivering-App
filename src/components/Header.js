@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   MdShoppingBasket,
-  MdOutlineAdd,
+  MdAdd,
   MdLogin,
+  MdOutlineAccountBalanceWallet,
   MdOutlineLogout,
 } from "react-icons/md";
+import { BiRupee } from "react-icons/bi";
 import { Link, Link as LinkR } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setCartIsOpen,
-  setIsMenuOpen,
   setUserInfo,
+  setIsMenuOpen,
+  setCartIsOpen,
 } from "../reducers/userSlice";
 import { Link as LinkS, animateScroll as scroll } from "react-scroll";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -280,6 +282,17 @@ const Header = () => {
                   <span>{userInfo?.accountType}</span>
                 )}
               </p>
+              {userInfo && (
+                <p className="wallet">
+                  <span>
+                    <MdOutlineAccountBalanceWallet className="yellow" /> Wallet
+                  </span>{" "}
+                  <span>
+                    <BiRupee className="green" />
+                    {userInfo?.wallet}
+                  </span>
+                </p>
+              )}
               <hr />
               {/* admin only */}
               {userInfo && userInfo.accountType === "admin" && (
@@ -287,7 +300,8 @@ const Header = () => {
                   to="/createItem"
                   onClick={() => dispatch(setIsMenuOpen(false))}
                 >
-                  New Item <MdOutlineAdd />
+                  New Item
+                  <MdAdd />
                 </LinkR>
               )}
               <ul className="mobile-view-list">
@@ -341,7 +355,8 @@ const Header = () => {
                 </li>
               </ul>
               <button className="logout-btn" onClick={logout}>
-                Logout <MdOutlineLogout />
+                Logout
+                <MdOutlineLogout />
               </button>
             </div>
           </div>

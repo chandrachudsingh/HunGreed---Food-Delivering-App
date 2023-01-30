@@ -4,14 +4,19 @@ import MenuContainer from "./MenuContainer";
 import { useRef, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import { getCartItems, saveCartItem } from "../utils/firebaseFunctions";
-import { setCartItems, setIsMenuOpen } from "../reducers/userSlice";
+import {
+  getCartItems,
+  getHotItems,
+  saveCartItem,
+} from "../utils/firebaseFunctions";
+import { setCartItems } from "../reducers/userSlice";
 import MessageModal from "./MessageModal";
 import Loading from "./Loading";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseAuth } from "../firebase.config";
+import { useEffect } from "react";
 
-const MenuSection = () => {
+const MenuSection = ({ closeMenu }) => {
   const { foodItems, isMenuOpen } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
   const [user] = useAuthState(firebaseAuth);
@@ -25,6 +30,7 @@ const MenuSection = () => {
     type: "danger",
     message: "",
   });
+  const [hotItems, setHotItems] = useState(false);
   const [addingToCart, setAddingToCart] = useState(false);
   const dishContainerRef = useRef();
   const dishCardRef = useRef();
@@ -114,22 +120,14 @@ const MenuSection = () => {
     );
   };
 
-  const closeMenu = () => {
-    const userDropdown = document.querySelector(".user-dropdown-menu");
-    userDropdown.classList.remove("openMenu");
-
-    const transitionDuration =
-      parseFloat(
-        window
-          .getComputedStyle(userDropdown)
-          .getPropertyValue("transition-duration")
-      ) * 1000;
-    setTimeout(() => {
-      userDropdown.style.display = "none"; //for closing animation
-
-      dispatch(setIsMenuOpen(false));
-    }, transitionDuration);
+  const getMostPopularItems = async () => {
+    const items = await getHotItems();
+    setHotItems(items);
   };
+
+  useEffect(() => {
+    getMostPopularItems();
+  }, []);
 
   return (
     <section
@@ -143,9 +141,7 @@ const MenuSection = () => {
     >
       <section className="hot-container">
         <div className="hot-header container-header">
-          <h2 className="hot-heading container-heading">
-            Our fresh & healthy fruits
-          </h2>
+          <h2 className="hot-heading container-heading">Our BestSellers</h2>
           <div className="slide-btn-container">
             <button
               className="slide-btn"
@@ -160,9 +156,7 @@ const MenuSection = () => {
         </div>
         {foodItems ? (
           <HotContainer
-            foodItems={foodItems.filter(
-              (item) => item.category === "icecreams"
-            )}
+            foodItems={hotItems}
             dishContainerRef={dishContainerRef}
             dishCardRef={dishCardRef}
             getScrollOffset={getScrollOffset}

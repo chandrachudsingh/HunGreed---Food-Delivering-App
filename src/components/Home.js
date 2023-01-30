@@ -7,6 +7,7 @@ import MenuSection from "./MenuSection";
 import ServicesSection from "./ServicesSection";
 import PremiumContainer from "./PremiumContainer";
 import Footer from "./Footer";
+import { setIsMenuOpen } from "../reducers/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setCartIsOpen, setUserInfo } from "../reducers/userSlice";
 import MessageModal from "./MessageModal";
@@ -42,19 +43,37 @@ const Home = () => {
     }, transitionDuration);
   };
 
+  const closeMenu = () => {
+    const userDropdown = document.querySelector(".user-dropdown-menu");
+    userDropdown.classList.remove("openMenu");
+
+    const transitionDuration =
+      parseFloat(
+        window
+          .getComputedStyle(userDropdown)
+          .getPropertyValue("transition-duration")
+      ) * 1000;
+    setTimeout(() => {
+      userDropdown.style.display = "none"; //for closing animation
+
+      dispatch(setIsMenuOpen(false));
+    }, transitionDuration);
+  };
+
   return (
     <>
       <div id="cart-overlay" onClick={closeCart}></div>
       <Header />
       <CartContainer />
-      <HeroSection />
-      <MenuSection />
-      <About />
-      <ServicesSection />
+      <HeroSection closeMenu={closeMenu} />
+      <MenuSection closeMenu={closeMenu} />
+      <About closeMenu={closeMenu} />
+      <ServicesSection closeMenu={closeMenu} />
       {userInfo?.accountType === "local" && !joinSuccess && (
         <PremiumContainer
           setJoinSuccess={setJoinSuccess}
           fetchUserDetails={fetchUserDetails}
+          closeMenu={closeMenu}
         />
       )}
       {joinSuccess && (

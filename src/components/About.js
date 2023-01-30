@@ -6,12 +6,10 @@ import MessageModal from "./MessageModal";
 import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseAuth } from "../firebase.config";
-import { useDispatch, useSelector } from "react-redux";
-import { setIsMenuOpen } from "../reducers/userSlice";
+import { useSelector } from "react-redux";
 
-const About = () => {
+const About = ({ closeMenu }) => {
   const { isMenuOpen } = useSelector((state) => state.userData);
-  const dispatch = useDispatch();
   const [user] = useAuthState(firebaseAuth);
 
   const [isUser, setIsUser] = useState(false);
@@ -31,23 +29,6 @@ const About = () => {
         setIsUser(false);
       }, modalDuration + transitionDuration)
     );
-  };
-
-  const closeMenu = () => {
-    const userDropdown = document.querySelector(".user-dropdown-menu");
-    userDropdown.classList.remove("openMenu");
-
-    const transitionDuration =
-      parseFloat(
-        window
-          .getComputedStyle(userDropdown)
-          .getPropertyValue("transition-duration")
-      ) * 1000;
-    setTimeout(() => {
-      userDropdown.style.display = "none"; //for closing animation
-
-      dispatch(setIsMenuOpen(false));
-    }, transitionDuration);
   };
 
   return (

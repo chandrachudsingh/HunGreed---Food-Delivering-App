@@ -1,5 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { MdShoppingBasket, MdOutlineLogout } from "react-icons/md";
+import {
+  MdShoppingBasket,
+  MdOutlineLogout,
+  MdOutlineAccountBalanceWallet,
+} from "react-icons/md";
 import { Link as LinkR } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +14,7 @@ import {
 } from "../reducers/userSlice";
 import { signOut } from "firebase/auth";
 import { firebaseAuth } from "../firebase.config";
+import { BiRupee } from "react-icons/bi";
 
 const Header = () => {
   const {
@@ -124,6 +129,18 @@ const Header = () => {
                 <span>{userInfo?.accountType}</span>
               )}
             </p>
+            {userInfo && (
+              <p className="wallet">
+                <span>
+                  <MdOutlineAccountBalanceWallet className="yellow" /> Wallet
+                </span>{" "}
+                <span>
+                  <BiRupee className="green" />
+                  {userInfo?.wallet}
+                </span>
+              </p>
+            )}
+            <hr />
             <button className="logout-btn" onClick={logout}>
               Logout <MdOutlineLogout />
             </button>

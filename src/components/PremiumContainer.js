@@ -6,8 +6,10 @@ import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseAuth } from "../firebase.config";
 import { joinUserPremium } from "../utils/firebaseFunctions";
+import { useSelector } from "react-redux";
 
-const PremiumContainer = ({ setJoinSuccess, fetchUserDetails }) => {
+const PremiumContainer = ({ setJoinSuccess, fetchUserDetails, closeMenu }) => {
+  const { isMenuOpen } = useSelector((state) => state.userData);
   const [user] = useAuthState(firebaseAuth);
 
   const premiumContainerRef = useRef();
@@ -31,7 +33,15 @@ const PremiumContainer = ({ setJoinSuccess, fetchUserDetails }) => {
   };
 
   return (
-    <div className="premium-container" ref={premiumContainerRef}>
+    <div
+      className="premium-container"
+      ref={premiumContainerRef}
+      onClick={() => {
+        if (user && isMenuOpen) {
+          closeMenu();
+        }
+      }}
+    >
       <button
         className="open-premium-btn"
         onClick={isOpen ? closeContainer : openContainer}

@@ -7,11 +7,17 @@ import {
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import emptyCart from "../Images/emptyCart.svg";
-import { setCartIsOpen, setCartItems } from "../reducers/userSlice";
+import {
+  setCartIsOpen,
+  setCartItems,
+  setUserInfo,
+} from "../reducers/userSlice";
 import {
   deleteAllCartItem,
+  fetchUserData,
   getCartItems,
   updateCartItem,
+  userCartCheckout,
 } from "../utils/firebaseFunctions";
 
 const CartContainer = () => {
@@ -22,7 +28,8 @@ const CartContainer = () => {
   const dispatch = useDispatch();
 
   const [deliveryCharges, setDeliveryCharges] = useState(50);
-  const [isItemsUpdating, setIsItemsUpdating] = useState(false);
+  const [cashback, setCashback] = useState(0);
+  const [isCartUpdating, setIsCartUpdating] = useState(false);
   const cartContainerRef = useRef();
   const subTotalRef = useRef();
   const totalRef = useRef();
@@ -47,18 +54,18 @@ const CartContainer = () => {
   const fetchCartItems = async (uid) => {
     await getCartItems(uid).then((data) => {
       dispatch(setCartItems(data));
-      setIsItemsUpdating(false);
+      setIsCartUpdating(false);
     });
   };
 
   const updateItemQty = async (uid, item, val) => {
-    setIsItemsUpdating(true);
+    setIsCartUpdating(true);
     await updateCartItem(uid, item, val);
     fetchCartItems(uid);
   };
 
   const deleteCart = async (uid) => {
-    setIsItemsUpdating(true);
+    setIsCartUpdating(true);
     await deleteAllCartItem(uid);
     fetchCartItems(uid);
   };
@@ -66,10 +73,15 @@ const CartContainer = () => {
   const cartTotalPrice = () => {
     let subTotal = 0;
     let total = 0;
+    let cashbackVal = 0;
     cartItems.forEach((item) => {
       subTotal += item.price * item.qty;
+      if (userInfo.accountType !== "local") {
+        cashbackVal += item.price * item.qty * 0.05;
+      }
     });
-    if (subTotal >= 500) {
+    setCashback(Math.floor(cashbackVal));
+    if (subTotal >= 500 || userInfo.accoutType !== "local") {
       setDeliveryCharges(0);
     } else {
       setDeliveryCharges(50);
@@ -77,6 +89,20 @@ const CartContainer = () => {
     total = subTotal + deliveryCharges;
     subTotalRef.current.innerHTML = `<span>₹</span> ${subTotal}`;
     totalRef.current.innerHTML = `<span>₹</span> ${total}`;
+  };
+
+  const fetchUserDetails = async (uid) => {
+    const data = await fetchUserData(uid);
+    dispatch(setUserInfo(data));
+  };
+
+  const cartCheckout = async (uid, cartItems, wallet, cashback) => {
+    setIsCartUpdating(true);
+    await userCartCheckout(uid, cartItems, wallet, cashback);
+    await deleteAllCartItem(uid);
+    fetchCartItems(uid);
+    fetchUserDetails(uid);
+    closeCart();
   };
 
   useEffect(() => {
@@ -105,7 +131,7 @@ const CartContainer = () => {
       </div>
       {cartItems && cartItems.length > 0 ? (
         <div className="cart-main">
-          {isItemsUpdating && (
+          {isCartUpdating && (
             <div id="cart-main-overlay">
               <div className="loaderBg">
                 <div className="loader"></div>
@@ -160,12 +186,27 @@ const CartContainer = () => {
                 {deliveryCharges}
               </p>
             </div>
+            {cashback !== 0 && (
+              <div className="cashback-total">
+                <p>cashback</p>
+                <p>
+                  <span>₹</span> {cashback}
+                </p>
+              </div>
+            )}
             <div className="hr"></div>
             <div className="cart-total">
               <p>total</p>
               <p ref={totalRef}></p>
             </div>
-            <button className="checkout-btn">check out</button>
+            <button
+              className="checkout-btn"
+              onClick={() =>
+                cartCheckout(userInfo.uid, cartItems, userInfo.wallet, cashback)
+              }
+            >
+              check out
+            </button>
           </div>
         </div>
       ) : (

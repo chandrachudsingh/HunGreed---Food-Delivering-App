@@ -4,6 +4,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
   orderBy,
   query,
   setDoc,
@@ -31,11 +32,12 @@ export const registerWithEmailAndPassword = async (name, email, password) => {
       uid: user.email,
       name,
       image: user.photoURL,
+      wallet: 0,
       authProvider: "google",
       accountType: "local",
     };
     const docRef = doc(firestore, "users", user.email);
-    await setDoc(docRef, userData);
+    await setDoc(docRef, userData, { merge: true });
     return { type: "success", message: "Registeration successful" };
   } catch (err) {
     console.error(err);
@@ -66,6 +68,7 @@ export const googleSignIn = async () => {
       uid: user.email,
       name: user.displayName,
       image: user.photoURL,
+      wallet: 0,
       authProvider: "google",
       accountType: "local",
     };
@@ -73,7 +76,7 @@ export const googleSignIn = async () => {
     const docRef = doc(firestore, "users", user.email);
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
-      await setDoc(docRef, userData);
+      await setDoc(docRef, userData, { merge: true });
     }
     return "success";
   } catch (err) {
@@ -126,7 +129,7 @@ export const saveCartItem = async (uid, data) => {
 export const updateCartItem = async (uid, item, val) => {
   const docRef = doc(firestore, uid + "_cartItems", item.id);
   if (item.qty + val !== 0) {
-    await updateDoc(docRef, { qty: item.qty + val });
+    await updateDoc(docRef, { qty: item.qty + val }, { merge: true });
   } else {
     await deleteCartItem(uid, item);
   }
@@ -158,8 +161,41 @@ export const getCartItems = async (uid) => {
   return docsSnap.docs.map((doc) => doc.data());
 };
 
+// Get hot items
+export const getHotItems = async () => {
+  const dbRef = collection(firestore, "foodItems");
+  const docsSnap = await getDocs(
+    query(dbRef, orderBy("qty", "desc"), limit(10))
+  );
+  return docsSnap.docs.map((doc) => doc.data());
+};
+
 // Join Premium button
 export const joinUserPremium = async (uid) => {
   const docRef = doc(firestore, "users", uid);
-  await updateDoc(docRef, { accountType: "premium" });
+  await updateDoc(docRef, { accountType: "premium" }, { merge: true });
+};
+
+// Cart checkout
+export const userCartCheckout = async (uid, cartItems, wallet, cashback) => {
+  // updating user
+  const userRef = doc(firestore, "users", uid);
+  await updateDoc(userRef, { wallet: wallet + cashback }, { merge: true });
+
+  // updating user orders
+  // const orderItems = {};
+  // const orderRef = doc(firestore, uid + "_orders", uid);
+  // await updateDoc(orderRef, data, { merge: true });
+
+  // updating food items
+  for (let i = 0; i < cartItems.length; i++) {
+    const foodRef = doc(firestore, "foodItems", cartItems[i].id);
+    const foodSnap = await getDoc(foodRef);
+    const foodItem = foodSnap.data();
+    await updateDoc(
+      foodRef,
+      { qty: foodItem.qty + cartItems[i].qty },
+      { merge: true }
+    );
+  }
 };

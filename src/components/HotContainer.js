@@ -19,6 +19,7 @@ const HotContainer = ({
         {foodItems && foodItems.length > 0 ? (
           foodItems.map((item) => {
             const { id, title, calories, imageURL, price } = item;
+            const priceFloat = parseFloat(price);
             return (
               <article
                 className="hot-card dish-card"
@@ -50,7 +51,7 @@ const HotContainer = ({
                   <p className="dish-name">{title}</p>
                   <p className="dish-calories">{calories} calories</p>
                   <p className="dish-price">
-                    <span>₹</span> {price}
+                    <span>₹</span> {priceFloat}
                   </p>
                 </div>
               </article>
