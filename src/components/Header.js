@@ -300,8 +300,8 @@ const Header = () => {
                   to="/createItem"
                   onClick={() => dispatch(setIsMenuOpen(false))}
                 >
-                  New Item
                   <MdAdd />
+                  New Item
                 </LinkR>
               )}
               <ul className="mobile-view-list">
@@ -355,8 +355,8 @@ const Header = () => {
                 </li>
               </ul>
               <button className="logout-btn" onClick={logout}>
-                Logout
                 <MdOutlineLogout />
+                Logout
               </button>
             </div>
           </div>

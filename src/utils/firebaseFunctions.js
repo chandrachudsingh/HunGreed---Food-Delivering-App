@@ -182,11 +182,6 @@ export const userCartCheckout = async (uid, cartItems, wallet, cashback) => {
   const userRef = doc(firestore, "users", uid);
   await updateDoc(userRef, { wallet: wallet + cashback }, { merge: true });
 
-  // updating user orders
-  // const orderItems = {};
-  // const orderRef = doc(firestore, uid + "_orders", uid);
-  // await updateDoc(orderRef, data, { merge: true });
-
   // updating food items
   for (let i = 0; i < cartItems.length; i++) {
     const foodRef = doc(firestore, "foodItems", cartItems[i].id);

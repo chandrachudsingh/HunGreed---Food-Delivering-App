@@ -142,7 +142,8 @@ const Header = () => {
             )}
             <hr />
             <button className="logout-btn" onClick={logout}>
-              Logout <MdOutlineLogout />
+              <MdOutlineLogout />
+              Logout
             </button>
           </div>
         </div>
