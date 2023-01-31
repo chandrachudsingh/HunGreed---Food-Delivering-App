@@ -72,12 +72,12 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
     let cashbackVal = 0;
     cartItems.forEach((item) => {
       subTotal += item.price * item.qty;
-      if (userInfo.accountType !== "local") {
+      if (userInfo?.accountType !== "local") {
         cashbackVal += item.price * item.qty * 0.05;
       }
     });
     setCashback(Math.floor(cashbackVal));
-    if (subTotal >= 500 || userInfo.accountType !== "local") {
+    if (subTotal >= 500 || userInfo?.accountType !== "local") {
       setDeliveryCharges(0);
     } else {
       setDeliveryCharges(50);

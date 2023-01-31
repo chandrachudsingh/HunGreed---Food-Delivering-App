@@ -125,7 +125,7 @@ const SignIn = (e) => {
     if (user) {
       navigate("/");
     }
-  }, [user, loading, navigate]);
+  }, [user, loading]);
 
   return (
     <div className="signin-page">

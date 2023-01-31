@@ -26,24 +26,18 @@ function App() {
     await getAllFoodItems().then((data) => {
       dispatch(setFoodItems(data));
     });
-  }, [dispatch]);
+  }, []);
 
-  const fetchCartItems = useCallback(
-    async (uid) => {
-      await getCartItems(uid).then((data) => {
-        dispatch(setCartItems(data));
-      });
-    },
-    [dispatch]
-  );
+  const fetchCartItems = useCallback(async (uid) => {
+    await getCartItems(uid).then((data) => {
+      dispatch(setCartItems(data));
+    });
+  }, []);
 
-  const fetchUserDetails = useCallback(
-    async (uid) => {
-      const data = await fetchUserData(uid);
-      dispatch(setUserInfo(data));
-    },
-    [dispatch]
-  );
+  const fetchUserDetails = useCallback(async (uid) => {
+    const data = await fetchUserData(uid);
+    dispatch(setUserInfo(data));
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -57,7 +51,7 @@ function App() {
     if (loading) return;
     if (!user) return navigate("/");
     fetchUserDetails(user.email);
-  }, [user, loading, navigate, fetchUserDetails]);
+  }, [user, loading, fetchUserDetails]);
 
   // disabling body scroll if cart is open
   useEffect(() => {
