@@ -20,7 +20,7 @@ import {
   userCartCheckout,
 } from "../utils/firebaseFunctions";
 
-const CartContainer = () => {
+const CartContainer = ({ setIsOrderSuccessModal }) => {
   const {
     userInfo,
     cart: { isOpen, cartItems },
@@ -81,19 +81,17 @@ const CartContainer = () => {
       }
     });
     setCashback(Math.floor(cashbackVal));
-    if (subTotal >= 500 || userInfo.accoutType !== "local") {
+    if (subTotal >= 500 || userInfo.accountType !== "local") {
       setDeliveryCharges(0);
     } else {
       setDeliveryCharges(50);
     }
+    console.log(deliveryCharges);
+    console.log(subTotal);
+    console.log(userInfo.accountType);
     total = subTotal + deliveryCharges;
     subTotalRef.current.innerHTML = `<span>₹</span> ${subTotal}`;
     totalRef.current.innerHTML = `<span>₹</span> ${total}`;
-  };
-
-  const fetchUserDetails = async (uid) => {
-    const data = await fetchUserData(uid);
-    dispatch(setUserInfo(data));
   };
 
   const cartCheckout = async (uid, cartItems, wallet, cashback) => {
@@ -101,8 +99,23 @@ const CartContainer = () => {
     await userCartCheckout(uid, cartItems, wallet, cashback);
     await deleteAllCartItem(uid);
     fetchCartItems(uid);
-    fetchUserDetails(uid);
-    closeCart();
+
+    // close cart
+    cartContainerRef.current.classList.remove("open-cart");
+    const transitionDuration =
+      parseFloat(
+        window
+          .getComputedStyle(cartContainerRef.current)
+          .getPropertyValue("transition-duration")
+      ) * 1000;
+    setTimeout(() => {
+      dispatch(setCartIsOpen(false));
+    }, transitionDuration);
+
+    setIsOrderSuccessModal(true);
+    document.getElementById("cart-overlay").style.display = "block";
+    document.getElementById("cart-overlay").style.backgroundColor =
+      "rgba(0, 0, 0, 0.5)";
   };
 
   useEffect(() => {
