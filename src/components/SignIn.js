@@ -19,7 +19,7 @@ const SignIn = (e) => {
   const [password, setPassword] = useState("");
   const [isNewUser, setIsNewUser] = useState(false);
 
-  const [user, loading, error] = useAuthState(firebaseAuth);
+  const [user, loading] = useAuthState(firebaseAuth);
   const navigate = useNavigate();
 
   const modalDuration = 3000;
@@ -125,7 +125,7 @@ const SignIn = (e) => {
     if (user) {
       navigate("/");
     }
-  }, [user, loading]);
+  }, [user, loading, navigate]);
 
   return (
     <div className="signin-page">
