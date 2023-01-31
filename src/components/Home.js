@@ -6,6 +6,7 @@ import About from "./About";
 import MenuSection from "./MenuSection";
 import ServicesSection from "./ServicesSection";
 import PremiumContainer from "./PremiumContainer";
+import OrderSuccessMessageModal from "./OrderSuccessMessageModal";
 import Footer from "./Footer";
 import { setIsMenuOpen } from "../reducers/userSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +20,7 @@ const Home = () => {
 
   const modalDuration = 3000;
   const [joinSuccess, setJoinSuccess] = useState(false);
+  const [isOrderSuccessModal, setIsOrderSuccessModal] = useState(false);
 
   const fetchUserDetails = async (uid) => {
     const data = await fetchUserData(uid);
@@ -64,7 +66,7 @@ const Home = () => {
     <>
       <div id="cart-overlay" onClick={closeCart}></div>
       <Header />
-      <CartContainer />
+      <CartContainer setIsOrderSuccessModal={setIsOrderSuccessModal} />
       <HeroSection closeMenu={closeMenu} />
       <MenuSection closeMenu={closeMenu} />
       <About closeMenu={closeMenu} />
@@ -76,12 +78,21 @@ const Home = () => {
           closeMenu={closeMenu}
         />
       )}
+
+      {/* premium member modal */}
       {joinSuccess && (
         <MessageModal
           modalDuration={modalDuration}
           type={"success"}
           message={"Congratulations!! You are now a premium member."}
           page={"premium"}
+        />
+      )}
+
+      {/* order successful modal */}
+      {isOrderSuccessModal && (
+        <OrderSuccessMessageModal
+          setIsOrderSuccessModal={setIsOrderSuccessModal}
         />
       )}
       <Footer />

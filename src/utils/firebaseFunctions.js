@@ -122,7 +122,8 @@ export const saveCartItem = async (uid, data) => {
     return;
   }
 
-  await setDoc(docRef, data, { merge: true });
+  const date = `${Date.now()}`;
+  await setDoc(docRef, { ...data, date }, { merge: true });
 };
 
 // Updating a cart item
@@ -157,7 +158,7 @@ export const deleteAllCartItem = async (uid) => {
 // Get Cart items
 export const getCartItems = async (uid) => {
   const dbRef = collection(firestore, uid + "_cartItems");
-  const docsSnap = await getDocs(query(dbRef, orderBy("id", "desc")));
+  const docsSnap = await getDocs(query(dbRef, orderBy("date", "desc")));
   return docsSnap.docs.map((doc) => doc.data());
 };
 
@@ -165,7 +166,7 @@ export const getCartItems = async (uid) => {
 export const getHotItems = async () => {
   const dbRef = collection(firestore, "foodItems");
   const docsSnap = await getDocs(
-    query(dbRef, orderBy("qty", "desc"), limit(10))
+    query(dbRef, orderBy("order_qty", "desc"), limit(10))
   );
   return docsSnap.docs.map((doc) => doc.data());
 };
@@ -178,10 +179,6 @@ export const joinUserPremium = async (uid) => {
 
 // Cart checkout
 export const userCartCheckout = async (uid, cartItems, wallet, cashback) => {
-  // updating user
-  const userRef = doc(firestore, "users", uid);
-  await updateDoc(userRef, { wallet: wallet + cashback }, { merge: true });
-
   // updating food items
   for (let i = 0; i < cartItems.length; i++) {
     const foodRef = doc(firestore, "foodItems", cartItems[i].id);
@@ -189,8 +186,12 @@ export const userCartCheckout = async (uid, cartItems, wallet, cashback) => {
     const foodItem = foodSnap.data();
     await updateDoc(
       foodRef,
-      { qty: foodItem.qty + cartItems[i].qty },
+      { order_qty: foodItem.order_qty + cartItems[i].qty },
       { merge: true }
     );
   }
+
+  // updating user
+  const userRef = doc(firestore, "users", uid);
+  await updateDoc(userRef, { wallet: wallet + cashback }, { merge: true });
 };

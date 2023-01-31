@@ -20,7 +20,7 @@ import {
   userCartCheckout,
 } from "../utils/firebaseFunctions";
 
-const CartContainer = () => {
+const CartContainer = ({ setIsOrderSuccessModal }) => {
   const {
     userInfo,
     cart: { isOpen, cartItems },
@@ -91,18 +91,28 @@ const CartContainer = () => {
     totalRef.current.innerHTML = `<span>₹</span> ${total}`;
   };
 
-  const fetchUserDetails = async (uid) => {
-    const data = await fetchUserData(uid);
-    dispatch(setUserInfo(data));
-  };
-
   const cartCheckout = async (uid, cartItems, wallet, cashback) => {
     setIsCartUpdating(true);
     await userCartCheckout(uid, cartItems, wallet, cashback);
     await deleteAllCartItem(uid);
     fetchCartItems(uid);
-    fetchUserDetails(uid);
-    closeCart();
+
+    // close cart
+    cartContainerRef.current.classList.remove("open-cart");
+    const transitionDuration =
+      parseFloat(
+        window
+          .getComputedStyle(cartContainerRef.current)
+          .getPropertyValue("transition-duration")
+      ) * 1000;
+    setTimeout(() => {
+      dispatch(setCartIsOpen(false));
+    }, transitionDuration);
+
+    setIsOrderSuccessModal(true);
+    document.getElementById("cart-overlay").style.display = "block";
+    document.getElementById("cart-overlay").style.backgroundColor =
+      "rgba(0, 0, 0, 0.5)";
   };
 
   useEffect(() => {

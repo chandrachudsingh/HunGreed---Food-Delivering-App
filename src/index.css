@@ -1024,28 +1024,6 @@ main {
   text-transform: capitalize;
 }
 
-.user-dropdown-menu hr {
-  background-color: var(--grey-color-lg3);
-  border: none;
-  border-radius: var(--border-radius);
-  margin-bottom: 4px;
-  height: 1px;
-  width: 100%;
-}
-
-.user-dropdown-menu a,
-.logout-btn {
-  color: var(--grey-color-dk2);
-  cursor: pointer;
-  display: flex;
-  font-size: 0.9rem;
-  align-items: center;
-  gap: 5px;
-  padding: 0 5px;
-  text-decoration: none;
-  height: 30px;
-}
-
 .wallet {
   color: var(--grey-color-dk2);
   display: flex;
@@ -1072,6 +1050,28 @@ main {
 
 .green {
   color: var(--secondary-color-dk);
+}
+
+.user-dropdown-menu hr {
+  background-color: var(--grey-color-lg3);
+  border: none;
+  border-radius: var(--border-radius);
+  margin-bottom: 4px;
+  height: 1px;
+  width: 100%;
+}
+
+.user-dropdown-menu a,
+.logout-btn {
+  color: var(--grey-color-dk2);
+  cursor: pointer;
+  display: flex;
+  font-size: 0.9rem;
+  align-items: center;
+  gap: 5px;
+  padding: 0 5px;
+  text-decoration: none;
+  height: 30px;
 }
 
 .logout-btn {
@@ -1617,6 +1617,87 @@ main {
 @media screen and (max-width: 320px) {
   .cart-items-container {
     padding: 0.5rem 0.5rem 0 0.5rem;
+  }
+}
+
+/*--------- Order Success message modal ----------*/
+.order-success-message-modal {
+  background-color: var(--primary-color);
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 35%;
+  left: auto;
+  height: 220px;
+  width: 220px;
+  z-index: 150;
+}
+
+.order-success-message-modal .success-icon {
+  color: var(--secondary-color-dk);
+  font-size: 4rem;
+}
+
+.order-success-message-modal p {
+  text-transform: capitalize;
+}
+
+.close-modal-btn {
+  background-color: inherit;
+  border: none;
+  border-top: 1px solid var(--grey-color-lg3);
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+  cursor: pointer;
+  color: var(--secondary-color-dk);
+  font-size: 1rem;
+  padding: 0.5rem;
+  position: absolute;
+  bottom: 0;
+  text-transform: capitalize;
+  transition: var(--primary-transition);
+  width: 100%;
+}
+
+.close-modal-btn:hover {
+  background-color: var(--primary-color-dk);
+}
+
+/* medium screen devices */
+@media screen and (max-width: 768px) {
+  .order-success-message-modal {
+    height: 200px;
+    width: 200px;
+  }
+
+  .order-success-message-modal .success-icon {
+    font-size: 3.5rem;
+  }
+
+  .order-success-message-modal p,
+  .close-modal-btn {
+    font-size: 0.9rem;
+  }
+}
+
+/* small screen devices */
+@media screen and (max-width: 480px) {
+  .order-success-message-modal {
+    height: 180px;
+    width: 160px;
+  }
+
+  .order-success-message-modal .success-icon {
+    font-size: 3rem;
+  }
+
+  .order-success-message-modal p,
+  .close-modal-btn {
+    font-size: 0.8rem;
   }
 }
 
