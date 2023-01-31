@@ -8,9 +8,14 @@ import {
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import emptyCart from "../Images/emptyCart.svg";
-import { setCartIsOpen, setCartItems } from "../reducers/userSlice";
+import {
+  setCartIsOpen,
+  setCartItems,
+  setUserInfo,
+} from "../reducers/userSlice";
 import {
   deleteAllCartItem,
+  fetchUserData,
   getCartItems,
   updateCartItem,
   userCartCheckout,
@@ -54,6 +59,11 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
     });
   };
 
+  const fetchUserDetails = useCallback(async (uid) => {
+    const data = await fetchUserData(uid);
+    dispatch(setUserInfo(data));
+  }, []);
+
   const updateItemQty = async (uid, item, val) => {
     setIsCartUpdating(true);
     await updateCartItem(uid, item, val);
@@ -92,6 +102,7 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
     await userCartCheckout(uid, cartItems, wallet, cashback);
     await deleteAllCartItem(uid);
     fetchCartItems(uid);
+    fetchUserDetails(uid);
 
     // close cart
     cartContainerRef.current.classList.remove("open-cart");
