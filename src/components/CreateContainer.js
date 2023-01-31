@@ -55,10 +55,10 @@ const CreateContainer = () => {
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
     uploadTask.on(
       "state_changed",
-      (snapshot) => {
-        const uploadProgress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      },
+      // (snapshot) => {
+      //   // const uploadProgress =
+      //   //   (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      // },
       (error) => {
         console.log(error);
         dispatch(setFields(true));
@@ -271,11 +271,7 @@ const CreateContainer = () => {
                 </label>
               ) : (
                 <div className="newItem-img-display">
-                  <img
-                    src={imageAsset}
-                    alt="item image"
-                    className="item-image"
-                  />
+                  <img src={imageAsset} alt="item" className="item-image" />
                   <button className="image-delete-btn" onClick={deleteImage}>
                     <MdDelete className="delete-icon" />
                   </button>

@@ -18,7 +18,7 @@ const MessageModal = ({ modalDuration, type, message, page }) => {
       modalRef.current &&
         modalRef.current.classList.remove("open-message-modal");
     }, modalDuration);
-  }, []);
+  }, [modalDuration]);
   return (
     <div className={`message-modal ${type}-modal`} ref={modalRef}>
       {type === "success" ? (
