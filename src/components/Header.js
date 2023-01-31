@@ -19,6 +19,7 @@ import { Link as LinkS, animateScroll as scroll } from "react-scroll";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseAuth } from "../firebase.config";
 import { signOut } from "firebase/auth";
+import { useCallback } from "react";
 
 const Header = () => {
   const {
@@ -28,7 +29,7 @@ const Header = () => {
   } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
-  const [user, loading, error] = useAuthState(firebaseAuth);
+  const [user] = useAuthState(firebaseAuth);
 
   const userDropdownRef = useRef();
   const cartItemCountRef = useRef();
@@ -75,13 +76,13 @@ const Header = () => {
     }, 0);
   };
 
-  const totalQty = () => {
+  const totalQty = useCallback(() => {
     let sum = 0;
     cartItems.forEach((item) => {
       sum += item.qty;
     });
     cartItemCountRef.current.innerText = sum;
-  };
+  }, [cartItems]);
 
   function getNavHeight() {
     const nav = document.querySelector(".navbar");
@@ -133,7 +134,7 @@ const Header = () => {
     if (cartItemCountRef.current) {
       totalQty();
     }
-  }, [cartItems]);
+  }, [totalQty]);
 
   useEffect(() => {
     if (user) {

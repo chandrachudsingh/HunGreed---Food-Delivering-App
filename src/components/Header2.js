@@ -15,6 +15,7 @@ import {
 import { signOut } from "firebase/auth";
 import { firebaseAuth } from "../firebase.config";
 import { BiRupee } from "react-icons/bi";
+import { useCallback } from "react";
 
 const Header = () => {
   const {
@@ -66,13 +67,13 @@ const Header = () => {
     }, 0);
   };
 
-  const totalQty = () => {
+  const totalQty = useCallback(() => {
     let sum = 0;
     cartItems.forEach((item) => {
       sum += item.qty;
     });
     cartItemCountRef.current.innerText = sum;
-  };
+  }, [cartItems]);
 
   const setAltUserImg = (e) => {
     e.target.src = Avatar;
@@ -82,7 +83,7 @@ const Header = () => {
     if (cartItemCountRef.current) {
       totalQty();
     }
-  }, [cartItems]);
+  }, [totalQty]);
 
   return (
     <nav

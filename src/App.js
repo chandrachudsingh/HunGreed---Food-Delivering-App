@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import Home from "./components/Home";
 import SignIn from "./components/SignIn";
 import CreatePage from "./components/CreatePage";
@@ -22,36 +22,42 @@ function App() {
   const navigate = useNavigate();
   const [user, loading] = useAuthState(firebaseAuth);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     await getAllFoodItems().then((data) => {
       dispatch(setFoodItems(data));
     });
-  };
+  }, [dispatch]);
 
-  const fetchCartItems = async (uid) => {
-    await getCartItems(uid).then((data) => {
-      dispatch(setCartItems(data));
-    });
-  };
+  const fetchCartItems = useCallback(
+    async (uid) => {
+      await getCartItems(uid).then((data) => {
+        dispatch(setCartItems(data));
+      });
+    },
+    [dispatch]
+  );
 
-  const fetchUserDetails = async (uid) => {
-    const data = await fetchUserData(uid);
-    dispatch(setUserInfo(data));
-  };
+  const fetchUserDetails = useCallback(
+    async (uid) => {
+      const data = await fetchUserData(uid);
+      dispatch(setUserInfo(data));
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   useEffect(() => {
     fetchCartItems(userInfo?.uid);
-  }, [userInfo]);
+  }, [userInfo, fetchCartItems]);
 
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/");
     fetchUserDetails(user.email);
-  }, [user, loading]);
+  }, [user, loading, navigate, fetchUserDetails]);
 
   // disabling body scroll if cart is open
   useEffect(() => {

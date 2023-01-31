@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useCallback } from "react";
 import {
   MdArrowBack,
   MdClearAll,
@@ -7,14 +8,9 @@ import {
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import emptyCart from "../Images/emptyCart.svg";
-import {
-  setCartIsOpen,
-  setCartItems,
-  setUserInfo,
-} from "../reducers/userSlice";
+import { setCartIsOpen, setCartItems } from "../reducers/userSlice";
 import {
   deleteAllCartItem,
-  fetchUserData,
   getCartItems,
   updateCartItem,
   userCartCheckout,
@@ -70,7 +66,7 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
     fetchCartItems(uid);
   };
 
-  const cartTotalPrice = () => {
+  const cartTotalPrice = useCallback(() => {
     let subTotal = 0;
     let total = 0;
     let cashbackVal = 0;
@@ -89,7 +85,7 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
     total = subTotal + deliveryCharges;
     subTotalRef.current.innerHTML = `<span>₹</span> ${subTotal}`;
     totalRef.current.innerHTML = `<span>₹</span> ${total}`;
-  };
+  }, [cartItems, deliveryCharges, userInfo]);
 
   const cartCheckout = async (uid, cartItems, wallet, cashback) => {
     setIsCartUpdating(true);
@@ -119,7 +115,7 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
     if (subTotalRef.current && totalRef.current) {
       cartTotalPrice();
     }
-  }, [cartItems]);
+  }, [cartTotalPrice]);
 
   return (
     <aside
