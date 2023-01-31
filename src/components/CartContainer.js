@@ -86,9 +86,6 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
     } else {
       setDeliveryCharges(50);
     }
-    console.log(deliveryCharges);
-    console.log(subTotal);
-    console.log(userInfo.accountType);
     total = subTotal + deliveryCharges;
     subTotalRef.current.innerHTML = `<span>₹</span> ${subTotal}`;
     totalRef.current.innerHTML = `<span>₹</span> ${total}`;
