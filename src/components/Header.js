@@ -119,9 +119,17 @@ const Header = ({ offset }) => {
   }, [totalQty]);
 
   useEffect(() => {
-    window.addEventListener("resize", changeHeaderAttrs);
+    window.addEventListener("resize", () => {
+      if (loginBtnRef.current) {
+        changeHeaderAttrs();
+      }
+    });
     return () => {
-      window.removeEventListener("resize", changeHeaderAttrs);
+      window.removeEventListener("resize", () => {
+        if (loginBtnRef.current) {
+          changeHeaderAttrs();
+        }
+      });
     };
   }, []);
 
