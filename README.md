@@ -6,9 +6,9 @@ Food delivery application for a food franchise which allows people to order a va
 
 ## Technologies Used
 
-* ReactJS
-* Redux Toolkit
-* Firebase
-* HTML
-* CSS
-* JavaScript
+- ReactJS
+- Redux Toolkit
+- Firebase
+- HTML
+- CSS
+- JavaScript
