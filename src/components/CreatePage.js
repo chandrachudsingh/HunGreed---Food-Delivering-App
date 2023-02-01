@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import CartContainer from "./CartContainer";
 import Header from "./Header2";
 import CreateContainer from "./CreateContainer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCartIsOpen } from "../reducers/userSlice";
 
 const CreatePage = () => {
+  const { cart } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
+
+  const [isOrderSuccessModal, setIsOrderSuccessModal] = useState(false);
 
   const closeCart = () => {
     const cartContainer = document.querySelector(".cart-container");
@@ -27,10 +30,22 @@ const CreatePage = () => {
   };
   return (
     <>
-      <div id="background-overlay" onClick={closeCart}></div>
+      <div
+        id="background-overlay"
+        onClick={() => {
+          if (cart.isOpen) closeCart();
+        }}
+      ></div>
       <Header />
-      <CartContainer />
+      <CartContainer setIsOrderSuccessModal={setIsOrderSuccessModal} />
       <CreateContainer />
+
+      {/* order successful modal */}
+      {isOrderSuccessModal && (
+        <OrderSuccessMessageModal
+          setIsOrderSuccessModal={setIsOrderSuccessModal}
+        />
+      )}
     </>
   );
 };
