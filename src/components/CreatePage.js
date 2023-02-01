@@ -4,6 +4,7 @@ import Header from "./Header2";
 import CreateContainer from "./CreateContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { setCartIsOpen } from "../reducers/userSlice";
+import OrderSuccessMessageModal from "./OrderSuccessMessageModal";
 
 const CreatePage = () => {
   const { cart } = useSelector((state) => state.userData);
