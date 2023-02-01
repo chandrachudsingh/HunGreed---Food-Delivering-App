@@ -11,7 +11,7 @@ const CreatePage = () => {
   const closeCart = () => {
     const cartContainer = document.querySelector(".cart-container");
     cartContainer.classList.remove("open-cart");
-    document.getElementById("cart-overlay").style.backgroundColor =
+    document.getElementById("background-overlay").style.backgroundColor =
       "rgba(0, 0, 0, 0)";
 
     const transitionDuration =
@@ -22,12 +22,12 @@ const CreatePage = () => {
       ) * 1000;
     setTimeout(() => {
       dispatch(setCartIsOpen(false));
-      document.getElementById("cart-overlay").style.display = "none";
+      document.getElementById("background-overlay").style.display = "none";
     }, transitionDuration);
   };
   return (
     <>
-      <div id="cart-overlay" onClick={closeCart}></div>
+      <div id="background-overlay" onClick={closeCart}></div>
       <Header />
       <CartContainer />
       <CreateContainer />

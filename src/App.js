@@ -49,8 +49,9 @@ function App() {
 
   useEffect(() => {
     if (loading) return;
-    if (!user) return navigate("/");
-    fetchUserDetails(user.email);
+    if (user) {
+      fetchUserDetails(user.email);
+    }
   }, [user, loading, fetchUserDetails]);
 
   // disabling body scroll if cart is open
@@ -67,10 +68,10 @@ function App() {
     <main>
       <Routes>
         <Route path="/" element={<Home />} exact />
-        <Route path="/signin" element={<SignIn />} exact />
+        <Route path="/signin" element={<SignIn />} />
         {/* admin only */}
         {user && userInfo?.accountType === "admin" && (
-          <Route path="/createItem" element={<CreatePage />} exact />
+          <Route path="/createItem" element={<CreatePage />} />
         )}
       </Routes>
     </main>

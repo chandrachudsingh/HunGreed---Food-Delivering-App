@@ -37,7 +37,7 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
 
   const closeCart = () => {
     cartContainerRef.current.classList.remove("open-cart");
-    document.getElementById("cart-overlay").style.backgroundColor =
+    document.getElementById("background-overlay").style.backgroundColor =
       "rgba(0, 0, 0, 0)";
 
     const transitionDuration =
@@ -48,7 +48,7 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
       ) * 1000;
     setTimeout(() => {
       dispatch(setCartIsOpen(false));
-      document.getElementById("cart-overlay").style.display = "none";
+      document.getElementById("background-overlay").style.display = "none";
     }, transitionDuration);
   };
 
@@ -117,9 +117,9 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
     }, transitionDuration);
 
     setIsOrderSuccessModal(true);
-    document.getElementById("cart-overlay").style.display = "block";
-    document.getElementById("cart-overlay").style.backgroundColor =
-      "rgba(0, 0, 0, 0.5)";
+    document.getElementById("background-overlay").style.display = "block";
+    document.getElementById("background-overlay").style.backgroundColor =
+      "rgba(0, 0, 0, 0.6)";
   };
 
   useEffect(() => {

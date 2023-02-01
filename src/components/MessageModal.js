@@ -21,20 +21,22 @@ const MessageModal = ({ modalDuration, type, message, page }) => {
   }, [modalDuration]);
   return (
     <div className={`message-modal ${type}-modal`} ref={modalRef}>
-      {type === "success" ? (
-        page === "signin" ? (
-          <MdThumbUp className="message-modal-icon" />
-        ) : page === "menu" || page === "premium" ? (
-          <MdCheckCircle className="message-modal-icon" />
+      <div className="message-modal-icon-container">
+        {type === "success" ? (
+          page === "signin" ? (
+            <MdThumbUp className="message-modal-icon" />
+          ) : page === "menu" || page === "premium" ? (
+            <MdCheckCircle className="message-modal-icon" />
+          ) : (
+            <MdOutlineGppGood className="message-modal-icon" />
+          )
+        ) : page === "signin" ? (
+          <MdErrorOutline className="message-modal-icon" />
         ) : (
-          <MdOutlineGppGood className="message-modal-icon" />
-        )
-      ) : page === "signin" ? (
-        <MdErrorOutline className="message-modal-icon" />
-      ) : (
-        <MdLogin className="message-modal-icon" />
-      )}{" "}
-      {message}
+          <MdLogin className="message-modal-icon" />
+        )}{" "}
+      </div>
+      <p>{message}</p>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import CartContainer from "./CartContainer";
 import HeroSection from "./HeroSection";
@@ -15,12 +15,13 @@ import MessageModal from "./MessageModal";
 import { fetchUserData } from "../utils/firebaseFunctions";
 
 const Home = () => {
-  const { userInfo } = useSelector((state) => state.userData);
+  const { userInfo, cart } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
   const modalDuration = 3000;
   const [joinSuccess, setJoinSuccess] = useState(false);
   const [isOrderSuccessModal, setIsOrderSuccessModal] = useState(false);
+  const [offset, setOffset] = useState(-82);
 
   const fetchUserDetails = async (uid) => {
     const data = await fetchUserData(uid);
@@ -30,7 +31,7 @@ const Home = () => {
   const closeCart = () => {
     const cartContainer = document.querySelector(".cart-container");
     cartContainer.classList.remove("open-cart");
-    document.getElementById("cart-overlay").style.backgroundColor =
+    document.getElementById("background-overlay").style.backgroundColor =
       "rgba(0, 0, 0, 0)";
 
     const transitionDuration =
@@ -41,7 +42,7 @@ const Home = () => {
       ) * 1000;
     setTimeout(() => {
       dispatch(setCartIsOpen(false));
-      document.getElementById("cart-overlay").style.display = "none";
+      document.getElementById("background-overlay").style.display = "none";
     }, transitionDuration);
   };
 
@@ -62,12 +63,28 @@ const Home = () => {
     }, transitionDuration);
   };
 
+  function getNavHeight() {
+    const nav = document.querySelector(".navbar");
+    const navHeight = parseFloat(getComputedStyle(nav).height);
+    setOffset(-navHeight);
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", getNavHeight);
+    getNavHeight();
+  }, []);
+
   return (
     <>
-      <div id="cart-overlay" onClick={closeCart}></div>
-      <Header />
+      <div
+        id="background-overlay"
+        onClick={() => {
+          if (cart.isOpen) closeCart();
+        }}
+      ></div>
+      <Header offset={offset} />
       <CartContainer setIsOrderSuccessModal={setIsOrderSuccessModal} />
-      <HeroSection closeMenu={closeMenu} />
+      <HeroSection closeMenu={closeMenu} offset={offset} />
       <MenuSection closeMenu={closeMenu} />
       <About closeMenu={closeMenu} />
       <ServicesSection closeMenu={closeMenu} />

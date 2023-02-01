@@ -89,7 +89,7 @@
   --loader-border-lg: 3.5px solid rgb(225, 225, 225);
   --loader-top-border: 4.5px solid rgb(0, 200, 0);
   --loader-top-border-lg: 3.5px solid rgb(0, 200, 0);
-  --background-tr: rgba(0, 0, 0, 0.5);
+  --background-tr: rgba(0, 0, 0, 0.6);
   --background-tr2: rgba(0, 0, 0, 0.4);
   --background-tr3: rgba(255, 255, 255, 0.6);
   --background-radGradient: radial-gradient(
@@ -196,15 +196,21 @@ main {
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow6);
   display: flex;
-  gap: 0.5rem;
+  gap: 10px;
   align-items: center;
   justify-content: center;
+  margin: 0 10px;
   padding: 4px 10px;
   position: fixed;
-  top: 90%;
+  bottom: 50px;
   transition: var(--primary-transition);
   opacity: 0;
-  z-index: 10;
+  z-index: 75;
+}
+
+.message-modal-icon-container {
+  display: flex;
+  align-items: center;
 }
 
 .success-modal {
@@ -223,6 +229,18 @@ main {
 
 .message-modal-icon {
   font-size: 1.2rem;
+}
+
+/* medium screen devices */
+@media screen and (max-width: 768px) {
+  .message-modal {
+    font-size: 0.9rem;
+    gap: 8px;
+  }
+
+  .message-modal-icon {
+    font-size: 1.1rem;
+  }
 }
 
 /* small screen devices */
@@ -298,6 +316,7 @@ main {
 /* signin message modal */
 .signin-container > .message-modal {
   top: 80%;
+  bottom: auto;
 }
 
 /* signin overlay */
@@ -511,9 +530,11 @@ main {
   font-size: 1.2rem;
 }
 
-.signin-btn:hover {
-  background: var(--secondary-color);
-  box-shadow: var(--box-shadow);
+@media (hover: hover) {
+  .signin-btn:hover {
+    background: var(--secondary-color);
+    box-shadow: var(--box-shadow);
+  }
 }
 
 .signin-btn:active {
@@ -571,8 +592,10 @@ main {
   font-size: 1.2rem;
 }
 
-.google-signin-btn:hover {
-  box-shadow: var(--box-shadow3);
+@media (hover: hover) {
+  .google-signin-btn:hover {
+    box-shadow: var(--box-shadow3);
+  }
 }
 
 .google-signin-btn:active {
@@ -594,7 +617,12 @@ main {
   transition: var(--primary-transition);
 }
 
-.signup-link span:hover,
+@media (hover: hover) {
+  .signup-link span:hover {
+    text-decoration: underline;
+  }
+}
+
 .signup-link span:active {
   text-decoration: underline;
 }
@@ -851,10 +879,12 @@ main {
   }
 }
 
-.cart:hover,
-.cart:focus {
-  animation: pop 0.15s linear forwards;
-  outline: none;
+@media (hover: hover) {
+  .cart:hover,
+  .cart:focus {
+    animation: pop 0.15s linear forwards;
+    outline: none;
+  }
 }
 
 .cart-itemCount {
@@ -896,9 +926,11 @@ main {
   width: 80px;
 }
 
-.login-btn:hover {
-  background-color: var(--secondary-color);
-  box-shadow: var(--box-shadow);
+@media (hover: hover) {
+  .login-btn:hover {
+    background-color: var(--secondary-color);
+    box-shadow: var(--box-shadow);
+  }
 }
 
 .login-btn:active {
@@ -938,8 +970,10 @@ main {
   width: 1.6rem;
 }
 
-.user-profile-btn:hover {
-  box-shadow: var(--user-profile-box-shadow);
+@media (hover: hover) {
+  .user-profile-btn:hover {
+    box-shadow: var(--user-profile-box-shadow);
+  }
 }
 
 .user-profile-btn:active {
@@ -1079,10 +1113,12 @@ main {
   border: none;
 }
 
-.user-dropdown-menu a:hover,
-.logout-btn:hover {
-  background-color: var(--primary-color-dk);
-  transition: var(--primary-transition);
+@media (hover: hover) {
+  .user-dropdown-menu a:hover,
+  .logout-btn:hover {
+    background-color: var(--primary-color-dk);
+    transition: var(--primary-transition);
+  }
 }
 
 /* mobile specific nav options */
@@ -1171,9 +1207,11 @@ main {
     margin: 5px;
   }
 
-  .logout-btn:hover,
-  .logout-btn:focus {
-    background-color: var(--logoutBtn-mobile-hover-color) !important;
+  @media (hover: hover) {
+    .logout-btn:hover,
+    .logout-btn:focus {
+      background-color: var(--logoutBtn-mobile-hover-color) !important;
+    }
   }
 }
 
@@ -1216,7 +1254,7 @@ main {
 /*-----------------Cart Container-----------------*/
 /* ********************************************** */
 
-#cart-overlay {
+#background-overlay {
   background-color: var(--background-tr);
   display: none;
   position: fixed;
@@ -1271,9 +1309,11 @@ main {
   transition: var(--primary-transition);
 }
 
-.close-cart-btn:hover,
-.close-cart-btn:focus {
-  color: var(--red-color);
+@media (hover: hover) {
+  .close-cart-btn:hover,
+  .close-cart-btn:focus {
+    color: var(--red-color);
+  }
 }
 
 .close-cart-btn:active {
@@ -1513,9 +1553,11 @@ main {
   transition: var(--secondary-transition);
 }
 
-.checkout-btn:hover {
-  background-color: var(--secondary-color);
-  box-shadow: var(--box-shadow);
+@media (hover: hover) {
+  .checkout-btn:hover {
+    background-color: var(--secondary-color);
+    box-shadow: var(--box-shadow);
+  }
 }
 
 .checkout-btn:active {
@@ -1663,8 +1705,10 @@ main {
   width: 100%;
 }
 
-.close-modal-btn:hover {
-  background-color: var(--primary-color-dk);
+@media (hover: hover) {
+  .close-modal-btn:hover {
+    background-color: var(--primary-color-dk);
+  }
 }
 
 /* medium screen devices */
@@ -1787,9 +1831,11 @@ main {
   width: 180px;
 }
 
-.hero-order-btn:hover {
-  background-color: var(--secondary-color);
-  box-shadow: var(--box-shadow);
+@media (hover: hover) {
+  .hero-order-btn:hover {
+    background-color: var(--secondary-color);
+    box-shadow: var(--box-shadow);
+  }
 }
 
 .hero-order-btn:active {
@@ -2257,8 +2303,10 @@ main {
   transition: var(--secondary-transition);
 }
 
-.image-delete-btn:hover {
-  background-color: var(--delete-btn-hover-color);
+@media (hover: hover) {
+  .image-delete-btn:hover {
+    background-color: var(--delete-btn-hover-color);
+  }
 }
 
 .delete-icon {
@@ -2281,9 +2329,11 @@ main {
   transition: var(--primary-transition);
 }
 
-.save-btn:hover {
-  background-color: var(--secondary-color-dk);
-  box-shadow: var(--box-shadow);
+@media (hover: hover) {
+  .save-btn:hover {
+    background-color: var(--secondary-color-dk);
+    box-shadow: var(--box-shadow);
+  }
 }
 
 .save-btn:active {
@@ -2435,9 +2485,11 @@ main {
   transition: var(--primary-transition);
 }
 
-.slide-btn:hover {
-  background-color: var(--secondary-color);
-  color: white;
+@media (hover: hover) {
+  .slide-btn:hover {
+    background-color: var(--secondary-color);
+    color: white;
+  }
 }
 
 /* Loading animation */
@@ -3092,9 +3144,11 @@ main {
   width: 200px;
 }
 
-.join-btn:hover {
-  background-color: var(--secondary-color);
-  box-shadow: var(--box-shadow);
+@media (hover: hover) {
+  .join-btn:hover {
+    background-color: var(--secondary-color);
+    box-shadow: var(--box-shadow);
+  }
 }
 
 .join-btn:active {
@@ -3548,7 +3602,7 @@ main {
   grid-template-columns: repeat(3, 1fr);
   flex-wrap: wrap;
   gap: 2rem 4rem;
-  padding: 0 1.8rem;
+  padding: 0 2rem;
 }
 
 .vertical-column {
@@ -3678,10 +3732,6 @@ main {
     gap: 1rem;
     padding-top: 3rem;
   }
-
-  .footer-vertical {
-    padding: 0 1rem;
-  }
 }
 
 @media screen and (max-width: 640px) {
@@ -3701,7 +3751,6 @@ main {
   .footer-vertical {
     gap: 1.25rem;
     grid-template-columns: 1fr 1fr;
-    padding: 10px;
   }
 
   .vertical-column {
@@ -3798,7 +3847,7 @@ main {
   transition: var(--secondary-transition);
   height: 205px;
   width: 300px;
-  z-index: 150;
+  z-index: 50;
 }
 
 .open-premium-container {
@@ -3823,6 +3872,12 @@ main {
   transition: var(--secondary-transition);
   height: 32px;
   width: 32px;
+}
+
+@media (hover: hover) {
+  .open-premium-btn:hover {
+    background-color: var(--grey-color-dk2);
+  }
 }
 
 /* Premium heading */
@@ -3878,9 +3933,11 @@ main {
   width: 150px;
 }
 
-.join-premium-btn:hover {
-  background-color: var(--blue-color-lg);
-  box-shadow: var(--box-shadow5);
+@media (hover: hover) {
+  .join-premium-btn:hover {
+    background-color: var(--blue-color-lg);
+    box-shadow: var(--box-shadow5);
+  }
 }
 
 .join-premium-btn:active {
@@ -3964,6 +4021,7 @@ main {
 
 @media screen and (max-width: 320px) {
   .premium-container {
+    --open-btn-right: 45%;
     width: 100%;
   }
 }

@@ -60,10 +60,10 @@ const Header = () => {
 
   const openCart = () => {
     dispatch(setCartIsOpen(!isOpen));
-    document.getElementById("cart-overlay").style.display = "block";
+    document.getElementById("background-overlay").style.display = "block";
     setTimeout(() => {
-      document.getElementById("cart-overlay").style.backgroundColor =
-        "rgba(0, 0, 0, 0.5)";
+      document.getElementById("background-overlay").style.backgroundColor =
+        "rgba(0, 0, 0, 0.6)";
     }, 0);
   };
 

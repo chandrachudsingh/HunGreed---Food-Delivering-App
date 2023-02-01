@@ -7,21 +7,9 @@ import { useSelector } from "react-redux";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseAuth } from "../firebase.config";
 
-const HeroSection = ({ closeMenu }) => {
+const HeroSection = ({ closeMenu, offset }) => {
   const { isMenuOpen } = useSelector((state) => state.userData);
   const [user] = useAuthState(firebaseAuth);
-  const [offset, setOffset] = useState(-82);
-
-  function getNavHeight() {
-    const nav = document.querySelector(".navbar");
-    const navHeight = parseFloat(getComputedStyle(nav).height);
-    setOffset(-navHeight);
-  }
-
-  useEffect(() => {
-    window.addEventListener("resize", getNavHeight);
-    getNavHeight();
-  }, []);
 
   return (
     <section

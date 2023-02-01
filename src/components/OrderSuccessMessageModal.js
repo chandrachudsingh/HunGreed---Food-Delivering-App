@@ -4,7 +4,7 @@ import { BsCheckCircleFill } from "react-icons/bs";
 const OrderSuccessMessageModal = ({ setIsOrderSuccessModal }) => {
   const closeModal = () => {
     setIsOrderSuccessModal(false);
-    document.getElementById("cart-overlay").style.display = "none";
+    document.getElementById("background-overlay").style.display = "none";
   };
   return (
     <div className="order-success-message-modal">

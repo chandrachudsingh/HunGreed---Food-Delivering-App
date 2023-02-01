@@ -7,7 +7,7 @@ import {
   MdOutlineLogout,
 } from "react-icons/md";
 import { BiRupee } from "react-icons/bi";
-import { Link, Link as LinkR } from "react-router-dom";
+import { Link as LinkR } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -21,7 +21,7 @@ import { firebaseAuth } from "../firebase.config";
 import { signOut } from "firebase/auth";
 import { useCallback } from "react";
 
-const Header = () => {
+const Header = ({ offset }) => {
   const {
     userInfo,
     isMenuOpen,
@@ -35,7 +35,6 @@ const Header = () => {
   const cartItemCountRef = useRef();
   const cartIconContainerRef = useRef();
   const loginBtnRef = useRef();
-  const [offset, setOffset] = useState(-82);
   const [loginBtnText, setLoginBtnText] = useState(true);
 
   const openMenu = () => {
@@ -69,10 +68,10 @@ const Header = () => {
 
   const openCart = () => {
     dispatch(setCartIsOpen(!isOpen));
-    document.getElementById("cart-overlay").style.display = "block";
+    document.getElementById("background-overlay").style.display = "block";
     setTimeout(() => {
-      document.getElementById("cart-overlay").style.backgroundColor =
-        "rgba(0, 0, 0, 0.5)";
+      document.getElementById("background-overlay").style.backgroundColor =
+        "rgba(0, 0, 0, 0.6)";
     }, 0);
   };
 
@@ -84,29 +83,25 @@ const Header = () => {
     cartItemCountRef.current.innerText = sum;
   }, [cartItems]);
 
-  function getNavHeight() {
-    const nav = document.querySelector(".navbar");
-    const navHeight = parseFloat(getComputedStyle(nav).height);
-    setOffset(-navHeight);
-  }
-
   const changeHeaderAttrs = () => {
     const pageWidth = window.innerWidth;
-    const loginBtnWidth = parseInt(
-      window.getComputedStyle(loginBtnRef.current).width
-    );
-
-    if (pageWidth > 640) {
-      cartIconContainerRef.current.style.width = "fit-content";
-    } else if (pageWidth <= 640) {
-      cartIconContainerRef.current.style.width = `${loginBtnWidth}px`;
-    }
-
     if (pageWidth > 320) {
       setLoginBtnText(true);
     } else {
       setLoginBtnText(false);
     }
+
+    setTimeout(() => {
+      const loginBtnWidth = parseInt(
+        window.getComputedStyle(loginBtnRef.current).width
+      );
+
+      if (pageWidth > 640) {
+        cartIconContainerRef.current.style.width = "fit-content";
+      } else if (pageWidth <= 640) {
+        cartIconContainerRef.current.style.width = `${loginBtnWidth}px`;
+      }
+    }, 0);
   };
 
   const toggleHome = () => {
@@ -118,23 +113,25 @@ const Header = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("resize", () => {
-      getNavHeight();
-      if (loginBtnRef.current) {
-        changeHeaderAttrs();
-      }
-    });
-    getNavHeight();
-    if (loginBtnRef.current) {
-      changeHeaderAttrs();
-    }
-  }, []);
-
-  useEffect(() => {
     if (cartItemCountRef.current) {
       totalQty();
     }
   }, [totalQty]);
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      if (loginBtnRef.current) {
+        changeHeaderAttrs();
+      }
+    });
+  }, []);
+
+  // at logout when screen is small
+  useEffect(() => {
+    if (loginBtnRef.current) {
+      changeHeaderAttrs();
+    }
+  }, [loginBtnRef.current]);
 
   useEffect(() => {
     if (user) {
@@ -362,9 +359,13 @@ const Header = () => {
             </div>
           </div>
         ) : (
-          <Link to="/signin" className="login-btn" ref={loginBtnRef}>
+          <button
+            className="login-btn"
+            ref={loginBtnRef}
+            onClick={() => (window.location.href = "/signin")}
+          >
             {loginBtnText ? "Sign In" : <MdLogin />}
-          </Link>
+          </button>
         )}
       </div>
     </nav>
