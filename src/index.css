@@ -3602,7 +3602,7 @@ main {
   grid-template-columns: repeat(3, 1fr);
   flex-wrap: wrap;
   gap: 2rem 4rem;
-  padding: 0 2rem;
+  padding: 0 1.8rem;
 }
 
 .vertical-column {
@@ -3731,6 +3731,10 @@ main {
   .footer {
     gap: 1rem;
     padding-top: 3rem;
+  }
+
+  .footer-vertical {
+    padding: 0 1rem;
   }
 }
 
