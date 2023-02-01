@@ -7,10 +7,20 @@ import {
   FaYoutube,
   FaLinkedin,
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
-const Footer = () => {
+const Footer = ({ closeMenu }) => {
+  const { isMenuOpen } = useSelector((state) => state.userData);
+
   return (
-    <footer className="footer">
+    <footer
+      className="footer"
+      onClick={() => {
+        if (isMenuOpen) {
+          closeMenu();
+        }
+      }}
+    >
       <div className="footer-vertical">
         <div className="about-links vertical-column">
           <h4>About</h4>

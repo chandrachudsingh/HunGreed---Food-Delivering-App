@@ -1017,7 +1017,7 @@ main {
 .user-dropdown-menu {
   background-color: var(--primary-color-lg);
   border-radius: 4px;
-  box-shadow: var(--box-shadow);
+  box-shadow: var(--box-shadow5);
   display: none;
   flex-direction: column;
   position: absolute;

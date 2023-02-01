@@ -113,7 +113,7 @@ const Home = () => {
           setIsOrderSuccessModal={setIsOrderSuccessModal}
         />
       )}
-      <Footer />
+      <Footer closeMenu={closeMenu} />
     </>
   );
 };
