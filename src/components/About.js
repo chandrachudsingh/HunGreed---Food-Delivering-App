@@ -95,7 +95,7 @@ const About = ({ closeMenu }) => {
             Join Us <MdChevronRight className="right-icon" />
           </button>
         ) : (
-          <Link to="/signin" className="join-btn">
+          <Link to="/sign-in" className="join-btn">
             Join Us <MdChevronRight className="right-icon" />
           </Link>
         )}

@@ -72,6 +72,7 @@ const Home = () => {
   useEffect(() => {
     window.addEventListener("resize", getNavHeight);
     getNavHeight();
+    return () => window.removeEventListener("resize", getNavHeight);
   }, []);
 
   return (

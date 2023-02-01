@@ -1,8 +1,8 @@
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import Home from "./components/Home";
 import SignIn from "./components/SignIn";
 import CreatePage from "./components/CreatePage";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserData,
@@ -19,7 +19,6 @@ function App() {
     cart: { isOpen },
   } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [user, loading] = useAuthState(firebaseAuth);
 
   const fetchData = useCallback(async () => {
@@ -67,11 +66,11 @@ function App() {
   return (
     <main>
       <Routes>
-        <Route path="/" element={<Home />} exact />
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/" element={<Home />} exact="true" />
+        <Route path="/sign-in" element={<SignIn />} exact="true" />
         {/* admin only */}
         {user && userInfo?.accountType === "admin" && (
-          <Route path="/createItem" element={<CreatePage />} />
+          <Route path="/create-item" element={<CreatePage />} exact="true" />
         )}
       </Routes>
     </main>

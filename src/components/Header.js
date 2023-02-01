@@ -119,11 +119,10 @@ const Header = ({ offset }) => {
   }, [totalQty]);
 
   useEffect(() => {
-    window.addEventListener("resize", () => {
-      if (loginBtnRef.current) {
-        changeHeaderAttrs();
-      }
-    });
+    window.addEventListener("resize", changeHeaderAttrs);
+    return () => {
+      window.removeEventListener("resize", changeHeaderAttrs);
+    };
   }, []);
 
   // at logout when screen is small
@@ -275,7 +274,10 @@ const Header = ({ offset }) => {
               className={`user-dropdown-menu ${isMenuOpen && "openMenu"}`}
             >
               <p className="user-name">
-                {userInfo?.name?.split(" ").slice(0, 2).join(" ")}
+                {userInfo?.name
+                  ?.split(" ")
+                  .slice(0, 2)
+                  .join(" ")}
                 {userInfo?.accountType !== "local" && (
                   <span>{userInfo?.accountType}</span>
                 )}
@@ -295,7 +297,7 @@ const Header = ({ offset }) => {
               {/* admin only */}
               {userInfo && userInfo.accountType === "admin" && (
                 <LinkR
-                  to="/createItem"
+                  to="/create-item"
                   onClick={() => dispatch(setIsMenuOpen(false))}
                 >
                   <MdAdd />
@@ -359,13 +361,9 @@ const Header = ({ offset }) => {
             </div>
           </div>
         ) : (
-          <button
-            className="login-btn"
-            ref={loginBtnRef}
-            onClick={() => (window.location.href = "/signin")}
-          >
+          <LinkR to="/sign-in" className="login-btn" ref={loginBtnRef}>
             {loginBtnText ? "Sign In" : <MdLogin />}
-          </button>
+          </LinkR>
         )}
       </div>
     </nav>

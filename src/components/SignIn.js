@@ -60,7 +60,6 @@ const SignIn = (e) => {
       status = await registerWithEmailAndPassword(name, email, password);
     } else {
       if (!email || !password) {
-        console.log("hello");
         setTimeout(() => {
           setModal({
             isModal: true,
