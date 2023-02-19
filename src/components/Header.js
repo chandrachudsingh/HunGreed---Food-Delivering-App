@@ -168,7 +168,9 @@ const Header = ({ offset }) => {
               }
             }}
           >
-            H<span className="small">un</span>G
+            <span>H</span>
+            <span className="small">un</span>
+            <span>G</span>
             <span className="small">reed</span>
           </LinkR>
         </div>
@@ -282,10 +284,7 @@ const Header = ({ offset }) => {
               className={`user-dropdown-menu ${isMenuOpen && "openMenu"}`}
             >
               <p className="user-name">
-                {userInfo?.name
-                  ?.split(" ")
-                  .slice(0, 2)
-                  .join(" ")}
+                {userInfo?.name?.split(" ").slice(0, 2).join(" ")}
                 {userInfo?.accountType !== "local" && (
                   <span>{userInfo?.accountType}</span>
                 )}

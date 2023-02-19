@@ -169,7 +169,9 @@ const SignIn = (e) => {
           <BsShieldLock className="shield-icon" />
           <div className="brand-logo">
             <div className="logo-text">
-              H<span className="small">un</span>G
+              <span>H</span>
+              <span className="small">un</span>
+              <span>G</span>
               <span className="small">reed</span>
             </div>
           </div>

@@ -97,7 +97,9 @@ const Header = () => {
       <div className="nav-container">
         <div className="brand-logo">
           <LinkR to="/" className="logo-text">
-            H<span className="small">un</span>G
+            <span>H</span>
+            <span className="small">un</span>
+            <span>G</span>
             <span className="small">reed</span>
           </LinkR>
         </div>

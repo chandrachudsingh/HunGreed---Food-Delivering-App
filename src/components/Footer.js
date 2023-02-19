@@ -91,7 +91,10 @@ const Footer = ({ closeMenu }) => {
       </div>
       <div className="brand-logo">
         <div className="logo-text">
-          H<span className="small">un</span>G<span className="small">reed</span>
+          <span>H</span>
+          <span className="small">un</span>
+          <span>G</span>
+          <span className="small">reed</span>
         </div>
       </div>
       <div className="footer-social-media">

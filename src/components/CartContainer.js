@@ -138,13 +138,15 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
           <MdArrowBack />
         </button>
         <h3 className="cart-heading">cart</h3>
-        <button
-          className="clear-cart-btn"
-          onClick={() => deleteCart(userInfo?.uid)}
-        >
-          <p>clear</p>
-          <MdClearAll className="clear-icon" />
-        </button>
+        {cartItems && cartItems.length > 0 && (
+          <button
+            className="clear-cart-btn"
+            onClick={() => deleteCart(userInfo?.uid)}
+          >
+            <p>clear</p>
+            <MdClearAll className="clear-icon" />
+          </button>
+        )}
       </div>
       {cartItems && cartItems.length > 0 ? (
         <div className="cart-main">
