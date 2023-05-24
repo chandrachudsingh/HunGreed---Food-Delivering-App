@@ -20,6 +20,7 @@ import {
   updateCartItem,
   userCartCheckout,
 } from "../utils/firebaseFunctions";
+import StripeCheckout from "react-stripe-checkout";
 
 const CartContainer = ({ setIsOrderSuccessModal }) => {
   const {
@@ -28,6 +29,7 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
   } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
+  const [cartTotal, setCartTotal] = useState(0);
   const [deliveryCharges, setDeliveryCharges] = useState(50);
   const [cashback, setCashback] = useState(0);
   const [isCartUpdating, setIsCartUpdating] = useState(false);
@@ -78,7 +80,6 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
 
   const cartTotalPrice = useCallback(() => {
     let subTotal = 0;
-    let total = 0;
     let cashbackVal = 0;
     cartItems.forEach((item) => {
       subTotal += item.price * item.qty;
@@ -92,9 +93,9 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
     } else {
       setDeliveryCharges(50);
     }
-    total = subTotal + deliveryCharges;
+    setCartTotal(subTotal + deliveryCharges);
     subTotalRef.current.innerHTML = `<span>₹</span> ${subTotal}`;
-    totalRef.current.innerHTML = `<span>₹</span> ${total}`;
+    totalRef.current.innerHTML = `<span>₹</span> ${subTotal + deliveryCharges}`;
   }, [cartItems, deliveryCharges, userInfo]);
 
   const cartCheckout = async (uid, cartItems, wallet, cashback) => {
@@ -218,14 +219,18 @@ const CartContainer = ({ setIsOrderSuccessModal }) => {
               <p>total</p>
               <p ref={totalRef}></p>
             </div>
-            <button
-              className="checkout-btn"
-              onClick={() =>
+            <StripeCheckout
+              name="HunGreed"
+              description="Cart Checkout"
+              amount={cartTotal * 100}
+              currency="INR"
+              token={() =>
                 cartCheckout(userInfo.uid, cartItems, userInfo.wallet, cashback)
               }
+              stripeKey="pk_test_51NBFfISDyDXJEzxbZWiridxLT1BHqQYgnvTpbFK50ykZHmHG1yZMe4cfYKEOKPwb1uNfLC09ZpZEsW6LQ8Q40FoF00HxkVOEpO"
             >
-              check out
-            </button>
+              <button className="checkout-btn">check out</button>
+            </StripeCheckout>
           </div>
         </div>
       ) : (

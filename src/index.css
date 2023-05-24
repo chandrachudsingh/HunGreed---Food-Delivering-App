@@ -1550,6 +1550,7 @@ main {
   padding: 0.5rem;
   text-transform: capitalize;
   transition: var(--secondary-transition);
+  width: 100%;
 }
 
 @media (hover: hover) {

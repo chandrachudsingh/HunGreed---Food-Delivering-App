@@ -7,11 +7,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseAuth } from "../firebase.config";
 import { joinUserPremium } from "../utils/firebaseFunctions";
 import { useSelector } from "react-redux";
+import StripeCheckout from "react-stripe-checkout";
 
 const PremiumContainer = ({ setJoinSuccess, fetchUserDetails, closeMenu }) => {
   const { isMenuOpen } = useSelector((state) => state.userData);
   const [user] = useAuthState(firebaseAuth);
 
+  const premiumFees = 399;
   const premiumContainerRef = useRef();
   const openPremiumBtnRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
@@ -69,12 +71,16 @@ const PremiumContainer = ({ setJoinSuccess, fetchUserDetails, closeMenu }) => {
           </ul>
         </div>
       </div>
-      <button
-        className="join-premium-btn"
-        onClick={() => joinPremium(user.email)}
+      <StripeCheckout
+        name="HunGreed"
+        description="Premium Membership"
+        amount={premiumFees * 100}
+        currency="INR"
+        token={() => joinPremium(user.email)}
+        stripeKey="pk_test_51NBFfISDyDXJEzxbZWiridxLT1BHqQYgnvTpbFK50ykZHmHG1yZMe4cfYKEOKPwb1uNfLC09ZpZEsW6LQ8Q40FoF00HxkVOEpO"
       >
-        Join
-      </button>
+        <button className="join-premium-btn">Join</button>
+      </StripeCheckout>
     </div>
   );
 };
