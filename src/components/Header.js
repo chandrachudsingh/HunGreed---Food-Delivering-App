@@ -5,6 +5,7 @@ import {
   MdLogin,
   MdOutlineAccountBalanceWallet,
   MdOutlineLogout,
+  MdOutlineDashboard,
 } from "react-icons/md";
 import { BiRupee } from "react-icons/bi";
 import { Link as LinkR } from "react-router-dom";
@@ -303,13 +304,22 @@ const Header = ({ offset }) => {
               <hr />
               {/* admin only */}
               {userInfo && userInfo.accountType === "admin" && (
-                <LinkR
-                  to="/create-item"
-                  onClick={() => dispatch(setIsMenuOpen(false))}
-                >
-                  <MdAdd />
-                  New Item
-                </LinkR>
+                <>
+                  <LinkR
+                    to="/admin/dashboard"
+                    onClick={() => dispatch(setIsMenuOpen(false))}
+                  >
+                    <MdOutlineDashboard />
+                    Dashboard
+                  </LinkR>
+                  <LinkR
+                    to="/admin/create-item"
+                    onClick={() => dispatch(setIsMenuOpen(false))}
+                  >
+                    <MdAdd />
+                    New Item
+                  </LinkR>
+                </>
               )}
               <ul className="mobile-view-list">
                 <li>

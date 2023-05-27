@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import Home from "./components/Home";
 import SignIn from "./components/SignIn";
-import CreatePage from "./components/CreatePage";
+import AdminPage from "./components/AdminPage";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,6 +12,7 @@ import {
 import { setCartItems, setFoodItems, setUserInfo } from "./reducers/userSlice";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseAuth } from "./firebase.config";
+import ErrorPage from "./components/ErrorPage";
 
 function App() {
   const {
@@ -67,11 +68,19 @@ function App() {
     <main>
       <Routes>
         <Route path="/" element={<Home />} exact="true" />
-        <Route path="/sign-in" element={<SignIn />} exact="true" />
+        <Route path="/sign-in" element={<SignIn />} />
         {/* admin only */}
-        {user && userInfo?.accountType === "admin" && (
-          <Route path="/create-item" element={<CreatePage />} exact="true" />
-        )}
+        <Route
+          path="/admin/*"
+          element={
+            user && userInfo?.accountType === "admin" ? (
+              <AdminPage />
+            ) : (
+              <ErrorPage />
+            )
+          }
+        />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </main>
   );

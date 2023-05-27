@@ -85,12 +85,24 @@ export const googleSignIn = async () => {
   }
 };
 
-//  fecth user data
+//  fetch user data
 export const fetchUserData = async (uid) => {
   try {
     const docRef = doc(firestore, "users", uid);
     const docSnap = await getDoc(docRef);
     return docSnap.data();
+  } catch (err) {
+    console.error(err);
+  }
+  return null;
+};
+
+//  check user accountType
+export const checkUserPrivilege = async (uid) => {
+  try {
+    const docRef = doc(firestore, "users", uid);
+    const docSnap = await getDoc(docRef);
+    return docSnap.data().accountType;
   } catch (err) {
     console.error(err);
   }

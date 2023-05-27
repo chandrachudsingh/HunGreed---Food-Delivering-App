@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Dashboard from "./Dashboard";
 import CartContainer from "./CartContainer";
 import Header from "./Header2";
 import CreateContainer from "./CreateContainer";
@@ -6,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCartIsOpen } from "../reducers/userSlice";
 import OrderSuccessMessageModal from "./OrderSuccessMessageModal";
 
-const CreatePage = () => {
+const AdminPage = () => {
   const { cart } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
@@ -39,7 +41,13 @@ const CreatePage = () => {
       ></div>
       <Header />
       <CartContainer setIsOrderSuccessModal={setIsOrderSuccessModal} />
-      <CreateContainer />
+
+      <Routes>
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="create-item" element={<CreateContainer />} />
+        <Route path="*" element={<Navigate to="dashboard" />} />
+      </Routes>
 
       {/* order successful modal */}
       {isOrderSuccessModal && (
@@ -51,4 +59,4 @@ const CreatePage = () => {
   );
 };
 
-export default CreatePage;
+export default AdminPage;

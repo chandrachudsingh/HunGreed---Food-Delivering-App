@@ -3,6 +3,8 @@ import {
   MdShoppingBasket,
   MdOutlineLogout,
   MdOutlineAccountBalanceWallet,
+  MdOutlineDashboard,
+  MdAdd,
 } from "react-icons/md";
 import { Link as LinkR } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
@@ -53,9 +55,9 @@ const Header = () => {
 
   const logout = () => {
     dispatch(setIsMenuOpen(false));
+    window.location.href = "/";
     dispatch(setUserInfo(null));
     signOut(firebaseAuth);
-    window.location.href = "/";
   };
 
   const openCart = () => {
@@ -144,6 +146,20 @@ const Header = () => {
               </p>
             )}
             <hr />
+            <LinkR
+              to="/admin/dashboard"
+              onClick={() => dispatch(setIsMenuOpen(false))}
+            >
+              <MdOutlineDashboard />
+              Dashboard
+            </LinkR>
+            <LinkR
+              to="/admin/create-item"
+              onClick={() => dispatch(setIsMenuOpen(false))}
+            >
+              <MdAdd />
+              New Item
+            </LinkR>
             <button className="logout-btn" onClick={logout}>
               <MdOutlineLogout />
               Logout

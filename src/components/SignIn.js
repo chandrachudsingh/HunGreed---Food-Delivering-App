@@ -4,6 +4,7 @@ import { BsShieldLock } from "react-icons/bs";
 import { FaShapes } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import {
+  checkUserPrivilege,
   googleSignIn,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
@@ -117,12 +118,21 @@ const SignIn = (e) => {
     }
   };
 
+  const checkUserAccountType = async (id) => {
+    const accountType = await checkUserPrivilege(id);
+    if (accountType !== "admin") {
+      navigate("/");
+    } else {
+      navigate("/admin/dashboard");
+    }
+  };
+
   useEffect(() => {
     if (loading) {
       return;
     }
     if (user) {
-      navigate("/");
+      checkUserAccountType(user.email);
     }
   }, [user, loading]);
 
