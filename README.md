@@ -5,8 +5,8 @@ Food delivery application for a food franchise which allows people to order a va
 ## Deployment Link - [hungreed](https://hungreed.netlify.app/)
 
 #### Username & Password
-Admin - prahlad@gmail.com; prahlad@123
-User - demo@gmail.com; demo@123
+* Admin - prahlad@gmail.com; prahlad@123
+* User - demo@gmail.com; demo@123
 
 ## Technologies Used
 
