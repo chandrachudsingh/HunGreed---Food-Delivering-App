@@ -118,7 +118,7 @@ const Header = () => {
         <div className="user-profile">
           <button className="user-profile-btn">
             <img
-              src={userInfo?.image}
+              src={userInfo.image || Avatar}
               alt="user-profile"
               onError={(e) => setAltUserImg(e)}
               onClick={() => (isMenuOpen ? closeMenu() : openMenu())}
