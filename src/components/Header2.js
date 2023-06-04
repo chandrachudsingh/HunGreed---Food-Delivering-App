@@ -5,7 +5,9 @@ import {
   MdOutlineAccountBalanceWallet,
   MdOutlineDashboard,
   MdAdd,
+  MdOutlineHome,
 } from "react-icons/md";
+import { BiRupee } from "react-icons/bi";
 import { Link as LinkR } from "react-router-dom";
 import Avatar from "../Images/avatar.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +18,6 @@ import {
 } from "../reducers/userSlice";
 import { signOut } from "firebase/auth";
 import { firebaseAuth } from "../firebase.config";
-import { BiRupee } from "react-icons/bi";
 import { useCallback } from "react";
 
 const Header = () => {
@@ -37,20 +38,29 @@ const Header = () => {
     }, 0);
   };
 
-  const closeMenu = () => {
-    userDropdownRef.current.classList.remove("openMenu");
+  const closeMenu = (e) => {
+    if (!(e && e.target.classList.contains("ignoreCloseMenu"))) {
+      if (
+        e &&
+        e.target.parentNode.tagName === "svg" &&
+        e.target.parentNode.classList.contains("ignoreCloseMenu")
+      ) {
+        return;
+      }
 
-    const transitionDuration =
-      parseFloat(
-        window
-          .getComputedStyle(userDropdownRef.current)
-          .getPropertyValue("transition-duration")
-      ) * 1000;
-    setTimeout(() => {
-      userDropdownRef.current.style.display = "none"; //for closing animation
+      userDropdownRef.current.classList.remove("openMenu");
+      const transitionDuration =
+        parseFloat(
+          window
+            .getComputedStyle(userDropdownRef.current)
+            .getPropertyValue("transition-duration")
+        ) * 1000;
+      setTimeout(() => {
+        userDropdownRef.current.style.display = "none"; //for closing animation
 
-      dispatch(setIsMenuOpen(false));
-    }, transitionDuration);
+        dispatch(setIsMenuOpen(false));
+      }, transitionDuration);
+    }
   };
 
   const logout = () => {
@@ -90,19 +100,23 @@ const Header = () => {
   return (
     <nav
       className="navbar"
-      onClick={() => {
+      onClick={(e) => {
         if (isMenuOpen) {
-          closeMenu();
+          closeMenu(e);
         }
       }}
     >
       <div className="nav-container">
         <div className="brand-logo">
-          <LinkR to="/" className="logo-text">
-            <span>H</span>
-            <span className="small">un</span>
-            <span>G</span>
-            <span className="small">reed</span>
+          <LinkR
+            to="/"
+            className="logo-text ignoreCloseMenu"
+            onClick={() => dispatch(setIsMenuOpen(false))}
+          >
+            <span className="ignoreCloseMenu">H</span>
+            <span className="small ignoreCloseMenu">un</span>
+            <span className="ignoreCloseMenu">G</span>
+            <span className="small ignoreCloseMenu">reed</span>
           </LinkR>
         </div>
         <div className="cartIcon-container2">
@@ -126,37 +140,42 @@ const Header = () => {
           </button>
           <div
             ref={userDropdownRef}
-            className={`user-dropdown-menu ${isMenuOpen && "openMenu"}`}
+            className={`user-dropdown-menu ignoreCloseMenu ${
+              isMenuOpen && "openMenu"
+            }`}
           >
-            <p className="user-name">
+            <p className="user-name ignoreCloseMenu">
               {userInfo?.name?.split(" ").slice(0, 2).join(" ")}
               {userInfo?.accountType !== "local" && (
-                <span>{userInfo?.accountType}</span>
+                <span className="ignoreCloseMenu">{userInfo?.accountType}</span>
               )}
             </p>
             {userInfo && (
-              <p className="wallet">
-                <span>
-                  <MdOutlineAccountBalanceWallet className="yellow" /> Wallet
+              <p className="wallet ignoreCloseMenu">
+                <span className="ignoreCloseMenu">
+                  <MdOutlineAccountBalanceWallet className="yellow ignoreCloseMenu" />{" "}
+                  Wallet
                 </span>{" "}
-                <span>
-                  <BiRupee className="green" />
+                <span className="ignoreCloseMenu">
+                  <BiRupee className="green ignoreCloseMenu" />
                   {userInfo?.wallet}
                 </span>
               </p>
             )}
             <hr />
             <LinkR
-              to="/admin/dashboard"
+              to="/"
+              className="ignoreCloseMenu"
               onClick={() => dispatch(setIsMenuOpen(false))}
             >
+              <MdOutlineHome />
+              Home
+            </LinkR>
+            <LinkR to="/admin/dashboard">
               <MdOutlineDashboard />
               Dashboard
             </LinkR>
-            <LinkR
-              to="/admin/create-item"
-              onClick={() => dispatch(setIsMenuOpen(false))}
-            >
+            <LinkR to="/admin/create-item">
               <MdAdd />
               New Item
             </LinkR>

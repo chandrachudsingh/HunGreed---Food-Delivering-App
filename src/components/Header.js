@@ -45,20 +45,29 @@ const Header = ({ offset }) => {
     }, 0);
   };
 
-  const closeMenu = () => {
-    userDropdownRef.current.classList.remove("openMenu");
+  const closeMenu = (e) => {
+    if (!(e && e.target.classList.contains("ignoreCloseMenu"))) {
+      if (
+        e &&
+        e.target.parentNode.tagName === "svg" &&
+        e.target.parentNode.classList.contains("ignoreCloseMenu")
+      ) {
+        return;
+      }
 
-    const transitionDuration =
-      parseFloat(
-        window
-          .getComputedStyle(userDropdownRef.current)
-          .getPropertyValue("transition-duration")
-      ) * 1000;
-    setTimeout(() => {
-      userDropdownRef.current.style.display = "none"; //for closing animation
+      userDropdownRef.current.classList.remove("openMenu");
+      const transitionDuration =
+        parseFloat(
+          window
+            .getComputedStyle(userDropdownRef.current)
+            .getPropertyValue("transition-duration")
+        ) * 1000;
+      setTimeout(() => {
+        userDropdownRef.current.style.display = "none"; //for closing animation
 
-      dispatch(setIsMenuOpen(false));
-    }, transitionDuration);
+        dispatch(setIsMenuOpen(false));
+      }, transitionDuration);
+    }
   };
 
   const logout = () => {
@@ -151,24 +160,15 @@ const Header = ({ offset }) => {
   return (
     <nav
       className="navbar"
-      // onClick={() => {
-      //   if (user && isMenuOpen) {
-      //     closeMenu();
-      //   }
-      // }}
+      onClick={(e) => {
+        if (user && isMenuOpen) {
+          closeMenu(e);
+        }
+      }}
     >
       <div className="nav-container">
         <div className="brand-logo">
-          <LinkR
-            to="/"
-            className="logo-text"
-            onClick={() => {
-              toggleHome();
-              if (user && isMenuOpen) {
-                closeMenu();
-              }
-            }}
-          >
+          <LinkR to="/" className="logo-text" onClick={toggleHome}>
             <span>H</span>
             <span className="small">un</span>
             <span>G</span>
@@ -253,15 +253,7 @@ const Header = ({ offset }) => {
           </li>
         </ul>
         <div className="cartIcon-container" ref={cartIconContainerRef}>
-          <button
-            className="cart"
-            onClick={() => {
-              openCart();
-              if (user) {
-                closeMenu();
-              }
-            }}
-          >
+          <button className="cart" onClick={openCart}>
             <MdShoppingBasket />
             {cartItems && cartItems.length > 0 && (
               <div className="cart-itemCount">
@@ -282,21 +274,26 @@ const Header = ({ offset }) => {
             </button>
             <div
               ref={userDropdownRef}
-              className={`user-dropdown-menu ${isMenuOpen && "openMenu"}`}
+              className={`user-dropdown-menu ignoreCloseMenu ${
+                isMenuOpen && "openMenu"
+              }`}
             >
-              <p className="user-name">
+              <p className="user-name ignoreCloseMenu">
                 {userInfo?.name?.split(" ").slice(0, 2).join(" ")}
                 {userInfo?.accountType !== "local" && (
-                  <span>{userInfo?.accountType}</span>
+                  <span className="ignoreCloseMenu">
+                    {userInfo?.accountType}
+                  </span>
                 )}
               </p>
               {userInfo && (
-                <p className="wallet">
-                  <span>
-                    <MdOutlineAccountBalanceWallet className="yellow" /> Wallet
+                <p className="wallet ignoreCloseMenu">
+                  <span className="ignoreCloseMenu">
+                    <MdOutlineAccountBalanceWallet className="yellow ignoreCloseMenu" />{" "}
+                    Wallet
                   </span>{" "}
-                  <span>
-                    <BiRupee className="green" />
+                  <span className="ignoreCloseMenu">
+                    <BiRupee className="green ignoreCloseMenu" />
                     {userInfo?.wallet}
                   </span>
                 </p>
@@ -307,16 +304,18 @@ const Header = ({ offset }) => {
                 <>
                   <LinkR
                     to="/admin/dashboard"
+                    className="ignoreCloseMenu"
                     onClick={() => dispatch(setIsMenuOpen(false))}
                   >
-                    <MdOutlineDashboard />
+                    <MdOutlineDashboard className="ignoreCloseMenu" />
                     Dashboard
                   </LinkR>
                   <LinkR
                     to="/admin/create-item"
+                    className="ignoreCloseMenu"
                     onClick={() => dispatch(setIsMenuOpen(false))}
                   >
-                    <MdAdd />
+                    <MdAdd className="ignoreCloseMenu" />
                     New Item
                   </LinkR>
                 </>
@@ -371,7 +370,7 @@ const Header = ({ offset }) => {
                   </LinkS>
                 </li>
               </ul>
-              <button className="logout-btn" onClick={logout}>
+              <button className="logout-btn ignoreCloseMenu" onClick={logout}>
                 <MdOutlineLogout />
                 Logout
               </button>
