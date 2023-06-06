@@ -119,6 +119,7 @@ const Header = ({ offset }) => {
   };
 
   const setAltUserImg = (e) => {
+    e.onError = null; // to avoid infinite loop in case of faulty backup image
     e.target.src = Avatar;
   };
 

@@ -88,6 +88,7 @@ const Header = () => {
   }, [cartItems]);
 
   const setAltUserImg = (e) => {
+    e.onError = null; // to avoid infinite loop in case of faulty backup image
     e.target.src = Avatar;
   };
 
@@ -132,7 +133,7 @@ const Header = () => {
         <div className="user-profile">
           <button className="user-profile-btn">
             <img
-              src={userInfo.image || Avatar}
+              src={userInfo?.image || Avatar}
               alt="user-profile"
               onError={(e) => setAltUserImg(e)}
               onClick={() => (isMenuOpen ? closeMenu() : openMenu())}
@@ -179,7 +180,13 @@ const Header = () => {
               <MdAdd />
               New Item
             </LinkR>
-            <button className="logout-btn" onClick={logout}>
+            <button
+              className="logout-btn ignoreCloseMenu"
+              onClick={() => {
+                logout();
+                dispatch(setIsMenuOpen(false));
+              }}
+            >
               <MdOutlineLogout />
               Logout
             </button>
